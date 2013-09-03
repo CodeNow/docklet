@@ -1,0 +1,27 @@
+{
+  "name": "docklet",
+  "version": "0.1.0",
+  "description": "Listens for tasks and runs them as docker containers",
+  "main": "server.js",
+  "scripts": {
+    "test": "NODE_ENV=testing ./node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CodeNow/docklet.git"
+  },
+  "author": "Runnable",
+  "license": "BSD",
+  "dependencies": {
+    "docker.js": "git://github.com/CodeNow/docker.js.git",
+    "rollbar": "~0.2.3",
+    "async": "~0.2.9",
+    "source-map-support": "~0.2.3"
+  },
+  "devDependencies": {
+    "coffee-script": "~1.6.3",
+    "should": "~1.2.2",
+    "mocha": "~1.10.0",
+    "superagent": "~0.14.7"
+  }
+}
