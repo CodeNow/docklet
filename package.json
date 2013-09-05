@@ -20,7 +20,8 @@
     "source-map-support": "~0.2.3",
     "eson": "~0.4.1",
     "node-uuid": "~1.4.1",
-    "debug": "~0.7.2"
+    "debug": "~0.7.2",
+    "node-etcd": "~0.2.0"
   },
   "devDependencies": {
     "coffee-script": "~1.6.3",
