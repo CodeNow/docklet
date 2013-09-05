@@ -2,8 +2,9 @@
   "name": "docklet",
   "version": "0.1.0",
   "description": "Listens for tasks and runs them as docker containers",
-  "main": "server.js",
+  "main": "/lib/index.js",
   "scripts": {
+    "start": "node lib/index.js",
     "test": "NODE_ENV=testing ./node_modules/.bin/mocha"
   },
   "repository": {
@@ -16,7 +17,10 @@
     "docker.js": "git://github.com/CodeNow/docker.js.git",
     "rollbar": "~0.2.3",
     "async": "~0.2.9",
-    "source-map-support": "~0.2.3"
+    "source-map-support": "~0.2.3",
+    "eson": "~0.4.1",
+    "node-uuid": "~1.4.1",
+    "debug": "~0.7.2"
   },
   "devDependencies": {
     "coffee-script": "~1.6.3",

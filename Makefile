@@ -2,9 +2,9 @@ build:
 	@./node_modules/.bin/coffee -m -o lib src
 test:
 ifdef grep
-		@NODE_ENV=testing ./node_modules/.bin/mocha --reporter spec --grep ${grep}
+	@NODE_ENV=testing ./node_modules/.bin/mocha --reporter spec --grep ${grep}
 else
-		@NODE_ENV=testing ./node_modules/.bin/mocha --reporter spec
+	@NODE_ENV=testing ./node_modules/.bin/mocha --reporter spec
 endif
 install:
 	@npm install
