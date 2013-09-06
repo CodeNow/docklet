@@ -21,9 +21,7 @@
     "eson": "~0.4.1",
     "node-uuid": "~1.4.1",
     "debug": "~0.7.2",
-    "node-etcd": "~0.2.0"
-  },
-  "devDependencies": {
+    "node-etcd": "EnosFeedler/node-etcd.git",
     "coffee-script": "~1.6.3",
     "should": "~1.2.2",
     "mocha": "~1.10.0",
