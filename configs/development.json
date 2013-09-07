@@ -1,4 +1,5 @@
 {
+  "checkImageInterval": "1 seconds",
   "docker_host": "localhost",
   "docker_port": 6000
 }

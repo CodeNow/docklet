@@ -1,20 +1,10 @@
 configs = require './configs'
 request = require 'request'
+queue = require './queue'
 
-pullImage = (repo, cb) ->
-  request
-    method: 'POST'
-    url: "http://#{configs.docker_host}:#{configs.docker_port}/images/create"
-    qs:
-      fromImage: repo
-    json: true
-    body: { }
-  , (err, res) ->
-    if err then cb err else
-      if res.statusCode isnt 200 then cb new Error "docker error #{res.body}" else
-        cb()
+images = [ ]
 
-findImage = (repo, cb) ->
+cacheImages = (cb) ->
   request
     method: 'GET'
     url: "http://#{configs.docker_host}:#{configs.docker_port}/images/json"
@@ -22,10 +12,19 @@ findImage = (repo, cb) ->
   , (err, res) ->
     if err then cb err else
       if res.statusCode isnt 200 then cb new Error "docker error #{res.body}" else
-        found = false
-        for item in res.body
-          if item.Repository is repo then found = true
-        cb null, found
+        images = res.body
+        cb()
+
+pullImage = (repo, cb) ->
+  queue.push repo, cb
+
+findImage = (repo, cb) ->
+  cacheImages (err) ->
+    if err then cb err else
+      found = false
+      for item in images
+        if item.Repository is repo then found = true
+      cb null, found
 
 module.exports =
   pullImage: pullImage
