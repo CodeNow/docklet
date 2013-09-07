@@ -25,6 +25,7 @@
     "coffee-script": "~1.6.3",
     "should": "~1.2.2",
     "mocha": "~1.10.0",
-    "superagent": "~0.14.7"
+    "superagent": "~0.14.7",
+    "request": "~2.27.0"
   }
 }

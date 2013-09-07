@@ -1,40 +1,32 @@
+docker = require './docker'
 etcd = require 'node-etcd'
 
 c = new etcd()
 
-# 1. WATCH SERVICE TABLE FOR ROW ADDITIONS
-
 w = c.watcher '/runnables'
+
+index = 0
 
 w.on 'change', (value) ->
 
-  console.log value
-
-  # 2. WHEN ROW IS ADDED, CHECK LOCAL DOCKER IMAGE CACHE IF AVAILABLE (PERIODICALLY UPDATE IN MEMORY LIST)
-
-  # 3. IF IMAGE IS NOT CACHED, ATTEMPT TO PULL DOWN IMAGE FROM DOCKER REGISTRY
-
-  # 4. ATTEMPT TO AQUIRE THE LOCK TO START RUNNING THE CONTAINER
-
   if value.newKey and value.value is 'request'
 
-    c.setTest value.key.replace('state', 'docklet'), '0', 'undefined', (err, val) ->
-
-      # 5. IF LOCK FAILS, THEN DONE
-      console.log err
-      console.log val
-
-      if not err and val.value is '0'
-
-        # 6. START A CONTAINER AND UPDATE TABLE ROW WITH TTL
-        console.log 'lock success'
-
-        # 7. WHEN THE CONTAINER IS RUNNING THEN UPDATE STATE TO "RUNNING" WITH DOCKER INDEX
-
-        # 8. WRITE "ACTIVE" STATE WITH TTL VIA DOCKWORKER (OR FROM DOCKLET DIRECTLY)
-
-        # 9. STATE TRANSITIONS TO INACTIVE IF DOCKWORKER/MACHINE DIES
-
-# TODO: IMPLEMENT THE BOOT SEQUENCE
-# 1. WALK THROUGH THE EXISTING SERVICE TABLE AND LOOK FOR ROWS IN RUNNING STATE OWNED BY US
-# 2. FOR CONTAINERS OWNED BY US, START THEM BACK UP AGAIN (STATE SHOULD HAVE FLIPPED TO INACTIVE)
+    c.get value.key.replace('state', 'repo'), (err, val) ->
+      if not err
+        repo = val.value
+        console.log "finding image #{repo}"
+        docker.findImage repo, (err, found) ->
+          if err then console.log err else
+            response = () ->
+              c.setTest value.key.replace('state', 'docklet'), '0', 'undefined', (err, val) ->
+                if err then console.log err else
+                  if val.value is '0' then console.log "docklet #{index} aquired the lock to run image #{repo}"
+            if found
+              console.log "found image #{repo}"
+              response()
+            else
+              console.log "not found. pulling image #{repo}"
+              docker.pullImage repo, (err) ->
+                if err then console.log err else
+                  console.log "pulled image #{repo}"
+                  response()
