@@ -1,7 +1,10 @@
+configs = require './configs'
 docker = require './docker'
 etcd = require 'node-etcd'
 
-c = new etcd()
+c = new etcd
+ host: configs.etcd_host
+ port: configs.etcd_port
 
 w = c.watcher '/runnables'
 
