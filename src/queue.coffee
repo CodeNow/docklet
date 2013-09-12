@@ -13,4 +13,5 @@ module.exports = async.queue (repo, cb) ->
     if err then cb err else
       if res.statusCode isnt 200 then cb new Error "docker error #{res.body}" else
         "pulled image #{repo}"
-        cb()
+        docker = require './docker'
+        docker.cacheImages cb
