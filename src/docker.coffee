@@ -19,12 +19,18 @@ pullImage = (repo, cb) ->
   queue.push repo, cb
 
 findImage = (repo, cb) ->
-  cacheImages (err) ->
-    if err then cb err else
-      found = false
-      for item in images
-        if item.Repository is repo then found = true
+  found = false
+  for item in images
+    if item.Repository is repo then found = true
+  if found
+    process.nextTick ->
       cb null, found
+  else 
+    cacheImages (err) ->
+      if err then cb err else
+        for item in images
+          if item.Repository is repo then found = true
+        cb null, found
 
 module.exports =
   pullImage: pullImage
