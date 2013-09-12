@@ -24,13 +24,18 @@ findImage = (repo, cb) ->
     if item.Repository is repo then found = true
   if found
     process.nextTick ->
-      cb null, found
+      cb null
   else 
     cacheImages (err) ->
       if err then cb err else
         for item in images
           if item.Repository is repo then found = true
-        cb null, found
+        if found
+          console.log "found image #{repo}"
+          cb null
+        else
+          console.log "not found. pulling image #{repo}"
+          docker.pullImage repo, cb
 
 module.exports =
   pullImage: pullImage
