@@ -3,5 +3,9 @@
   "etcd_host": "10.0.2.90",
   "etcd_port": 4001,
   "docker_host": "localhost",
-  "docker_port": 4243
+  "docker_port": 4243,
+  "auth": {
+  	"user": "runnableProduction",
+  	"password": "insertWittyPasswordHere"
+  }
 }
