@@ -1,7 +1,7 @@
 var uuid = require('node-uuid');
 var configs = require('../lib/configs');
 var etcd = require('node-etcd');
-var client = new etcd(configs.etcdHost, configs.etcdPort);
+var client = new etcd(configs.etcd_host, configs.etcd_port);
 
 require('./fixtures/etcd');
 require('./fixtures/docker');
