@@ -66,12 +66,12 @@ function set (req, res, next) {
   };
   setTimeout(function () {
     res.json(resp);
-  }, 20);
+  }, 15);
   setTimeout(function () {
     responses.push(resp);
     data[req.params.token][req.params.name] = req.body;
     app.emit('/runnables', resp);
-  }, 70);
+  }, 30);
 }
 
 function get (req, res, next) {
