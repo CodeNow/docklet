@@ -1,7 +1,11 @@
 {
   "checkImageInterval": "30 seconds",
-  "etcd_host": "10.0.2.232",
+  "etcd_host": "10.0.2.90",
   "etcd_port": 4001,
-  "docker_host": "10.0.2.232",
-  "docker_port": 4243
+  "docker_host": "localhost",
+  "docker_port": 4243,
+  "auth": {
+    "user": "runnableIntegration",
+    "password": "calculus"
+  }
 }
