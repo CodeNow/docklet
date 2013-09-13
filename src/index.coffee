@@ -6,7 +6,7 @@ c = new etcd configs.etcd_host, configs.etcd_port
 
 w = c.watcher '/runnables'
 
-index = Number (process.argv[2] || 0)
+index = process.env.DOCKLET_INDEX
 
 w.on 'change', (value) ->
 

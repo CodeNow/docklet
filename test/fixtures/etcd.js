@@ -1,13 +1,15 @@
 var express = require('express');
 var app = express();
 var data = {};
-var index = 2;
+var index = 0;
+var responses = [];
 
 app.use(express.bodyParser());
 
 app.post('/v1/keys/runnables/:token/:name', set);
 
 app.get('/v1/watch/runnables/:token/docklet', docklet);
+app.post('/v1/watch/runnables/:token/docklet', express.json(), docklet);
 app.get('/v1/watch/runnables', watch);
 app.post('/v1/watch/runnables', watch);
 //app.get('/v1/keys/runnables/:token/docklet', docklet);
@@ -28,10 +30,14 @@ function ok (req, res) {
 }
 
 function docklet (req, res, next) {
-  var key = req.url.replace(/\/v1\/watch/,'')
+  var key = req.url.replace(/\/v1\/watch/,'');
+  var index = req.body.index;
+  if (index < responses.length - 1) {
+    console.log(index, responses.length);
+  }
   app.on('/runnables', checkKey);
   function checkKey (data) {
-    if (key === data.key) {
+    if (key === data.key && data.index > index) {
       app.removeListener('/runnables', checkKey);
       res.json(data);
     }
@@ -52,17 +58,20 @@ function set (req, res, next) {
   var prevValue = data[req.params.token][req.params.name] || {};
   var resp = {
     action: 'SET',
-    newKey: req.body.value !== prevValue.value,
+    newKey: prevValue.value === void 0,
     value: req.body.value,
     prevValue: prevValue.value,
     key: req.url.replace(/\/v1\/keys/,''),
     index: index++
   };
-  res.json(resp);
   setTimeout(function () {
+    res.json(resp);
+  }, 20);
+  setTimeout(function () {
+    responses.push(resp);
     data[req.params.token][req.params.name] = req.body;
     app.emit('/runnables', resp);
-  }, 50);
+  }, 70);
 }
 
 function get (req, res, next) {

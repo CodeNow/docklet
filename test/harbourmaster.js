@@ -22,18 +22,25 @@ describe('harbourmaster interface', function () {
   it('should respond to a request', function (done) {
     var docklet = this.row + '/docklet';
     var state = this.row + '/state';
-    setTimeout(function () {
-      client.watch(docklet, function dockletReady (err, val) {
-        if (err) {
-          next(err);
+    var index;
+    client.set(state, 'request', watch);
+    function watch (err, val) {
+      if (err) throw err;
+      if (val) index = val.index;
+      client.watchIndex(docklet, index, onValue);
+    }
+    function onValue (err, val) {
+      if (err) {
+        next(err);
+      } else {
+        if (val.value == null) {
+          throw new Error('no value');
+        } else if (val.newKey) {
+          watch();
         } else {
-          if (val.value == null) {
-            throw new Error('no value');
-          }
           done();
         }
-      });
-    }, 100);
-    client.set(state, 'request', function () {});
+      }
+    }
   });
 });
