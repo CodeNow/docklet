@@ -5,7 +5,7 @@
   "main": "/lib/index.js",
   "scripts": {
     "start": "node lib/index.js",
-    "test": "NODE_ENV=testing ./node_modules/.bin/mocha"
+    "test": "NODE_ENV=testing DOCKLET_INDEX=0 ./node_modules/.bin/mocha -R spec"
   },
   "repository": {
     "type": "git",
@@ -27,5 +27,8 @@
     "mocha": "~1.10.0",
     "superagent": "~0.14.7",
     "request": "~2.27.0"
+  },
+  "devDependencies": {
+    "express": "~3.4.0"
   }
 }

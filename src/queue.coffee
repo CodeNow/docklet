@@ -9,7 +9,10 @@ module.exports = async.queue (repo, cb) ->
     qs: fromImage: repo
     json: true
     body: { }
+    auth: configs.auth
   , (err, res) ->
     if err then cb err else
       if res.statusCode isnt 200 then cb new Error "docker error #{res.body}" else
-        cb()
+        console.log "pulled image #{repo}"
+        docker = require './docker'
+        docker.cacheImages cb
