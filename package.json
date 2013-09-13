@@ -5,7 +5,7 @@
   "main": "/lib/index.js",
   "scripts": {
     "start": "node lib/index.js",
-    "test": "NODE_ENV=testing ./node_modules/.bin/mocha"
+    "test": "NODE_ENV=testing ./node_modules/.bin/mocha -R spec"
   },
   "repository": {
     "type": "git",

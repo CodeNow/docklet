@@ -1,0 +1,7 @@
+{
+  "checkImageInterval": "1 seconds",
+  "etcd_host": "localhost",
+  "etcd_port": 4001,
+  "docker_host": "localhost",
+  "docker_port": 4243
+}
