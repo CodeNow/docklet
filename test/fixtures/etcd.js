@@ -1,7 +1,6 @@
 var express = require('express');
 var app = express();
 var data = {};
-var bus = new (new require('events').EventEmitter);
 var index = 2;
 
 app.use(express.bodyParser());
@@ -30,17 +29,17 @@ function ok (req, res) {
 
 function docklet (req, res, next) {
   var key = req.url.replace(/\/v1\/watch/,'')
-  bus.on('/runnables', checkKey);
+  app.on('/runnables', checkKey);
   function checkKey (data) {
     if (key === data.key) {
-      bus.removeListener('/runnables', checkKey);
+      app.removeListener('/runnables', checkKey);
       res.json(data);
     }
   }
 }
 
 function watch (res, res, next) {
-  bus.once('/runnables', function (data) {
+  app.once('/runnables', function (data) {
     res.json(data);
   });
 }
@@ -62,7 +61,7 @@ function set (req, res, next) {
   res.json(resp);
   setTimeout(function () {
     data[req.params.token][req.params.name] = req.body;
-    bus.emit('/runnables', resp);
+    app.emit('/runnables', resp);
   }, 50);
 }
 
