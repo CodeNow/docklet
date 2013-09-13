@@ -7,7 +7,6 @@ var base = 'http://localhost:' + configs.port;
 var webToken = 'web-' + uuid();
 var newWebToken = 'twilio-' + uuid();
 
-
 require('./fixtures/etcd');
 require('./fixtures/docker');
 require('../lib');
