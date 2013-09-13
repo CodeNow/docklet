@@ -27,5 +27,8 @@
     "mocha": "~1.10.0",
     "superagent": "~0.14.7",
     "request": "~2.27.0"
+  },
+  "devDependencies": {
+    "express": "~3.4.0"
   }
 }
