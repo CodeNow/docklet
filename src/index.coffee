@@ -24,4 +24,4 @@ w.on 'change', (value) ->
               else
                 console.log "docklet #{index} did not win the race to start a container from image #{repo}"
               if err.errorCode >= 300
-                if console.error err
+                console.error err
