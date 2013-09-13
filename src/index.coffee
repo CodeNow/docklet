@@ -23,5 +23,5 @@ w.on 'change', (value) ->
                 console.log "docklet #{index} aquired the lock to run image #{repo}" 
               else
                 console.log "docklet #{index} did not win the race to start a container from image #{repo}"
-              if err.errorCode >= 300
+              if err?.errorCode >= 300
                 console.error err
