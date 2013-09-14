@@ -4,11 +4,14 @@ redis = require 'redis'
 pubsub = redis.createClient configs.redisPort, configs.redisHost
 client = redis.createClient configs.redisPort, configs.redisHost
 
-ip = configs.networkInterface == 'lo0' ? 'localhost' : require("os")
-  .networkInterfaces()[configs.networkInterface]
-  .filter((iface) ->
-    iface.family is "IPv4"
-  )[0].address
+ip = if configs.networkInterface == 'lo0'
+   'localhost'
+else
+  require("os")
+    .networkInterfaces()[configs.networkInterface]
+    .filter((iface) ->
+      iface.family is "IPv4"
+    )[0].address
 
 pubsub.on 'message', (key, json) ->
   try
