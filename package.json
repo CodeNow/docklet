@@ -21,12 +21,12 @@
     "eson": "~0.4.1",
     "node-uuid": "~1.4.1",
     "debug": "~0.7.2",
-    "node-etcd": "EnosFeedler/node-etcd.git",
     "coffee-script": "~1.6.3",
     "should": "~1.2.2",
     "mocha": "~1.10.0",
     "superagent": "~0.14.7",
-    "request": "~2.27.0"
+    "request": "~2.27.0",
+    "redis": "~0.8.4"
   },
   "devDependencies": {
     "express": "~3.4.0"

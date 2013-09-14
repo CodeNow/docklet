@@ -1,27 +1,28 @@
 configs = require './configs'
 docker = require './docker'
-etcd = require 'node-etcd'
+redis = require 'redis'
+pubsub = redis.createClient configs.redisPort, configs.redisHost
+client = redis.createClient configs.redisPort, configs.redisHost
 
-c = new etcd configs.etcd_host, configs.etcd_port
+ip = require("os").networkInterfaces()[configs.networkInterface]
+.filter((iface) ->
+  iface.family is "IPv4"
+)[0].address
 
-w = c.watcher '/runnables'
+pubsub.on 'message', (key, json) ->
+  try
+    data = JSON.parse json
+    docker.findImage data.repo, (err) ->
+      client.setnx "#{data.servicesToken}:dockletLock", true, (err, lock) ->
+        if (err) 
+          throw err
+        if (lock)
+          # console.log "docklet aquired the lock to run image #{data.repo}"
+          client.publish "#{data.servicesToken}:dockletReady", ip
+        else
+          # console.log "docklet did not win the race to start a container from image #{data.repo}"
+  catch err
+    console.error err
 
-index = process.env.DOCKLET_INDEX
+pubsub.subscribe 'dockletRequest'
 
-w.on 'change', (value) ->
-
-  if value.newKey and value.value is 'request'
-
-    c.get value.key.replace('state', 'repo'), (err, val) ->
-      if not err
-        repo = val.value
-        console.log "finding image #{repo}"
-        docker.findImage repo, (err) ->
-          if err then console.log err else
-            c.setTest value.key.replace('state', 'docklet'), index.toString(), 'undefined', (err, val) ->
-              if val?.value is index.toString() 
-                console.log "docklet #{index} aquired the lock to run image #{repo}" 
-              else
-                console.log "docklet #{index} did not win the race to start a container from image #{repo}"
-              if err?.errorCode >= 300
-                console.error err
