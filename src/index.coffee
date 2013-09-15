@@ -25,11 +25,12 @@ pubsub.on 'message', (key, json) ->
             throw err
           if (lock)
             lockCount++
+            setTimeout ->
+              lockCount--
+            , 100
             # console.log "docklet aquired the lock to run image #{data.repo}"
             client.publish "#{data.servicesToken}:dockletReady", ip
           else
-            lockCount--;
-            if lockCount < 0 then lockCount = 0
             # console.log "docklet did not win the race to start a container from image #{data.repo}"
       , lockCount * 100
   catch err
