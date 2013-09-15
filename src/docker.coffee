@@ -1,4 +1,3 @@
-require 'sugar'
 configs = require './configs'
 request = require 'request'
 queue = require './queue'
