@@ -32,7 +32,7 @@ pubsub.on 'message', (key, json) ->
             client.publish "#{data.servicesToken}:dockletReady", ip
           else
             # console.log "docklet did not win the race to start a container from image #{data.repo}"
-      , lockCount * 100
+      , lockCount * 100 + Math.random() * 50
   catch err
     console.error err
 
