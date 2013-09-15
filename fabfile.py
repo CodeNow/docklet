@@ -23,6 +23,8 @@ def integration():
   """
   env.settings = 'integration'
   env.hosts = [ 
+    'docker-int',
+    'docker2-int',
     'docker3-int',
     'docker4-int',
     'docker5-int',
@@ -92,6 +94,7 @@ def install_nginx():
   Install and configure nginx
   """
   sudo('apt-get install -y nginx')
+  sudo('killall nginx || echo no nginx')
   sudo('nginx -c /home/ubuntu/docklet/nginx.conf')
 
 def setup_registry():
@@ -117,6 +120,7 @@ def install_requirements():
   Install the required packages using npm.
   """
   sudo('npm install pm2 -g')
+  sudo('rm -rf /home/ubuntu/tmp')
   with cd('docklet'):
     run('npm install')
     run('make')
@@ -125,13 +129,9 @@ def boot():
   """
   Start process with pm2
   """
+  run('pm2 stopAll')
   run('NODE_ENV=%(settings)s pm2 start docklet/lib/index.js -n docklet' % env)
 
-def test3():
-  if run('[ -d docklet ] && echo true || echo false') == 'true':
-    local('echo docket')
-  else:
-    local('echo no docklet')
 
 
 ######################### BASE IMAGE ENDS HERE ##############################
