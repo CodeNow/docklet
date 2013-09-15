@@ -139,10 +139,22 @@ def deploy():
   """
   update the server.
   """
+  require('settings', provided_by=[production, integration])
+  require('branch', provided_by=[stable, master, branch])
   clone_repo()
   install_nginx()
   install_requirements()
   boot()
+
+"""
+Commands - stopAll
+"""
+def stopAll():
+  require('settings', provided_by=[production, integration])
+  sudo('docker stop `docker ps -q | xargs echo`')
+
+def ps():
+  sudo('docker ps')
 
 ######################### BASE IMAGE ENDS HERE ##############################
 
