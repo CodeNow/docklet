@@ -132,7 +132,17 @@ def boot():
   run('pm2 stopAll')
   run('NODE_ENV=%(settings)s pm2 start docklet/lib/index.js -n docklet' % env)
 
-
+"""
+Commands - deploy
+"""
+def deploy():
+  """
+  update the server.
+  """
+  clone_repo()
+  install_nginx()
+  install_requirements()
+  boot()
 
 ######################### BASE IMAGE ENDS HERE ##############################
 
