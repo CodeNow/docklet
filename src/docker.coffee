@@ -1,3 +1,4 @@
+require 'sugar'
 configs = require './configs'
 request = require 'request'
 queue = require './queue'
@@ -34,7 +35,7 @@ findImage = (repo, cb) ->
           pullImage repo, cb
 
 module.exports = {
+  findImage: findImage.lazy 200
   cacheImages
   pullImage
-  findImage
 }
