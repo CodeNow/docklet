@@ -35,7 +35,7 @@ findImage = (repo, cb) ->
           pullImage repo, cb
 
 module.exports = {
-  findImage: findImage.lazy 200, true
+  findImage
   cacheImages
   pullImage
 }
