@@ -87,6 +87,13 @@ def install_node():
   sudo('apt-get update')
   sudo('apt-get install -y nodejs')
 
+def install_nginx():
+  """
+  Install and configure nginx
+  """
+  sudo('apt-get install -y nginx')
+  sudo('nginx -c /home/ubuntu/docklet/nginx.conf')
+
 def setup_registry():
   """
   Fix registry dns entry.
@@ -99,7 +106,11 @@ def clone_repo():
   Do initial clone of the git repository.
   """
   sudo('apt-get install -y git')
-  run('git clone https://github.com/CodeNow/docklet')
+  if run('[ -d docklet ] && echo true || echo false') == 'false':
+    run('git clone https://github.com/CodeNow/docklet')
+
+  with cd('docklet'):
+    run('git checkout %(branch)s; git pull origin %(branch)s' % env)
 
 def install_requirements():
   """
@@ -115,6 +126,12 @@ def boot():
   Start process with pm2
   """
   run('NODE_ENV=%(settings)s pm2 start docklet/lib/index.js -n docklet' % env)
+
+def test3():
+  if run('[ -d docklet ] && echo true || echo false') == 'true':
+    local('echo docket')
+  else:
+    local('echo no docklet')
 
 
 ######################### BASE IMAGE ENDS HERE ##############################
