@@ -15,7 +15,8 @@ def production():
   env.settings = 'production'
   env.hosts = [ 
     'docker',
-    'docker2'
+    'docker2',
+    'docker3'
   ]
  
 def integration():
