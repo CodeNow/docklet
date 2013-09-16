@@ -1,7 +1,8 @@
 {
   "checkImageInterval": "1 seconds",
-  "etcd_host": "localhost",
-  "etcd_port": 4001,
+  "redisPort": "6379",
+  "redisHost": "127.0.0.1",
   "docker_host": "localhost",
-  "docker_port": 4243
+  "docker_port": 4243,
+  "networkInterface": "lo0"
 }
