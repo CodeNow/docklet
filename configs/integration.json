@@ -1,11 +1,12 @@
 {
   "checkImageInterval": "30 seconds",
-  "etcd_host": "10.0.2.90",
-  "etcd_port": 4001,
+  "redisPort": "6379",
+  "redisHost": "10.0.1.14",
   "docker_host": "localhost",
   "docker_port": 4243,
   "auth": {
     "user": "runnableIntegration",
     "password": "calculus"
-  }
+  },
+  "networkInterface": "eth0"
 }
