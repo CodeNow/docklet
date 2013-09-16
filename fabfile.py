@@ -80,6 +80,8 @@ def install_docker():
   """
   sudo('apt-get install -y linux-image-extra-`uname -r` curl')
   sudo('curl https://get.docker.io/ubuntu/info | sh -x')
+  sudo('echo "*                soft    nofile          10000" >> /etc/security/limits.conf')
+  sudo('echo "*                hard    nofile          10000" >> /etc/security/limits.conf')
 
 def install_node():
   """
