@@ -147,14 +147,23 @@ def deploy():
   boot()
 
 """
-Commands - stopAll
+Commands - docker stuff
 """
 def stopAll():
   require('settings', provided_by=[production, integration])
   sudo('docker stop `docker ps -q | xargs echo`')
 
+def killAll():
+  require('settings', provided_by=[production, integration])
+  sudo('docker kill `docker ps -q | xargs echo`')
+
 def ps():
+  require('settings', provided_by=[production, integration])
   sudo('docker ps')
+
+def version():
+  require('settings', provided_by=[production, integration])
+  sudo('docker version')
 
 ######################### BASE IMAGE ENDS HERE ##############################
 
