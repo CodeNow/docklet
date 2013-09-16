@@ -23,7 +23,7 @@ findImage = (repo, cb) ->
   if repo of images
     process.nextTick ->
       cb null
-  else 
+  else
     cacheImages (err) ->
       if err then cb err else
         if repo of images

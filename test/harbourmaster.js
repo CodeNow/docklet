@@ -4,11 +4,12 @@ var redis = require('redis');
 var pubsub = redis.createClient(configs.redisPort, configs.redisHost);
 var client = redis.createClient(configs.redisPort, configs.redisHost);
 
-require('./fixtures/docker');
+var docker = require('./fixtures/docker');
 require('../lib');
 
 describe('harbourmaster interface', function () {
-  it('should respond to a request', function (done) {
+
+  it('should respond to a request to create a container', function (done) {
     var servicesToken = 'services-' + uuid();
     var repo = 'base';
     pubsub.on('subscribe', onSubscribed);
@@ -18,7 +19,7 @@ describe('harbourmaster interface', function () {
     function onSubscribed (key, count) {
       if (key === servicesToken + ':dockletReady') {
         client.publish('dockletRequest', JSON.stringify({
-          repo: repo, 
+          repo: repo,
           servicesToken: servicesToken
         }));
       }
@@ -26,8 +27,26 @@ describe('harbourmaster interface', function () {
 
     function onMessage (key, docklet) {
       if (key === servicesToken + ':dockletReady') {
-        pubsub.unsubscribe(servicesToken + ':dockletReady', done);  
+        pubsub.unsubscribe(servicesToken + ':dockletReady', done);
       }
     }
   });
+
+  it('should respond to a request to prune unused containers', function (done) {
+    var containerIds = [
+      '0',
+      '1',
+      '2',
+      '3'
+    ];
+    client.publish('dockletPrune', JSON.stringify(containerIds));
+    setTimeout(function () {
+      if (docker.pruneCount() !== 3) {
+        done(new Error('expected prune count to equal 3'));
+      } else {
+        done();
+      }
+    }, 100);
+  });
+
 });
