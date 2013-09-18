@@ -39,11 +39,11 @@ function top (container, cb) {
 
 function applyHolyWater (containers) {
   console.log('SKELETONS', containers.map(id));
-  async.eachSeries(containers, kill, celebrate);
+  async.eachSeries(containers, stop, celebrate);
 }
 
-function kill (container, cb) {
-  docker.killContainer(container.Id, dead);
+function stop (container, cb) {
+  docker.stopContainer(container.Id, dead);
   function dead (err) {
     console.log('DEAD', container.Id);
     cb(err);

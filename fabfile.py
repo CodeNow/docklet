@@ -126,6 +126,7 @@ def install_requirements():
   sudo('npm install pm2 -g')
   sudo('rm -rf /home/ubuntu/tmp')
   with cd('docklet'):
+    run('rm -rf node_modules')
     run('npm install')
     run('make')
 
@@ -135,6 +136,7 @@ def boot():
   """
   run('pm2 stopAll')
   run('NODE_ENV=%(settings)s pm2 start docklet/lib/index.js -n docklet' % env)
+  run('NODE_ENV=%(settings)s pm2 start docklet/scripts/lxc-skelly.js -n paladin' % env)
 
 """
 Commands - deploy
