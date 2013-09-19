@@ -14,9 +14,10 @@ def production():
   """
   env.settings = 'production'
   env.hosts = [ 
-    'docker',
-    'docker2',
-    'docker3'
+    # 'docker',
+    # 'docker2',
+    # 'docker3',
+    'docker4'
   ]
  
 def integration():
@@ -25,12 +26,12 @@ def integration():
   """
   env.settings = 'integration'
   env.hosts = [ 
-    'docker-int',
+    #'docker-int',
     'docker2-int',
-    'docker3-int',
-    'docker4-int',
-    'docker5-int',
-    'docker6-int'
+    #'docker3-int',
+    #'docker4-int',
+    #'docker5-int',
+    #'docker6-int'
   ]
 
 
@@ -136,7 +137,7 @@ def boot():
   """
   run('pm2 stopAll')
   run('NODE_ENV=%(settings)s pm2 start docklet/lib/index.js -n docklet' % env)
-  run('NODE_ENV=%(settings)s pm2 start docklet/scripts/lxc-skelly.js -n paladin' % env)
+  # run('NODE_ENV=%(settings)s pm2 start docklet/scripts/lxc-skelly.js -n paladin' % env)
 
 """
 Commands - deploy
