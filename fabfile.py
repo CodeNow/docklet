@@ -13,24 +13,36 @@ def production():
   Work on production environment
   """
   env.settings = 'production'
-  env.hosts = [ 
-    'docker',
-    'docker2',
-    'docker3'
+  env.hosts = [
+    # 'docker',
+    # 'docker2',
+    # 'docker3',
+    'docker4'
   ]
- 
+
 def integration():
   """
   Work on staging environment
   """
   env.settings = 'integration'
-  env.hosts = [ 
-    'docker-int',
-    'docker2-int',
+  env.hosts = [
+    'docker1-int'
+    'docker2-int'
     'docker3-int',
     'docker4-int',
     'docker5-int',
-    'docker6-int'
+    'docker6-int',
+    'docker7-int',
+    'docker8-int',
+    'docker9-int',
+    'docker10-int',
+    'docker11-int',
+    'docker12-int',
+    'docker13-int',
+    'docker14-int',
+    'docker15-int',
+    'docker16-int',
+    'docker17-int'
   ]
 
 
@@ -42,13 +54,13 @@ def stable():
   Work on stable branch.
   """
   env.branch = 'stable'
- 
+
 def master():
   """
   Work on development branch.
   """
   env.branch = 'master'
- 
+
 def branch(branch_name):
   """
   Work on any specified branch.
@@ -136,7 +148,7 @@ def boot():
   """
   run('pm2 stopAll')
   run('NODE_ENV=%(settings)s pm2 start docklet/lib/index.js -n docklet' % env)
-  run('NODE_ENV=%(settings)s pm2 start docklet/scripts/lxc-skelly.js -n paladin' % env)
+  # run('NODE_ENV=%(settings)s pm2 start docklet/scripts/lxc-skelly.js -n paladin' % env)
 
 """
 Commands - deploy
