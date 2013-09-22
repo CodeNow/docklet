@@ -26,8 +26,8 @@ def integration():
   """
   env.settings = 'integration'
   env.hosts = [
-    'docker1-int'
-    'docker2-int'
+    # 'docker1-int'
+    # 'docker2-int'
     'docker3-int',
     'docker4-int',
     'docker5-int',
@@ -178,6 +178,18 @@ def killAll():
 def ps():
   require('settings', provided_by=[production, integration])
   sudo('docker ps')
+
+def psa():
+  require('settings', provided_by=[production, integration])
+  sudo('docker ps -a')
+
+def max_fds():
+  require('settings', provided_by=[production, integration])
+  sudo('ulimit -n')
+
+def curr_fds():
+  require('settings', provided_by=[production, integration])
+  sudo('lsof | wc -l')
 
 def version():
   require('settings', provided_by=[production, integration])
