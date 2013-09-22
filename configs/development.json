@@ -3,6 +3,6 @@
   "redisPort": "6379",
   "redisHost": "127.0.0.1",
   "docker_host": "localhost",
-  "docker_port": 6000,
+  "docker_port": 4243,
   "networkInterface": "lo0"
 }
