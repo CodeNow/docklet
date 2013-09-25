@@ -35,7 +35,7 @@ def integration():
     'docker9-int',
     'docker10-int',
     'docker11-int',
-    'docker12-int',
+    # 'docker12-int',
     'docker13-int',
     'docker14-int',
     'docker15-int',
@@ -186,7 +186,7 @@ def deploy():
 """
 Commands - delta_deploy
 """
-
+# @parallel
 def delta_deploy():
   """
   increment the server.
