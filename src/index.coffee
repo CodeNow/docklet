@@ -32,7 +32,7 @@ pubsub.on 'message', (key, json) ->
         if err then return console.error err else
         execFile 'ps', ['ax', '-o', 'stat'], (err, stdout) ->
           if (err) then return console.error err else
-          zombieCount = stdout.split('Zl').length -1
+          zombieCount = stdout.split('Zl').length - 1
           load = os.loadavg()[0] - zombieCount
           delay = lockCount * 500 + load * 1000
           console.log load, lockCount, delay
