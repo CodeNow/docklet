@@ -26,6 +26,8 @@ def integration():
   """
   env.settings = 'integration'
   env.hosts = [
+    'docker1-int',
+    'docker2-int',
     'docker3-int',
     'docker4-int',
     'docker5-int',
@@ -40,7 +42,40 @@ def integration():
     'docker14-int',
     'docker15-int',
     'docker16-int',
-    'docker17-int'
+    'docker17-int',
+    'docker18-int',
+    'docker19-int',
+    'docker20-int',
+    'docker21-int',
+    'docker22-int',
+    'docker23-int',
+    'docker24-int',
+    'docker25-int',
+    'docker26-int',
+    'docker27-int',
+    'docker28-int',
+    'docker29-int',
+    'docker30-int',
+    'docker31-int',
+    'docker32-int',
+    'docker33-int',
+    'docker34-int',
+    'docker35-int',
+    'docker36-int',
+    'docker37-int',
+    'docker38-int',
+    'docker39-int',
+    'docker40-int',
+    'docker41-int',
+    'docker42-int',
+    'docker43-int',
+    'docker44-int',
+    'docker45-int',
+    'docker46-int',
+    'docker47-int',
+    'docker48-int',
+    'docker49-int',
+    'docker50-int'
   ]
 
 
@@ -145,6 +180,8 @@ def install_requirements():
   """
   Install the required packages using npm.
   """
+  sudo('npm install n -g')
+  sudo('n 0.10.18')
   sudo('npm install pm2 -g')
   sudo('rm -rf /home/ubuntu/tmp')
   with cd('docklet'):
