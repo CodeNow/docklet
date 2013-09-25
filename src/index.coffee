@@ -7,6 +7,7 @@ docker = require './docker'
 dockerjs = require 'docker.js'
 os = require 'os'
 redis = require 'redis'
+execFile = require('child_process').execFile
 pubsub = redis.createClient configs.redisPort, configs.redisHost
 client = redis.createClient configs.redisPort, configs.redisHost
 dockerClient = dockerjs host: "http://#{configs.docker_host}:#{configs.docker_port}"
@@ -28,23 +29,27 @@ pubsub.on 'message', (key, json) ->
     data = JSON.parse json
     if key is 'dockletRequest'
       docker.findImage data.repo, (err) ->
-        load = os.loadavg()[0]
-        loaded = load > (0.7 * numCPUs) ? 1.0 : 0
-        if loaded then console.log "loaded: #{load}"
-        setTimeout ->
-          client.setnx "#{data.servicesToken}:dockletLock", true, (err, lock) ->
-            if (err)
-              throw err
-            if (lock)
-              lockCount++
-              setTimeout ->
-                lockCount--
-              , 100
-              # console.log "docklet aquired the lock to run image #{data.repo}"
-              client.publish "#{data.servicesToken}:dockletReady", ip
-            else
-              # console.log "docklet did not win the race to start a container from image #{data.repo}"
-        , lockCount * 100 + Math.random() * 50 + loaded * 1000 * 10
+        if err then return console.error err else
+        execFile 'ps', ['ax', '-o', 'stat'], (err, stdout) ->
+          if (err) then return console.error err else
+          zombieCount = stdout.split('Zl').length -1
+          load = os.loadavg()[0] - zombieCount
+          delay = lockCount * 500 + load * 1000
+          console.log load, lockCount, delay
+          setTimeout ->
+            client.setnx "#{data.servicesToken}:dockletLock", true, (err, lock) ->
+              if (err)
+                throw err
+              if (lock)
+                lockCount++
+                setTimeout ->
+                  lockCount--
+                , 500
+                # console.log "docklet aquired the lock to run image #{data.repo}"
+                client.publish "#{data.servicesToken}:dockletReady", ip
+              else
+                # console.log "docklet did not win the race to start a container from image #{data.repo}"
+          , delay
     else if key is 'dockletPrune'
       whitelist = data
       dockerClient.listContainers queryParams: all: true, (err, containers) ->
