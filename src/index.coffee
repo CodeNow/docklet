@@ -28,7 +28,9 @@ pubsub.on 'message', (key, json) ->
     data = JSON.parse json
     if key is 'dockletRequest'
       docker.findImage data.repo, (err) ->
-        loaded = os.loadavg()[0] > (0.7 * numCPUs) ? 1.0 : 0
+        load = os.loadavg()[0]
+        loaded = load > (0.7 * numCPUs) ? 1.0 : 0
+        if loaded then console.log "loaded: #{load}"
         setTimeout ->
           client.setnx "#{data.servicesToken}:dockletLock", true, (err, lock) ->
             if (err)

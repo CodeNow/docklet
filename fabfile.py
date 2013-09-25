@@ -132,7 +132,6 @@ def clone_repo():
   Do initial clone of the git repository.
   """
   sudo('apt-get install -y git')
-  run('rm -rf docklet')
   if run('[ -d docklet ] && echo true || echo false') == 'false':
     run('git clone git@github.com:CodeNow/docklet.git')
 
@@ -164,6 +163,7 @@ def boot():
 """
 Commands - deploy
 """
+
 def deploy():
   """
   update the server.
