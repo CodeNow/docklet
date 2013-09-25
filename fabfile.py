@@ -75,7 +75,7 @@ def setup():
   require('settings', provided_by=[production, integration])
   require('branch', provided_by=[stable, master, branch])
 
-  install_ssh_key()
+  install_github()
   install_docker()
   install_node()
   setup_registry()
@@ -84,10 +84,11 @@ def setup():
   install_requirements()
   boot()
 
-def install_ssh_key():
+def install_github():
   """
-  Install github ssh keys
+  Install git & github ssh keys
   """
+  sudo('apt-get install -y git')
   put('~/.runnable/github_deploy', '~/.ssh/id_rsa')
   run('chmod 700 ~/.ssh/id_rsa')
   with prefix('eval `ssh-agent -s`'):
@@ -131,7 +132,6 @@ def clone_repo():
   """
   Do initial clone of the git repository.
   """
-  sudo('apt-get install -y git')
   if run('[ -d docklet ] && echo true || echo false') == 'false':
     run('git clone git@github.com:CodeNow/docklet.git')
 
@@ -160,6 +160,14 @@ def boot():
   run('NODE_ENV=%(settings)s pm2 start docklet/lib/index.js -n docklet' % env)
   # run('NODE_ENV=%(settings)s pm2 start docklet/scripts/lxc-skelly.js -n paladin' % env)
 
+def reboot():
+  """
+  Start process with pm2
+  """
+  with cd('docklet'):
+    run('make')
+  run('pm2 restartAll')
+
 """
 Commands - deploy
 """
@@ -174,6 +182,19 @@ def deploy():
   install_nginx()
   install_requirements()
   boot()
+
+"""
+Commands - delta_deploy
+"""
+
+def delta_deploy():
+  """
+  increment the server.
+  """
+  require('settings', provided_by=[production, integration])
+  require('branch', provided_by=[stable, master, branch])
+  clone_repo()
+  reboot()
 
 """
 Commands - docker stuff
