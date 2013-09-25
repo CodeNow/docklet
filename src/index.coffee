@@ -30,26 +30,23 @@ pubsub.on 'message', (key, json) ->
     if key is 'dockletRequest'
       docker.findImage data.repo, (err) ->
         if err then return console.error err else
-        execFile 'ps', ['ax', '-o', 'stat'], (err, stdout) ->
-          if (err) then return console.error err else
-          zombieCount = stdout.split('Zl').length - 1
-          load = os.loadavg()[0] - zombieCount
-          delay = lockCount * 500 + load * 1000
-          console.log load, lockCount, delay
-          setTimeout ->
-            client.setnx "#{data.servicesToken}:dockletLock", true, (err, lock) ->
-              if (err)
-                throw err
-              if (lock)
-                lockCount++
-                setTimeout ->
-                  lockCount--
-                , 500
-                # console.log "docklet aquired the lock to run image #{data.repo}"
-                client.publish "#{data.servicesToken}:dockletReady", ip
-              else
-                # console.log "docklet did not win the race to start a container from image #{data.repo}"
-          , delay
+        load = ~~os.loadavg()[0].toFixed(3).split('.').pop()
+        delay = lockCount * 500 + load
+        console.log load, lockCount, delay
+        setTimeout ->
+          client.setnx "#{data.servicesToken}:dockletLock", true, (err, lock) ->
+            if (err)
+              throw err
+            if (lock)
+              lockCount++
+              setTimeout ->
+                lockCount--
+              , 500
+              # console.log "docklet aquired the lock to run image #{data.repo}"
+              client.publish "#{data.servicesToken}:dockletReady", ip
+            else
+              # console.log "docklet did not win the race to start a container from image #{data.repo}"
+        , delay
     else if key is 'dockletPrune'
       whitelist = data
       dockerClient.listContainers queryParams: all: true, (err, containers) ->
