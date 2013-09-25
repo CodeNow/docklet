@@ -26,8 +26,6 @@ def integration():
   """
   env.settings = 'integration'
   env.hosts = [
-    # 'docker1-int'
-    # 'docker2-int'
     'docker3-int',
     'docker4-int',
     'docker5-int',
