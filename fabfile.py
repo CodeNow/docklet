@@ -75,6 +75,7 @@ def setup():
   require('settings', provided_by=[production, integration])
   require('branch', provided_by=[stable, master, branch])
 
+  install_ssh_key()
   install_docker()
   install_node()
   setup_registry()
@@ -83,6 +84,12 @@ def setup():
   install_requirements()
   boot()
 
+def install_ssh_key():
+  """
+  Install github ssh keys
+  """
+  put('~/.runnable/github_deploy', '~/.ssh/id_rsa')
+  run('ssh-add ~/.ssh/id_rsa')
 
 def install_docker():
   """
@@ -124,7 +131,7 @@ def clone_repo():
   """
   sudo('apt-get install -y git')
   if run('[ -d docklet ] && echo true || echo false') == 'false':
-    run('git clone https://github.com/CodeNow/docklet')
+    run('git clone git@github.com:CodeNow/docklet.git')
 
   with cd('docklet'):
     run('git checkout %(branch)s; git pull origin %(branch)s' % env)

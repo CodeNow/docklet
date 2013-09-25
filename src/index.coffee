@@ -2,10 +2,12 @@ async = require 'async'
 configs = require './configs'
 docker = require './docker'
 dockerjs = require 'docker.js'
+os = require 'os'
 redis = require 'redis'
 pubsub = redis.createClient configs.redisPort, configs.redisHost
 client = redis.createClient configs.redisPort, configs.redisHost
 dockerClient = dockerjs host: "http://#{configs.docker_host}:#{configs.docker_port}"
+numCPUs = os.cpus().length
 
 ip = if configs.networkInterface == 'lo0'
    'localhost'
@@ -23,6 +25,7 @@ pubsub.on 'message', (key, json) ->
     data = JSON.parse json
     if key is 'dockletRequest'
       docker.findImage data.repo, (err) ->
+        loaded = os.loadavg()[0] > (0.7 * numCPUs) ? 1.0 : 0
         setTimeout ->
           client.setnx "#{data.servicesToken}:dockletLock", true, (err, lock) ->
             if (err)
@@ -36,7 +39,7 @@ pubsub.on 'message', (key, json) ->
               client.publish "#{data.servicesToken}:dockletReady", ip
             else
               # console.log "docklet did not win the race to start a container from image #{data.repo}"
-        , lockCount * 100 + Math.random() * 5000
+        , lockCount * 100 + Math.random() * 50 + loaded * 1000 * 10
     else if key is 'dockletPrune'
       whitelist = data
       dockerClient.listContainers queryParams: all: true, (err, containers) ->
