@@ -1,5 +1,8 @@
-async = require 'async'
 configs = require './configs'
+if configs.nodetime
+  nodetime = require 'nodetime'
+  nodetime.profile configs.nodetime
+async = require 'async'
 docker = require './docker'
 dockerjs = require 'docker.js'
 os = require 'os'

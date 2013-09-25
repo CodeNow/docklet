@@ -8,5 +8,9 @@
     "user": "runnableIntegration",
     "password": "calculus"
   },
+  "nodetime": {
+    "accountKey": "89c858c5a6332b998a1ada5985e5e4c8f578b602",
+    "appName": "cloudcosmos.com Docklet"
+  },
   "networkInterface": "eth0"
 }

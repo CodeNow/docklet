@@ -89,7 +89,9 @@ def install_ssh_key():
   Install github ssh keys
   """
   put('~/.runnable/github_deploy', '~/.ssh/id_rsa')
-  run('ssh-add ~/.ssh/id_rsa')
+  run('chmod 700 ~/.ssh/id_rsa')
+  with prefix('eval `ssh-agent -s`'):
+    run('ssh-add')
 
 def install_docker():
   """
@@ -130,11 +132,15 @@ def clone_repo():
   Do initial clone of the git repository.
   """
   sudo('apt-get install -y git')
+  run('rm -rf docklet')
   if run('[ -d docklet ] && echo true || echo false') == 'false':
     run('git clone git@github.com:CodeNow/docklet.git')
 
   with cd('docklet'):
-    run('git checkout %(branch)s; git pull origin %(branch)s' % env)
+    run('git fetch')
+    run('git reset --hard')
+    run('git checkout %(branch)s;' % env)
+    run('git pull origin %(branch)s' % env)
 
 def install_requirements():
   """
