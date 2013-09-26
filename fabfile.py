@@ -200,9 +200,8 @@ def boot():
   """
   Start process with pm2
   """
-  run('pm2 stopAll')
-  sudo('pm2 stopAll')
-  run('NODE_ENV=%(settings)s pm2 start docklet/lib/index.js -n docklet' % env)
+  sudo('pm2 kill')
+  sudo('NODE_ENV=%(settings)s pm2 start docklet/lib/index.js -n docklet' % env)
   sudo('NODE_ENV=%(settings)s pm2 start docklet/lib/bouncer.js -n bouncer -i 10' % env)
 
 def reboot():
@@ -211,7 +210,6 @@ def reboot():
   """
   with cd('docklet'):
     run('make')
-  run('pm2 restartAll')
   sudo('pm2 restartAll')
 
 """
