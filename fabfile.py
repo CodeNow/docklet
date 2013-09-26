@@ -26,23 +26,6 @@ def integration():
   """
   env.settings = 'integration'
   env.hosts = [
-<<<<<<< HEAD
-    #'docker3-int',
-    # 'docker4-int',
-    # 'docker5-int',
-    # 'docker6-int',
-    # 'docker7-int',
-    # 'docker8-int',
-    # 'docker9-int',
-    # 'docker10-int',
-    # 'docker11-int',
-    # 'docker12-int',
-    'docker13-int',
-    # 'docker14-int',
-    # 'docker15-int',
-    # 'docker16-int',
-    # 'docker17-int'
-=======
     'docker1-int',
     'docker2-int',
     'docker3-int',
@@ -54,7 +37,7 @@ def integration():
     'docker9-int',
     'docker10-int',
     'docker11-int',
-    # 'docker12-int',
+    'docker12-int',
     'docker13-int',
     'docker14-int',
     'docker15-int',
@@ -93,7 +76,6 @@ def integration():
     'docker48-int',
     'docker49-int',
     'docker50-int'
->>>>>>> 66f634a42087270103b6b2445714879fcb2d0e1c
   ]
 
 
