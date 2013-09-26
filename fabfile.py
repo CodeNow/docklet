@@ -26,21 +26,21 @@ def integration():
   """
   env.settings = 'integration'
   env.hosts = [
-    'docker3-int',
-    'docker4-int',
-    'docker5-int',
-    'docker6-int',
-    'docker7-int',
-    'docker8-int',
-    'docker9-int',
-    'docker10-int',
-    'docker11-int',
+    #'docker3-int',
+    # 'docker4-int',
+    # 'docker5-int',
+    # 'docker6-int',
+    # 'docker7-int',
+    # 'docker8-int',
+    # 'docker9-int',
+    # 'docker10-int',
+    # 'docker11-int',
     # 'docker12-int',
     'docker13-int',
-    'docker14-int',
-    'docker15-int',
-    'docker16-int',
-    'docker17-int'
+    # 'docker14-int',
+    # 'docker15-int',
+    # 'docker16-int',
+    # 'docker17-int'
   ]
 
 
@@ -78,9 +78,9 @@ def setup():
   install_github()
   install_docker()
   install_node()
+  remove_nginx()
   setup_registry()
   clone_repo()
-  install_nginx()
   install_requirements()
   boot()
 
@@ -121,6 +121,13 @@ def install_nginx():
   sudo('killall nginx || echo no nginx')
   sudo('nginx -c /home/ubuntu/docklet/nginx.conf')
 
+def remove_nginx():
+  """
+  Install and configure nginx
+  """
+  sudo('killall nginx || echo no nginx')
+  sudo('apt-get remove -y nginx')
+
 def setup_registry():
   """
   Fix registry dns entry.
@@ -158,7 +165,7 @@ def boot():
   """
   run('pm2 stopAll')
   run('NODE_ENV=%(settings)s pm2 start docklet/lib/index.js -n docklet' % env)
-  # run('NODE_ENV=%(settings)s pm2 start docklet/scripts/lxc-skelly.js -n paladin' % env)
+  run('NODE_ENV=%(settings)s pm2 start docklet/lib/bouncer.js -n bouncer -n 10' % env)
 
 def reboot():
   """
@@ -179,7 +186,7 @@ def deploy():
   require('settings', provided_by=[production, integration])
   require('branch', provided_by=[stable, master, branch])
   clone_repo()
-  install_nginx()
+  remove_nginx()
   install_requirements()
   boot()
 
