@@ -18,6 +18,7 @@ events.on 'error', (err) ->
   console.error err
 
 events.on 'data', (buf) ->
+  console.log 'EVENT'
   try
     status = JSON.parse(buf).status
     if status is 'start'
@@ -63,3 +64,6 @@ module.exports.init = (cb) ->
 
 module.exports.getCount = () ->
   count
+
+ev.on 'count', (count) ->
+  console.log 'COUNT', count
