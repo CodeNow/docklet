@@ -52,6 +52,14 @@ app.post('/images/create', function (req, res, next) {
   res.send('ok');
 });
 
+app.get('/events', function (req, res, next) {
+  setInterval(function () {
+    res.write(JSON.stringify({
+      status: 'start'
+    }));
+  }, 100);
+});
+
 app.all('*', function (req, res, next) {
   console.log('Docker request:', req.method, req.url);
   next();
