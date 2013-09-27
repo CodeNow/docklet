@@ -6,7 +6,8 @@ module.exports = async.queue (repo, cb) ->
   request
     method: 'POST'
     url: "http://#{configs.docker_host}:#{configs.docker_port}/images/create"
-    qs: fromImage: repo
+    qs: 
+      fromImage: repo
     json: true
     body: { }
     auth: configs.auth

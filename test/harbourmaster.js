@@ -8,7 +8,9 @@ var docker = require('./fixtures/docker');
 require('../lib');
 
 describe('harbourmaster interface', function () {
-
+  before(function (done) {
+    setTimeout(done, 100);
+  });
   it('should respond to a request to create a container', function (done) {
     var servicesToken = 'services-' + uuid();
     var repo = 'base';
