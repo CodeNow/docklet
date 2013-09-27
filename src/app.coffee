@@ -28,7 +28,7 @@ pubsub.on 'message', (key, json) ->
       docker.findImage data.repo, (err) ->
         if err then return console.error err else
         count = containerCount.getCount()
-        delay = lockCount * 500 + count * 100
+        delay = lockCount * 1500 + count * 200
         setTimeout ->
           client.setnx "#{data.servicesToken}:dockletLock", true, (err, lock) ->
             if (err)

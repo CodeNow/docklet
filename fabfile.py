@@ -80,7 +80,6 @@ def integration():
     'docker50-int'
   ]
 
-
 """
 Branches
 """
@@ -142,8 +141,6 @@ def install_docker():
   run('wget --output-document=docker https://get.docker.io/builds/Linux/x86_64/docker-0.6.1')
   run('chmod +x docker')
   sudo('mv ./docker /usr/bin/docker')
-  sudo('killall docker')
-  sudo('nohup docker -d')
 
 def install_node():
   """
@@ -155,13 +152,13 @@ def install_node():
   sudo('apt-get update')
   sudo('apt-get install -y nodejs')
 
-def install_nginx():
-  """
-  Install and configure nginx
-  """
-  sudo('apt-get install -y nginx')
-  sudo('killall nginx || echo no nginx')
-  sudo('nginx -c /home/ubuntu/docklet/nginx.conf')
+# def install_nginx():
+#   """
+#   Install and configure nginx
+#   """
+#   sudo('apt-get install -y nginx')
+#   sudo('killall nginx || echo no nginx')
+#   sudo('nginx -c /home/ubuntu/docklet/nginx.conf')
 
 def remove_nginx():
   """
@@ -174,6 +171,7 @@ def setup_registry():
   """
   Fix registry dns entry.
   """
+  require('settings', provided_by=[production, integration])
   sudo('echo "%(registry)s registry.runnable.com" >> /etc/hosts' % env)
   sudo('/etc/init.d/dns-clean start')
 
@@ -278,6 +276,9 @@ def version():
   require('settings', provided_by=[production, integration])
   sudo('docker version')
 
+def images():
+  require('settings', provided_by=[production, integration])
+  sudo('docker images')
 ######################### BASE IMAGE ENDS HERE ##############################
 
 # git clone https://github.com/CodeNow/docklet
