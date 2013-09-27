@@ -5,19 +5,11 @@ dockerjs = require 'docker.js'
 os = require 'os'
 redis = require 'redis'
 containerCount = require './containerCount'
+ip = require './ip'
 pubsub = redis.createClient configs.redisPort, configs.redisHost
 client = redis.createClient configs.redisPort, configs.redisHost
 dockerClient = dockerjs host: "http://#{configs.docker_host}:#{configs.docker_port}"
 numCPUs = os.cpus().length
-
-ip = if configs.networkInterface == 'lo0'
-   'localhost'
-else
-  require("os")
-    .networkInterfaces()[configs.networkInterface]
-    .filter((iface) ->
-      iface.family is "IPv4"
-    )[0].address
 
 lockCount = 0
 
