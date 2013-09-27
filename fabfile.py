@@ -13,6 +13,7 @@ def production():
   Work on production environment
   """
   env.settings = 'production'
+  env.registry = '54.241.154.140'
   env.hosts = [
     # 'docker',
     # 'docker2',
@@ -25,6 +26,7 @@ def integration():
   Work on staging environment
   """
   env.settings = 'integration'
+  env.registry = '54.215.162.19'
   env.hosts = [
     'docker1-int',
     'docker2-int',
@@ -137,6 +139,11 @@ def install_docker():
   sudo('curl https://get.docker.io/ubuntu/info | sh -x')
   sudo('echo "*                soft    nofile          10000" >> /etc/security/limits.conf')
   sudo('echo "*                hard    nofile          10000" >> /etc/security/limits.conf')
+  run('wget --output-document=docker https://get.docker.io/builds/Linux/x86_64/docker-0.6.1')
+  run('chmod +x docker')
+  sudo('mv ./docker /usr/bin/docker')
+  sudo('killall docker')
+  sudo('nohup docker -d')
 
 def install_node():
   """
@@ -167,7 +174,7 @@ def setup_registry():
   """
   Fix registry dns entry.
   """
-  sudo('echo "54.241.154.140 registry.runnable.com" >> /etc/hosts')
+  sudo('echo "%(registry)s registry.runnable.com" >> /etc/hosts' % env)
   sudo('/etc/init.d/dns-clean start')
 
 def clone_repo():
