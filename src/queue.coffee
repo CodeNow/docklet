@@ -3,16 +3,11 @@ configs = require './configs'
 request = require 'request'
 
 module.exports = async.queue (repo, cb) ->
-  parts = repo.split '/'
-  registry = parts[0]
-  maintainer = parts[1]
-  id = parts[2]
   request
     method: 'POST'
     url: "http://#{configs.docker_host}:#{configs.docker_port}/images/create"
     qs: 
-      fromImage: "#{maintainer}/#{id}"
-      registry: registry
+      fromImage: repo
     json: true
     body: { }
     auth: configs.auth
