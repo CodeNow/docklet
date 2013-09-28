@@ -17,7 +17,7 @@ pubsub.on 'message', (key, json) ->
   try
     data = JSON.parse json
     if key is 'dockletRequest'
-      dockletRequestQueue.push data (err) ->
+      dockletRequestQueue.push data, (err) ->
         if err then console.error err
     else if key is 'dockletPrune'
       whitelist = data
