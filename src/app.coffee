@@ -43,21 +43,14 @@ pubsub.subscribe 'dockletPrune'
 dockletRequestQueue = async.queue (data, cb) ->
   docker.findImage data.repo, (err) ->
     if err then return cb err else
-    count = containerCount.getCount()
-    delay = lockCount * 1500 + count * 200 + Math.random() * 100
-    setTimeout ->
-      client.setnx "#{data.servicesToken}:dockletLock", true, (err, lock) ->
-        if (err)
-          throw err
-        if (lock)
-          containerCount.incCount()
-          lockCount++
-          setTimeout ->
-            lockCount--
-          , 500
-          # console.log "docklet aquired the lock to run image #{data.repo}"
-          client.publish "#{data.servicesToken}:dockletReady", ip
-        else
-          # console.log "docklet did not win the race to start a container from image #{data.repo}"
+    client.setnx "#{data.servicesToken}:dockletLock", true, (err, lock) ->
+      if (err)
+        throw err
+      if (lock)
+        count = containerCount.incCount()
+        setTimeout cb, 500 + count * 100
+        # console.log "docklet aquired the lock to run image #{data.repo}"
+        client.publish "#{data.servicesToken}:dockletReady", ip
+      else
+        # console.log "docklet did not win the race to start a container from image #{data.repo}"
         cb null
-    , delay

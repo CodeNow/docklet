@@ -50,6 +50,7 @@ module.exports.getCount = () ->
 module.exports.incCount = () ->
   count++
   ev.emit 'count', count
+  count
 
 ev.on 'count', (count) ->
   console.log 'COUNT', count
