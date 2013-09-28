@@ -17,8 +17,11 @@ pubsub.on 'message', (key, json) ->
   try
     data = JSON.parse json
     if key is 'dockletRequest'
-      dockletRequestQueue.push data, (err) ->
-        if err then console.error err
+      if dockletRequestQueue.length() < 10 or (dockletRequestQueue.length() < 20 and Math.random() < 0.5)
+        dockletRequestQueue.push data, (err) ->
+          if err then console.error err
+      else
+        console.log data, 'was ignored'
     else if key is 'dockletPrune'
       whitelist = data
       dockerClient.listContainers queryParams: all: true, (err, containers) ->
@@ -56,4 +59,4 @@ dockletRequestQueue = async.queue (data, cb) ->
         if count < 15
           cb
         else
-          setTimeout cb, 0
+          setTimeout cb, count * 10
