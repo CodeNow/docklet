@@ -17,10 +17,8 @@ pubsub.on 'message', (key, json) ->
   try
     data = JSON.parse json
     if key is 'dockletRequest'
-      console.log 'QUEUE', dockletRequestQueue.length()
       if (dockletRequestQueue.length() < 10) or ((dockletRequestQueue.length() < 20) and (Math.random() < 0.5))
         dockletRequestQueue.push data, (err) ->
-          console.log 'DONE', dockletRequestQueue.length()
           if err then console.error err
       else
         console.log data, 'was ignored'
@@ -59,7 +57,4 @@ dockletRequestQueue = async.queue (data, cb) ->
         client.publish "#{data.servicesToken}:dockletReady", ip
       else
         # console.log "docklet did not win the race to start a container from image #{data.repo}"
-        if count < 15
-          cb
-        else
-          setTimeout cb, count * 10
+        setTimeout cb, count * 3
