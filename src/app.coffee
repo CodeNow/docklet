@@ -53,4 +53,4 @@ dockletRequestQueue = async.queue (data, cb) ->
         client.publish "#{data.servicesToken}:dockletReady", ip
       else
         # console.log "docklet did not win the race to start a container from image #{data.repo}"
-        cb null
+        setTimeout cb, count * 5
