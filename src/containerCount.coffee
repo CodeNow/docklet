@@ -12,30 +12,30 @@ ip = require './ip'
 server = http.createServer()
 client = redis.createClient configs.redisPort, configs.redisHost
 
-events = docker.events({})
+# events = docker.events({})
 
-events.on 'error', (err) ->
-  console.error err
+# events.on 'error', (err) ->
+#   console.error err
 
-events.on 'data', (buf) ->
-  try
-    status = JSON.parse(buf).status
-    ev.emit 'event', JSON.parse(buf)
-    if status is 'start'
-      count++
-      ev.emit 'count', count
-    if status is 'die'
-      count--
-      ev.emit 'count', count
-  catch e
-    console.error e
+# events.on 'data', (buf) ->
+#   try
+#     status = JSON.parse(buf).status
+#     ev.emit 'event', JSON.parse(buf)
+#     if status is 'start'
+#       count++
+#       ev.emit 'count', count
+#     if status is 'die'
+#       count--
+#       ev.emit 'count', count
+#   catch e
+#     console.error e
 
 setInterval () ->
   docker.listContainers (err, containers) ->
     if err then console.log err else
     count = containers.length
     ev.emit 'count', count
-, 1000 * 20
+, 1000 * 5
 
 sock = shoe (stream) ->
   emitStream(ev)
