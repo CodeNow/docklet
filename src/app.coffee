@@ -20,6 +20,7 @@ pubsub.on 'message', (key, json) ->
       console.log 'QUEUE', dockletRequestQueue.length()
       if (dockletRequestQueue.length() < 10) or ((dockletRequestQueue.length() < 20) and (Math.random() < 0.5))
         dockletRequestQueue.push data, (err) ->
+          console.log 'DONE', dockletRequestQueue.length()
           if err then console.error err
       else
         console.log data, 'was ignored'
