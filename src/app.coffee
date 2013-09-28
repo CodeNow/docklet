@@ -48,7 +48,7 @@ dockletRequestQueue = async.queue (data, cb) ->
         throw err
       if (lock)
         count = containerCount.incCount()
-        setTimeout cb, 500 + count * 100
+        setTimeout cb, 1500 + count * 100
         # console.log "docklet aquired the lock to run image #{data.repo}"
         client.publish "#{data.servicesToken}:dockletReady", ip
       else
