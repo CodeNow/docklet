@@ -38,16 +38,16 @@ def integration():
     # 'docker8-int',
     # 'docker9-int',
     # 'docker10-int',
-    # 'docker11-int',
-    # 'docker12-int',
-    # 'docker13-int',
-    # 'docker14-int',
-    # 'docker15-int',
-    # 'docker16-int',
-    # 'docker17-int',
-    # 'docker18-int',
-    # 'docker19-int',
-    # 'docker20-int',
+    'docker11-int',
+    'docker12-int',
+    'docker13-int',
+    'docker14-int',
+    'docker15-int',
+    'docker16-int',
+    'docker17-int',
+    'docker18-int',
+    'docker19-int',
+    'docker20-int',
     # 'docker21-int',
     # 'docker22-int',
     # 'docker23-int',
@@ -77,7 +77,7 @@ def integration():
     # 'docker47-int',
     # 'docker48-int',
     # 'docker49-int',
-    'docker50-int'
+    # 'docker50-int'
   ]
 
 """
@@ -220,7 +220,7 @@ def reboot():
 """
 Commands - deploy
 """
-
+@parallel
 def deploy():
   """
   update the server.
@@ -272,6 +272,7 @@ def curr_fds():
   require('settings', provided_by=[production, integration])
   sudo('lsof | wc -l')
 
+@parallel
 def version():
   require('settings', provided_by=[production, integration])
   sudo('docker version')

@@ -24,7 +24,7 @@ events.on 'data', (buf) ->
     if status is 'start'
       count++
       ev.emit 'count', count
-    if status is 'stop'
+    if status is 'die'
       count--
       ev.emit 'count', count
   catch e
