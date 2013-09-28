@@ -17,6 +17,7 @@ pubsub.on 'message', (key, json) ->
   try
     data = JSON.parse json
     if key is 'dockletRequest'
+      console.log 'QUEUE', dockletRequestQueue.length()
       if dockletRequestQueue.length() < 10 or (dockletRequestQueue.length() < 20 and Math.random() < 0.5)
         dockletRequestQueue.push data, (err) ->
           if err then console.error err
