@@ -18,9 +18,9 @@ events.on 'error', (err) ->
   console.error err
 
 events.on 'data', (buf) ->
-  console.log 'EVENT'
   try
     status = JSON.parse(buf).status
+    ev.emit 'event', JSON.parse(buf)
     if status is 'start'
       count++
       ev.emit 'count', count
