@@ -38,7 +38,7 @@ def integration():
     # 'docker8-int',
     # 'docker9-int',
     # 'docker10-int',
-    # 'docker11-int',
+    'docker11-int',
     # 'docker12-int',
     # 'docker13-int',
     # 'docker14-int',
@@ -68,16 +68,16 @@ def integration():
     # 'docker38-int',
     # 'docker39-int',
     # 'docker40-int',
-    'docker41-int',
-    'docker42-int',
-    'docker43-int',
-    'docker44-int',
-    'docker45-int',
-    'docker46-int',
-    'docker47-int',
-    'docker48-int',
-    'docker49-int',
-    'docker50-int'
+    # 'docker41-int',
+    # 'docker42-int',
+    # 'docker43-int',
+    # 'docker44-int',
+    # 'docker45-int',
+    # 'docker46-int',
+    # 'docker47-int',
+    # 'docker48-int',
+    # 'docker49-int',
+    # 'docker50-int'
   ]
 
 """
