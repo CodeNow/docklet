@@ -9,10 +9,10 @@ app = express()
 
 app.post '/create/:repo', (req, res, next) ->
   if docker.checkCache req.params.repo
-    req.send 201
+    res.send 201
     setTimeout addSelf, 1000 + 100 * containerCount.incCount()
   else
-    req.send 404
+    res.send 404
     addSelf()
 
 addSelf = ->
