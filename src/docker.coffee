@@ -19,8 +19,11 @@ cacheImages = (cb) ->
 pullImage = (repo, cb) ->
   queue.push repo, cb
 
+checkCache = (repo) ->
+  repo of images
+
 findImage = (repo, cb) ->
-  if repo of images
+  if checkCache repo
     process.nextTick ->
       cb null
   else
