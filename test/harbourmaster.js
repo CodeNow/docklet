@@ -5,11 +5,13 @@ var pubsub = redis.createClient(configs.redisPort, configs.redisHost);
 var client = redis.createClient(configs.redisPort, configs.redisHost);
 
 var docker = require('./fixtures/docker');
-require('../lib');
 
 describe('harbourmaster interface', function () {
   before(function (done) {
-    setTimeout(done, 100);
+    setTimeout(function () {
+      require('../lib');
+    }, 10);
+    setTimeout(done, 500);
   });
   it('should respond to a request to create a container', function (done) {
     var servicesToken = 'services-' + uuid();
