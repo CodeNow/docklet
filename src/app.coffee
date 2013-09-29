@@ -9,7 +9,7 @@ app = express()
 
 app.post '/create', (req, res, next) ->
   if docker.checkCache req.query.fromImage
-    res.send 201
+    res.send 204
     setTimeout addSelf, 1000 + 100 * containerCount.incCount()
   else
     res.send 404

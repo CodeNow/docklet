@@ -56,7 +56,7 @@ describe('harbourmaster interface', function () {
       request.post('http://' + element[1] + ':3000/create?fromImage=base', function (err, res, body) {
         if (err) {
           done(err);
-        } else if (res.statusCode !== 201) {
+        } else if (res.statusCode !== 204) {
           done(new Error('bad statusCode: ' + res.statusCode));
         } else {
           done();
