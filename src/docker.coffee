@@ -14,12 +14,14 @@ cacheImages = (cb) ->
       if res.statusCode isnt 200 then cb new Error "docker error #{res.body}" else
         res.body.forEach (image) ->
           images[image.Repository] = image
+        # console.log 'CACHE', images
         cb()
 
 pullImage = (repo, cb) ->
   queue.push repo, cb
 
 checkCache = (repo) ->
+  # console.log 'CHECK', images, repo
   repo of images
 
 findImage = (repo, cb) ->
@@ -37,6 +39,7 @@ findImage = (repo, cb) ->
           pullImage repo, cb
 
 module.exports = {
+  checkCache
   findImage
   cacheImages
   pullImage

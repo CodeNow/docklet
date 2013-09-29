@@ -5,5 +5,5 @@ if configs.nodetime
 containerCount = require './containerCount'
 containerCount.init (err) ->
   if err then throw err else
-  # require './app'
+  require './app'
   require './pubsub'
