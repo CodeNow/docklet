@@ -58,6 +58,11 @@ app.get('/events', function (req, res, next) {
       status: 'start'
     }));
   }, 100);
+  setInterval(function () {
+    res.write(JSON.stringify({
+      status: 'stop'
+    }));
+  }, 100);
 });
 
 app.all('*', function (req, res, next) {

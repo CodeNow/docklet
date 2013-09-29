@@ -8,5 +8,6 @@
     "user": "runnableIntegration",
     "password": "calculus"
   },
-  "networkInterface": "eth0"
+  "networkInterface": "eth0",
+  "domain": "cloudcosmos.com"
 }

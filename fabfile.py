@@ -220,7 +220,7 @@ def reboot():
 """
 Commands - deploy
 """
-
+@parallel
 def deploy():
   """
   update the server.
@@ -272,6 +272,7 @@ def curr_fds():
   require('settings', provided_by=[production, integration])
   sudo('lsof | wc -l')
 
+@parallel
 def version():
   require('settings', provided_by=[production, integration])
   sudo('docker version')

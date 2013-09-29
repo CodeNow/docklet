@@ -8,5 +8,6 @@
   	"user": "runnableProduction",
   	"password": "insertWittyPasswordHere"
   },
-  "networkInterface": "eth0"
+  "networkInterface": "eth0",
+  "runnable.com"
 }
