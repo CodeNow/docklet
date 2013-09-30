@@ -9,5 +9,6 @@
   	"password": "insertWittyPasswordHere"
   },
   "networkInterface": "eth0",
-  "runnable.com"
+  "domain": "runnable.com",
+  "authToken": "8EM1dX06788BnRzZ9eaqrCLLmzokmgNe"
 }
