@@ -50,22 +50,22 @@ def production():
     #'docker33',
     #'docker34',
     #'docker35',
-    #'docker36',
+    'docker36',
     'docker37',
     'docker38',
     #'docker39',
     'docker40',
-    'docker41'
+    'docker41',
     #'docker42',
-    #'docker43',
-    #'docker44',
-    #'docker45',
-    #'docker46',
-    #'docker47',
+    'docker43',
+    'docker44',
+    'docker45',
+    'docker46',
+    'docker47',
     #'docker48',
-    #'docker49',
-    #'docker50',
-    #'docker51',
+    'docker49',
+    'docker50',
+    'docker51',
     'docker52',
     'docker53',
     'docker54',
@@ -350,6 +350,7 @@ def branch(branch_name):
 """
 Commands - setup
 """
+@parallel
 def setup():
   """
   Install and start the server.
@@ -364,7 +365,13 @@ def setup():
   setup_registry()
   clone_repo()
   install_requirements()
-  boot()
+  reboot_machine()
+
+def reboot_machine():
+  """
+  Reboot da box
+  """
+  sudo('reboot')
 
 def install_github():
   """
@@ -469,7 +476,6 @@ def reboot():
 """
 Commands - deploy
 """
-@parallel
 def deploy():
   """
   update the server.
