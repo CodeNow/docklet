@@ -425,6 +425,7 @@ def clone_repo():
   """
   Do initial clone of the git repository.
   """
+  run('rm -rf docklet')
   if run('[ -d docklet ] && echo true || echo false') == 'false':
     run('git clone git@github.com:CodeNow/docklet.git')
 
