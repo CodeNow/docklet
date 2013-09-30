@@ -4,5 +4,6 @@
   "redisHost": "127.0.0.1",
   "docker_host": "localhost",
   "docker_port": 4243,
-  "networkInterface": "lo0"
+  "networkInterface": "lo0",
+  "authToken": "lPNpt8ig5b3C6FqIt6el8cmY6w57413A"
 }
