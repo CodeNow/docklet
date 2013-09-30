@@ -51,21 +51,21 @@ def production():
     #'docker34',
     #'docker35',
     #'docker36',
-    #'docker37',
-    #'docker38',
+    'docker37',
+    'docker38',
     #'docker39',
-    #'docker40',
-    #'docker41',
+    'docker40',
+    'docker41'
     #'docker42',
-    'docker43',
-    'docker44',
-    'docker45',
-    'docker46',
-    'docker47',
+    #'docker43',
+    #'docker44',
+    #'docker45',
+    #'docker46',
+    #'docker47',
     #'docker48',
-    'docker49',
-    'docker50',
-    'docker51',
+    #'docker49',
+    #'docker50',
+    #'docker51',
     'docker52',
     'docker53',
     'docker54',
@@ -372,7 +372,9 @@ def install_github():
   """
   sudo('apt-get install -y git')
   put('~/.runnable/github_deploy', '~/.ssh/id_rsa')
+  put('~/.runnable/ssh_config', '~/.ssh/config')
   run('chmod 700 ~/.ssh/id_rsa')
+  run('chmod 700 ~/.ssh/config')
   with prefix('eval `ssh-agent -s`'):
     run('ssh-add')
 
@@ -394,7 +396,7 @@ def install_node():
   """
   sudo('apt-get update')
   sudo('apt-get install -y python-software-properties python g++ make')
-  sudo('sudo add-apt-repository ppa:chris-lea/node.js')
+  sudo('FORCE_ADD_APT_REPOSITORY=1 add-apt-repository ppa:chris-lea/node.js')
   sudo('apt-get update')
   sudo('apt-get install -y nodejs')
 
