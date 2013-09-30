@@ -1,60 +1,27 @@
 configs = require './configs'
-async = require 'async'
-docker = require './docker'
-dockerjs = require 'docker.js'
-os = require 'os'
-redis = require 'redis'
-containerCount = require './containerCount'
+express = require 'express'
+server = require './server'
 ip = require './ip'
-pubsub = redis.createClient configs.redisPort, configs.redisHost
-client = redis.createClient configs.redisPort, configs.redisHost
-dockerClient = dockerjs host: "http://#{configs.docker_host}:#{configs.docker_port}"
-numCPUs = os.cpus().length
+containerCount = require './containerCount'
+docker = require './docker'
+queue = require('redis').createClient configs.redisPort, configs.redisHost
+app = express()
 
-lockCount = 0
+app.post '/create', (req, res, next) ->
+  if docker.checkCache req.query.fromImage
+    res.send 204
+    setTimeout addSelf, 200 + 50 * containerCount.incCount()
+  else
+    res.send 404
+    addSelf()
 
-pubsub.on 'message', (key, json) ->
-  try
-    data = JSON.parse json
-    if key is 'dockletRequest'
-      if (dockletRequestQueue.length() < 10) or ((dockletRequestQueue.length() < 20) and (Math.random() < 0.5))
-        dockletRequestQueue.push data, (err) ->
-          if err then console.error err
-      else
-        console.log data, 'was ignored'
-    else if key is 'dockletPrune'
-      whitelist = data
-      dockerClient.listContainers queryParams: all: true, (err, containers) ->
-        if err then console.error err else
-          async.forEachSeries containers, (container, cb) ->
-            containerId = container.Id.substring 0, 12
-            if containerId in whitelist then cb() else
-              dockerClient.inspectContainer containerId, (err, res) ->
-                if err then cb err else
-                  if not res.State then cb() else
-                    if res.State.Running then cb() else
-                      dockerClient.removeContainer containerId, cb
-          , (err) -> if err then console.error err
-    else
-      throw new Error "Docklet received unknown message: #{key}"
-  catch err
-    console.error err
+addSelf = ->
+  queue.rpush 'docks', ip
 
-pubsub.subscribe 'dockletRequest'
-pubsub.subscribe 'dockletPrune'
+server.on 'request', (req, res) ->
+  if not /^\/count\//.test req.url
+    app req, res
 
-dockletRequestQueue = async.queue (data, cb) ->
-  docker.findImage data.repo, (err) ->
-    if err then return cb err else
-    client.setnx "#{data.servicesToken}:dockletLock", true, (err, lock) ->
-      if (err)
-        throw err
-      if (lock)
-        count = containerCount.incCount()
-        console.log 'LOCK', count
-        setTimeout cb, 1500 + count * 100
-        # console.log "docklet aquired the lock to run image #{data.repo}"
-        client.publish "#{data.servicesToken}:dockletReady", ip
-      else
-        # console.log "docklet did not win the race to start a container from image #{data.repo}"
-        setTimeout cb, count * 3
+addSelf()
+
+setInterval addSelf, 1000 * 60 * 5

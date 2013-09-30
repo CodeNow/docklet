@@ -1,6 +1,7 @@
 var uuid = require('node-uuid');
 var configs = require('../lib/configs');
 var redis = require('redis');
+var request = require('request');
 var pubsub = redis.createClient(configs.redisPort, configs.redisHost);
 var client = redis.createClient(configs.redisPort, configs.redisHost);
 
@@ -11,9 +12,24 @@ describe('harbourmaster interface', function () {
     setTimeout(function () {
       require('../lib');
     }, 10);
+    client.del('docks');
     setTimeout(done, 500);
   });
-  it('should respond to a request to create a container', function (done) {
+  it('should respond to a queue request to create a container with a miss the first time', function (done) {
+    client.blpop('docks', 1, function (err, element) {
+      request.post('http://' + element[1] + ':3000/create?fromImage=base', function (err, res, body) {
+        if (err) {
+          done(err);
+        } else if (res.statusCode !== 404) {
+          console.log(err, res, body);
+          done(new Error('bad statusCode'));
+        } else {
+          done();
+        }
+      })
+    });
+  });
+  it('should respond to a broadcast request to create a container', function (done) {
     var servicesToken = 'services-' + uuid();
     var repo = 'base';
     pubsub.on('subscribe', onSubscribed);
@@ -35,7 +51,19 @@ describe('harbourmaster interface', function () {
       }
     }
   });
-
+  it('should respond to a queue request to create a container', function (done) {
+    client.blpop('docks', 1, function (err, element) {
+      request.post('http://' + element[1] + ':3000/create?fromImage=base', function (err, res, body) {
+        if (err) {
+          done(err);
+        } else if (res.statusCode !== 204) {
+          done(new Error('bad statusCode: ' + res.statusCode));
+        } else {
+          done();
+        }
+      })
+    });
+  });
   it('should respond to a request to prune unused containers', function (done) {
     var containerIds = [
       '0',
