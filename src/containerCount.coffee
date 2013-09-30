@@ -1,5 +1,5 @@
 configs = require './configs'
-docker = require('docker.js') {}
+docker = require("docker.js")(token: configs.authToken)
 EventEmitter = require('events').EventEmitter
 emitStream = require 'emit-stream'
 JSONStream = require 'JSONStream'
