@@ -23,3 +23,5 @@ server.on 'request', (req, res) ->
     app req, res
 
 addSelf()
+
+setInterval addSelf, 1000 * 60 * 5
