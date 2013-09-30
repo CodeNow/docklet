@@ -1,5 +1,5 @@
 configs = require './configs'
-docker = require('docker.js') {}
+docker = require("docker.js")(token: configs.authToken)
 EventEmitter = require('events').EventEmitter
 emitStream = require 'emit-stream'
 JSONStream = require 'JSONStream'
@@ -9,7 +9,7 @@ redis = require 'redis'
 count = null
 ev = new EventEmitter
 ip = require './ip'
-server = http.createServer()
+server = require './server'
 client = redis.createClient configs.redisPort, configs.redisHost
 
 setInterval () ->
@@ -51,6 +51,3 @@ module.exports.incCount = () ->
   count++
   ev.emit 'count', count
   count
-
-ev.on 'count', (count) ->
-  console.log 'COUNT', count

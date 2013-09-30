@@ -6,3 +6,4 @@ containerCount = require './containerCount'
 containerCount.init (err) ->
   if err then throw err else
   require './app'
+  require './pubsub'
