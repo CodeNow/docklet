@@ -30,14 +30,8 @@ findImage = (repo, cb) ->
     process.nextTick ->
       cb null
   else
-    cacheImages (err) ->
-      if err then cb err else
-        if repo of images
-          # console.log "found image #{repo}"
-          cb null
-        else
-          # console.log "not found. pulling image #{repo}"
-          pullImage repo, cb
+    # console.log "not found. pulling image #{repo}"
+    pullImage repo, cb
 
 module.exports = {
   checkCache
