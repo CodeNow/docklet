@@ -8,7 +8,8 @@ cacheImages = (cb) ->
     method: 'GET'
     url: "http://#{configs.docker_host}:#{configs.docker_port}/images/json"
     json: true
-    auth: configs.auth
+    headers:
+      token: configs.authToken
   , (err, res) ->
     if err then cb err else
       if res.statusCode isnt 200 then cb new Error "docker error #{res.body}" else

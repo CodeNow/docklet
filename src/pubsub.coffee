@@ -8,7 +8,10 @@ containerCount = require './containerCount'
 ip = require './ip'
 pubsub = redis.createClient configs.redisPort, configs.redisHost
 client = redis.createClient configs.redisPort, configs.redisHost
-dockerClient = dockerjs host: "http://#{configs.docker_host}:#{configs.docker_port}"
+dockerClient = dockerjs(
+  host: "http://" + configs.docker_host + ":" + configs.docker_port
+  token: configs.authToken
+)
 numCPUs = os.cpus().length
 
 lockCount = 0
