@@ -1,30 +1,19 @@
 configs = require './configs'
 async = require 'async'
-docker = require './docker'
 dockerjs = require 'docker.js'
-os = require 'os'
 redis = require 'redis'
-containerCount = require './containerCount'
-ip = require './ip'
 pubsub = redis.createClient configs.redisPort, configs.redisHost
-client = redis.createClient configs.redisPort, configs.redisHost
-dockerClient = dockerjs(
+dockerClient = dockerjs
   host: "http://" + configs.docker_host + ":" + configs.docker_port
   token: configs.authToken
-)
-numCPUs = os.cpus().length
-
-lockCount = 0
+dockletRequestQueue = require './dockletRequestQueue'
 
 pubsub.on 'message', (key, json) ->
   try
     data = JSON.parse json
     if key is 'dockletRequest'
-      if (dockletRequestQueue.length() < 10) or ((dockletRequestQueue.length() < 20) and (Math.random() < 0.5))
-        dockletRequestQueue.push data, (err) ->
-          if err then console.error err
-      else
-        console.log data, 'was ignored'
+      dockletRequestQueue.push data, (err) ->
+        if err then console.error err
     else if key is 'dockletPrune'
       whitelist = data
       dockerClient.listContainers queryParams: all: true, (err, containers) ->
@@ -45,18 +34,3 @@ pubsub.on 'message', (key, json) ->
 
 pubsub.subscribe 'dockletRequest'
 pubsub.subscribe 'dockletPrune'
-
-dockletRequestQueue = async.queue (data, cb) ->
-  docker.findImage data.repo, (err) ->
-    if err then return cb err else
-    client.setnx "#{data.servicesToken}:dockletLock", true, (err, lock) ->
-      if (err)
-        throw err
-      if (lock)
-        count = containerCount.incCount()
-        setTimeout cb, 1500 + count * 100
-        # console.log "docklet aquired the lock to run image #{data.repo}"
-        client.publish "#{data.servicesToken}:dockletReady", ip
-      else
-        # console.log "docklet did not win the race to start a container from image #{data.repo}"
-        setTimeout cb, count * 3

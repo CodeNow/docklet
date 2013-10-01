@@ -24,4 +24,9 @@ server.on 'request', (req, res) ->
 
 addSelf()
 
-# setInterval addSelf, 1000 * 60 * 5
+setInterval ->
+  queue.lrange 'docks', 0, -1, (err, list) ->
+    if (err) then console.error err 
+    else if not (ip in list)
+      addSelf()
+, 1000 * 60 * 5
