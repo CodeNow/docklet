@@ -32,6 +32,7 @@ findImage = (repo, cb) ->
     process.nextTick ->
       cb null
   else
+    # optionally we could publish to the other docklets
     # console.log "not found. pulling image #{repo}"
     pullImage repo, cb
 
