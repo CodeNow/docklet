@@ -8,7 +8,7 @@ client = redis.createClient configs.redisPort, configs.redisHost
 
 
 dockletRequestQueue = module.exports = async.queue (data, cb) ->
-  docker.findImage data.repo, (err) ->
+  docker.findImage data, (err) ->
     if err then return cb err else
     client.setnx "#{data.servicesToken}:dockletLock", true, (err, lock) ->
       if (err)

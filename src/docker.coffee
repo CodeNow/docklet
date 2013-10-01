@@ -1,6 +1,7 @@
 configs = require './configs'
 request = require 'request'
 queue = require './queue'
+redis = require('redis').createClient configs.redisPort, configs.redisHost
 images = {}
 
 cacheImages = (cb) ->
@@ -27,14 +28,14 @@ checkCache = (repo) ->
   # console.log 'CHECK', images, repo
   repo of images
 
-findImage = (repo, cb) ->
-  if checkCache repo
+findImage = (data, cb) ->
+  if checkCache data.repo
     process.nextTick ->
       cb null
   else
-    # optionally we could publish to the other docklets
+    redis.publish 'dockletRequest', JSON.stringify data
     # console.log "not found. pulling image #{repo}"
-    pullImage repo, cb
+    pullImage data.repo, cb
 
 module.exports = {
   checkCache
