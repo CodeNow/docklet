@@ -11,6 +11,7 @@ handleJob = (err) ->
     else
       try
         data = JSON.parse job[1]
+        data.job = true
         dockletRequestQueue.push data, handleJob
       catch err
         console.error err
