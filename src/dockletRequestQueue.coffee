@@ -18,7 +18,6 @@ dockletRequestQueue = module.exports = async.queue (data, cb) ->
         setTimeout cb, 1500 + count * 100
         # console.log "docklet aquired the lock to run image #{data.repo}"
         client.publish "#{data.servicesToken}:dockletReady", ip
-        cb()
       else
         # console.log "docklet did not win the race to start a container from image #{data.repo}"
-        setTimeout cb, count * 3
+        cb()
