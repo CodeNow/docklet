@@ -33,7 +33,8 @@ findImage = (data, cb) ->
     process.nextTick ->
       cb null
   else
-    redis.publish 'dockletRequest', JSON.stringify data
+    if data.job
+      redis.publish 'dockletRequest', JSON.stringify data
     # console.log "not found. pulling image #{repo}"
     pullImage data.repo, cb
 
