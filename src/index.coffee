@@ -10,3 +10,4 @@ docker.cacheImages (err) ->
       if err then throw err else
       require './app'
       require './pubsub'
+      require './jobs'

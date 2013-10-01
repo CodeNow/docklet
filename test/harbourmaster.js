@@ -2,7 +2,6 @@ var uuid = require('node-uuid');
 var configs = require('../lib/configs');
 var redis = require('redis');
 var request = require('request');
-var pubsub = redis.createClient(configs.redisPort, configs.redisHost);
 var client = redis.createClient(configs.redisPort, configs.redisHost);
 
 var docker = require('./fixtures/docker');
@@ -32,6 +31,7 @@ describe('harbourmaster interface', function () {
   it('should respond to a broadcast request to create a container', function (done) {
     var servicesToken = 'services-' + uuid();
     var repo = 'base';
+    var pubsub = redis.createClient(configs.redisPort, configs.redisHost);
     pubsub.on('subscribe', onSubscribed);
     pubsub.on('message', onMessage);
     pubsub.subscribe(servicesToken + ':dockletReady');
@@ -63,6 +63,29 @@ describe('harbourmaster interface', function () {
         }
       })
     });
+  });
+  it('should respond to a job request to create a container', function (done) {
+    var servicesToken = 'services-' + uuid();
+    var repo = 'base';
+    var pubsub = redis.createClient(configs.redisPort, configs.redisHost);
+    pubsub.on('subscribe', onSubscribed);
+    pubsub.on('message', onMessage);
+    pubsub.subscribe(servicesToken + ':dockletReady');
+
+    function onSubscribed (key, count) {
+      if (key === servicesToken + ':dockletReady') {
+        client.rpush('dockletJobs', JSON.stringify({
+          repo: repo,
+          servicesToken: servicesToken
+        }));
+      }
+    }
+
+    function onMessage (key, docklet) {
+      if (key === servicesToken + ':dockletReady') {
+        pubsub.unsubscribe(servicesToken + ':dockletReady', done);
+      }
+    }
   });
   it('should respond to a request to prune unused containers', function (done) {
     var containerIds = [
