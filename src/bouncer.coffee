@@ -7,7 +7,7 @@ server = bouncy((req, res, bounce) ->
     console.log "routed"
     bounce net.connect("/var/run/docker.sock")
   else
-    console.err "auth error"
+    console.error "auth error"
     res.writeHead 401
     res.end()
     return
