@@ -8,6 +8,204 @@ env.use_ssh_config = True
 
 """
 
+
+
+"""
+
+
+
+"""
+Environments
+"""
+def production():
+  """
+  Work on production environment
+  """
+  env.settings = 'production'
+  env.registry = '54.241.154.140'
+  env.hosts = [
+    'docker-4-93',
+    'docker-4-94',
+    'docker-4-95',
+    'docker-4-96',
+    'docker-4-97',
+    'docker-4-98',
+    'docker-4-99',
+    'docker-4-100',
+    'docker-4-101',
+    'docker-4-102',
+    'docker-4-103',
+    'docker-4-104',
+    'docker-4-105',
+    'docker-4-106',
+    'docker-4-107',
+    'docker-4-108',
+    'docker-4-109',
+    'docker-4-110',
+    'docker-4-110',
+    'docker-4-112',
+    'docker-4-113',
+    'docker-4-114',
+    'docker-4-115',
+    'docker-4-116',
+    'docker-4-117',
+    'docker-4-118',
+    'docker-4-119',
+    'docker-4-120',
+    'docker-4-121',
+    'docker-4-122',
+    'docker-4-123',
+    'docker-4-124',
+    'docker-4-125',
+    'docker-4-126',
+    'docker-4-127',
+    'docker-4-128',
+    'docker-4-129',
+    'docker-4-130',
+    'docker-4-131',
+    'docker-4-132',
+    'docker-4-133',
+    'docker-4-134',
+    'docker-4-135',
+    'docker-4-136',
+    'docker-4-137',
+    'docker-4-138',
+    'docker-4-139',
+    'docker-4-140',
+    'docker-4-141',
+    'docker-4-142',
+    'docker-4-143',
+    'docker-4-144',
+    'docker-4-145',
+    'docker-4-146',
+    'docker-4-147',
+    'docker-4-148',
+    'docker-4-149',
+    'docker-4-150',
+    'docker-4-151',
+    'docker-4-152',
+    'docker-4-153',
+    'docker-4-154',
+    'docker-4-155',
+    'docker-4-156',
+    'docker-4-157',
+    'docker-4-158',
+    'docker-4-159',
+    'docker-4-160',
+    'docker-4-161',
+    'docker-4-162',
+    'docker-4-163',
+    'docker-4-164',
+    'docker-4-165',
+    'docker-4-166',
+    'docker-4-167',
+    'docker-4-168',
+    'docker-4-169',
+    'docker-4-170',
+    'docker-4-171',
+    'docker-4-172',
+    'docker-4-173',
+    'docker-4-174',
+    'docker-4-175',
+    'docker-4-176',
+    'docker-4-177',
+    'docker-4-178',
+    'docker-4-179',
+    'docker-4-180',
+    'docker-4-181',
+    'docker-4-182',
+    'docker-4-183',
+    'docker-4-184',
+    'docker-4-185',
+    'docker-4-186',
+    'docker-4-187',
+    'docker-4-188',
+    'docker-4-189',
+    'docker-4-190',
+    'docker-4-191',
+    'docker-4-192',
+    'docker-4-193',
+    'docker-4-194',
+    'docker-4-195',
+    'docker-4-196',
+    'docker-4-197',
+    'docker-4-198',
+    'docker-4-199',
+    'docker-4-200',
+    'docker-4-201',
+    'docker-4-202',
+    'docker-4-203',
+    'docker-4-204',
+    'docker-4-205',
+    'docker-4-206',
+    'docker-4-207',
+    'docker-4-208',
+    'docker-4-209',
+    'docker-4-210',
+    'docker-4-211',
+    'docker-4-212',
+    'docker-4-213',
+    'docker-4-214',
+    'docker-4-215',
+    'docker-4-216',
+    'docker-4-217',
+    'docker-4-218',
+    'docker-4-219',
+    'docker-4-220',
+    'docker-4-221',
+    'docker-4-222',
+    'docker-4-223',
+    'docker-4-224',
+    'docker-4-225',
+    'docker-4-226',
+    'docker-4-227',
+    'docker-4-228',
+    'docker-4-229',
+    'docker-4-230',
+    'docker-4-231',
+    'docker-4-232',
+    'docker-4-233',
+    'docker-4-234',
+    'docker-4-235',
+    'docker-4-236',
+    'docker-4-237',
+    'docker-4-238',
+    'docker-4-239',
+    'docker-4-240',
+    'docker-4-241',
+    'docker-4-242',
+    'docker-4-243',
+    'docker-4-244',
+    'docker-4-245',
+    'docker-4-246',
+    'docker-4-247',
+    'docker-4-248',
+    'docker-4-249',
+    'docker-4-251',
+    'docker-4-252',
+    'docker-4-253',
+    'docker-4-254',
+    'docker-5-6',
+    'docker-5-7',
+    'docker-5-8',
+    'docker-5-9',
+    'docker-5-10',
+    'docker-5-11',
+    'docker-5-12',
+    'docker-5-13',
+    'docker-5-14',
+    'docker-5-15',
+    'docker-5-16',
+    'docker-5-17',
+    'docker-5-18',
+    'docker-5-19',
+    'docker-5-20',
+    'docker-5-21',
+    'docker-5-22',
+    'docker-5-23',
+    'docker-5-24',
+    'docker-5-25',
+    'docker-5-26',
     'docker-5-27',
     'docker-5-28',
     'docker-5-29',
@@ -234,50 +432,7 @@ env.use_ssh_config = True
     'docker-5-251',
     'docker-5-252',
     'docker-5-253',
-    'docker-5-254',
-    'docker-5-255'
-
-
-"""
-
-
-
-"""
-Environments
-"""
-def production():
-  """
-  Work on production environment
-  """
-  env.settings = 'production'
-  env.registry = '54.241.154.140'
-  env.hosts = [
-    #'docker-5-1',
-    #'docker-5-2',
-    #'docker-5-3',
-    'docker-5-4',
-    'docker-5-5',
-    'docker-5-6',
-    'docker-5-7',
-    'docker-5-8',
-    'docker-5-9',
-    'docker-5-10',
-    'docker-5-11',
-    'docker-5-12',
-    'docker-5-13',
-    'docker-5-14',
-    'docker-5-15',
-    'docker-5-16',
-    'docker-5-17',
-    'docker-5-18',
-    'docker-5-19',
-    'docker-5-20',
-    'docker-5-21',
-    'docker-5-22',
-    'docker-5-23',
-    'docker-5-24',
-    'docker-5-25',
-    'docker-5-26',
+    'docker-5-254'
   ]
 
 def integration():
@@ -402,7 +557,6 @@ def clone_repo():
   """
   Do initial clone of the git repository.
   """
-  run('rm -rf docklet')
   if run('[ -d docklet ] && echo true || echo false') == 'false':
     run('git clone git@github.com:CodeNow/docklet.git')
 
@@ -441,6 +595,12 @@ def reboot():
     run('make')
   sudo('pm2 restartAll')
 
+def pm2_restartAll():
+  """
+  pm2 restartAll
+  """
+  sudo('pm2 restartAll')
+
 """
 Commands - deploy
 """
@@ -459,7 +619,7 @@ def deploy():
 """
 Commands - delta_deploy
 """
-# @parallel
+@parallel
 def delta_deploy():
   """
   increment the server.
@@ -468,6 +628,19 @@ def delta_deploy():
   require('branch', provided_by=[stable, master, branch])
   clone_repo()
   reboot()
+
+"""
+Commands - delta_deploy_no_make
+"""
+@parallel
+def delta_deploy_no_make():
+  """
+  increment the server.
+  """
+  require('settings', provided_by=[production, integration])
+  require('branch', provided_by=[stable, master, branch])
+  clone_repo()
+  pm2_restartAll()
 
 """
 Commands - docker stuff
