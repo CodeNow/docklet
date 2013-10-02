@@ -3,17 +3,31 @@ configs = require './configs'
 request = require 'request'
 
 module.exports = async.queue (repo, cb) ->
-  request
+  responded = false
+
+  respond = (err) ->
+    if not responded
+      responded = true
+      cb err
+    else
+      console.error err
+
+  req = request
     method: 'POST'
     url: "http://#{configs.docker_host}:#{configs.docker_port}/images/create"
     qs: 
       fromImage: repo
-    json: true
-    body: { }
     headers:
       token: configs.authToken
-  , (err, res) ->
-    if err then cb err else
-      if res.statusCode isnt 200 then cb new Error "docker error #{res.body}" else
-        # console.log "pulled image #{repo}"
-        cb null
+
+  req.on 'error', respond
+
+  req.on 'data', (json) ->
+    try
+      data = JSON.parse json
+      if data.error
+        respond new Error data.error
+    catch err
+      respond err
+  
+  req.on 'end', respond
