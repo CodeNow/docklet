@@ -11,7 +11,7 @@ cacheImages = (cb) ->
     json: true
     headers:
       token: configs.authToken
-  , (err, res) ->
+  , (err, res, body) ->
     if err then cb err else
       if res.statusCode isnt 200 then cb new Error "docker error #{res.body}" else
         res.body.forEach (image) ->
@@ -21,7 +21,7 @@ cacheImages = (cb) ->
 
 pullImage = (repo, cb) ->
   queue.push repo, (err) ->
-    images[repo] = true  unless err
+    images[repo] = true unless err?
     cb err
 
 checkCache = (repo) ->
@@ -29,14 +29,20 @@ checkCache = (repo) ->
   repo of images
 
 findImage = (data, cb) ->
-  if checkCache data.repo
-    process.nextTick ->
+  request
+    method: 'GET'
+    url: "http://#{configs.docker_host}:#{configs.docker_port}/images/#{data.repo}/json"
+    json: true
+    headers:
+      token: configs.authToken
+  , (err, res, body) ->
+    if err or res.statusCode isnt 200
+      if data.job
+        redis.publish 'dockletRequest', JSON.stringify data
+      # console.log "not found. pulling image #{repo}"
+      pullImage data.repo, cb
+    else
       cb null
-  else
-    if data.job
-      redis.publish 'dockletRequest', JSON.stringify data
-    # console.log "not found. pulling image #{repo}"
-    pullImage data.repo, cb
 
 module.exports = {
   checkCache
