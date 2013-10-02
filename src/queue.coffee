@@ -28,7 +28,7 @@ module.exports = async.queue (repo, cb) ->
       if data.error
         respond new Error data.error
     catch err
-      console.log json
+      console.log json.toString()
       respond err
   
   req.on 'end', respond

@@ -444,6 +444,7 @@ def reboot():
 """
 Commands - deploy
 """
+@parallel
 def deploy():
   """
   update the server.
