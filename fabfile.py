@@ -24,6 +24,94 @@ def production():
   env.settings = 'production'
   env.registry = '54.241.154.140'
   env.hosts = [
+    'docker-4-5',
+    'docker-4-6',
+    'docker-4-7',
+    'docker-4-8',
+    'docker-4-9',
+    'docker-4-10',
+    'docker-4-11',
+    'docker-4-12',
+    'docker-4-13',
+    'docker-4-14',
+    'docker-4-15',
+    'docker-4-16',
+    'docker-4-17',
+    'docker-4-18',
+    'docker-4-19',
+    'docker-4-20',
+    'docker-4-21',
+    'docker-4-22',
+    'docker-4-23',
+    'docker-4-24',
+    'docker-4-25',
+    'docker-4-26',
+    'docker-4-27',
+    'docker-4-28',
+    'docker-4-29',
+    'docker-4-30',
+    'docker-4-31',
+    'docker-4-32',
+    'docker-4-33',
+    'docker-4-34',
+    'docker-4-35',
+    'docker-4-36',
+    'docker-4-37',
+    'docker-4-38',
+    'docker-4-39',
+    'docker-4-40',
+    'docker-4-41',
+    'docker-4-42',
+    'docker-4-43',
+    'docker-4-44',
+    'docker-4-45',
+    'docker-4-46',
+    'docker-4-47',
+    'docker-4-48',
+    'docker-4-49',
+    'docker-4-50',
+    'docker-4-51',
+    'docker-4-52',
+    'docker-4-53',
+    'docker-4-54',
+    'docker-4-55',
+    'docker-4-56',
+    'docker-4-57',
+    'docker-4-58',
+    'docker-4-59',
+    'docker-4-60',
+    'docker-4-61',
+    'docker-4-62',
+    'docker-4-63',
+    'docker-4-64',
+    'docker-4-65',
+    'docker-4-66',
+    'docker-4-67',
+    'docker-4-68',
+    'docker-4-69',
+    'docker-4-70',
+    'docker-4-71',
+    'docker-4-72',
+    'docker-4-73',
+    'docker-4-74',
+    'docker-4-75',
+    'docker-4-76',
+    'docker-4-77',
+    'docker-4-78',
+    'docker-4-79',
+    'docker-4-80',
+    'docker-4-81',
+    'docker-4-82',
+    'docker-4-83',
+    'docker-4-84',
+    'docker-4-85',
+    'docker-4-86',
+    'docker-4-87',
+    'docker-4-88',
+    'docker-4-89',
+    'docker-4-90',
+    'docker-4-91',
+    'docker-4-92',
     'docker-4-93',
     'docker-4-94',
     'docker-4-95',
@@ -490,6 +578,7 @@ def setup():
   install_requirements()
   reboot_machine()
 
+@parallel
 def reboot_machine():
   """
   Reboot da box
@@ -570,15 +659,15 @@ def install_requirements():
   """
   Install the required packages using npm.
   """
-  sudo('npm install n -g')
-  sudo('n 0.10.18')
-  sudo('npm install pm2 -g')
+  # sudo('npm install n -g')
+  # sudo('n 0.10.18')
+  # sudo('npm install pm2 -g')
   sudo('rm -rf /home/ubuntu/tmp')
   with cd('docklet'):
-    run('rm -rf node_modules')
+    # run('rm -rf node_modules')
     run('npm install')
     run('make')
-
+@parallel
 def boot():
   """
   Start process with pm2
@@ -612,7 +701,6 @@ def deploy():
   require('settings', provided_by=[production, integration])
   require('branch', provided_by=[stable, master, branch])
   clone_repo()
-  remove_nginx()
   install_requirements()
   boot()
 
