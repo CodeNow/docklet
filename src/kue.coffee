@@ -14,6 +14,6 @@ jobs.process 'dockletRequest', (job, done) ->
   dockletRequestQueue.push job.data, (err) ->
     job.progress 2, 3
     if err then done err else
-      job.data.docklet = 'localhost'
+      job.data.docklet = ip
       job.update()
       job.set 'docklet', ip, done
