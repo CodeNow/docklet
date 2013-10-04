@@ -49,7 +49,7 @@ app.post('/images/create', function (req, res, next) {
   images.push({
     Repository: req.query.fromImage
   });
-  res.send('ok');
+  res.json({});
 });
 
 app.get('/events', function (req, res, next) {
@@ -63,6 +63,46 @@ app.get('/events', function (req, res, next) {
       status: 'stop'
     }));
   }, 100);
+});
+
+app.get('/images/:image/json', function (req, res, next) {
+  var responded = false;
+  images.forEach(function (image) {
+    if (image.Repository = req.params.image) {
+      res.json({
+           "id":"b750fe79269d2ec9a3c593ef05b4332b1d1a02a62b4accb2c21d589ff2f5f2dc",
+           "parent":"27cf784147099545",
+           "created":"2013-03-23T22:24:18.818426-07:00",
+           "container":"3d67245a8d72ecf13f33dffac9f79dcdf70f75acb84d308770391510e0c23ad0",
+           "container_config":
+                   {
+                           "Hostname":"",
+                           "User":"",
+                           "Memory":0,
+                           "MemorySwap":0,
+                           "AttachStdin":false,
+                           "AttachStdout":false,
+                           "AttachStderr":false,
+                           "PortSpecs":null,
+                           "Tty":true,
+                           "OpenStdin":true,
+                           "StdinOnce":false,
+                           "Env":null,
+                           "Cmd": ["/bin/bash"]
+                           ,"Dns":null,
+                           "Image":"base",
+                           "Volumes":null,
+                           "VolumesFrom":"",
+                           "WorkingDir":""
+                   },
+           "Size": 6824592
+      });
+      responded = true;
+    }
+  });
+  if (!responded) {
+    res.send(404);
+  }
 });
 
 app.all('*', function (req, res, next) {
