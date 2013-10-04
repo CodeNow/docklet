@@ -14,5 +14,4 @@ jobs.process 'dockletRequest', (job, done) ->
   dockletRequestQueue.push job.data, (err) ->
     job.progress 2, 3
     if err then done err else
-      client.hset 'harbourmasterSession:' + job.data.servicesToken, 
-        'docklet', ip, done
+      job.set 'docklet', ip, done
