@@ -1,10 +1,9 @@
-configs = require './configs'
 express = require 'express'
 server = require './server'
 ip = require './ip'
 containerCount = require './containerCount'
 docker = require './docker'
-queue = require('redis').createClient configs.redisPort, configs.redisHost
+queue = require './client'
 app = express()
 
 app.post '/create', (req, res, next) ->

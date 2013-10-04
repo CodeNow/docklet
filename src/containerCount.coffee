@@ -10,7 +10,7 @@ count = null
 ev = new EventEmitter
 ip = require './ip'
 server = require './server'
-client = redis.createClient configs.redisPort, configs.redisHost
+client = require './client'
 
 setInterval () ->
   docker.listContainers (err, containers) ->
@@ -35,7 +35,6 @@ client.multi()
   .exec (err) ->
     if err then throw err
     server.listen 3000
-    client.quit()
 
 module.exports.init = (cb) ->
   docker.listContainers (err, containers) ->

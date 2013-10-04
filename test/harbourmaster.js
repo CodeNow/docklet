@@ -8,10 +8,10 @@ var docker = require('./fixtures/docker');
 
 describe('harbourmaster interface', function () {
   before(function (done) {
+    client.del('docks');
     setTimeout(function () {
       require('../lib');
     }, 10);
-    client.del('docks');
     setTimeout(done, 500);
   });
   it('should respond to a queue request to create a container with a miss the first time', function (done) {
@@ -86,6 +86,19 @@ describe('harbourmaster interface', function () {
         pubsub.unsubscribe(servicesToken + ':dockletReady', done);
       }
     }
+  });
+  it('should respond to a kue request to create a container', function (done) {
+    var servicesToken = 'services-' + uuid();
+    var repo = 'base';
+    var kue = require('kue');
+    var jobs = kue.createQueue();
+    var job = jobs.create('dockletRequest', {
+      title: servicesToken,
+      repo: repo,
+      servicesToken: servicesToken
+    }).save();
+
+    job.on('complete', done);
   });
   it('should respond to a request to prune unused containers', function (done) {
     var containerIds = [

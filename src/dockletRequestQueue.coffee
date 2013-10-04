@@ -4,7 +4,7 @@ docker = require './docker'
 redis = require 'redis'
 containerCount = require './containerCount'
 ip = require './ip'
-client = redis.createClient configs.redisPort, configs.redisHost
+client = require './client'
 
 
 dockletRequestQueue = module.exports = async.queue (data, cb) ->

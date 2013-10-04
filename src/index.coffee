@@ -11,3 +11,4 @@ docker.cacheImages (err) ->
       require './app'
       require './pubsub'
       require './jobs'
+      require './kue'

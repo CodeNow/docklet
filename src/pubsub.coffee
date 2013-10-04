@@ -1,9 +1,7 @@
 configs = require './configs'
 async = require 'async'
-dockerjs = require 'docker.js'
-redis = require 'redis'
-pubsub = redis.createClient configs.redisPort, configs.redisHost
-dockerClient = dockerjs
+pubsub = require('redis').createClient configs.redisPort, configs.redisHost
+dockerClient = require('docker.js')
   host: "http://" + configs.docker_host + ":" + configs.docker_port
   token: configs.authToken
 dockletRequestQueue = require './dockletRequestQueue'

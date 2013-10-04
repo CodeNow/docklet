@@ -1,7 +1,7 @@
 configs = require './configs'
 request = require 'request'
 queue = require './queue'
-redis = require('redis').createClient configs.redisPort, configs.redisHost
+redis = require './client'
 images = {}
 
 cacheImages = (cb) ->
