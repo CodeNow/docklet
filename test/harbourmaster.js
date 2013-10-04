@@ -14,6 +14,9 @@ describe('harbourmaster interface', function () {
     }, 10);
     setTimeout(done, 500);
   });
+  beforeEach(function (done) {
+    setTimeout(done, 1500);
+  })
   it('should respond to a queue request to create a container with a miss the first time', function (done) {
     client.blpop('docks', 1, function (err, element) {
       request.post('http://' + element[1] + ':3000/create?fromImage=base', function (err, res, body) {
