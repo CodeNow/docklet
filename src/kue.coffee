@@ -1,5 +1,5 @@
 kue = require 'kue'
-dockletRequestQueue = require './dockletRequestQueue'
+docker = require './docker'
 ip = require './ip'
 configs = require './configs'
 client = require './client'
@@ -11,7 +11,7 @@ jobs = kue.createQueue()
 
 jobs.process 'dockletRequest', (job, done) ->
   job.progress 1, 3
-  dockletRequestQueue.push job.data, (err) ->
+  docker.findImage job.data, (err) ->
     job.progress 2, 3
     if err then done err else
       job.data.docklet = ip
