@@ -6,6 +6,11 @@ var client = redis.createClient(configs.redisPort, configs.redisHost);
 
 var docker = require('./fixtures/docker');
 
+// require('child_process').exec = function (cmd, cb) {
+//   console.log('exec', cmd);
+//   cb();
+// };
+
 describe('harbourmaster interface', function () {
   before(function (done) {
     client.del('docks');
@@ -44,5 +49,23 @@ describe('harbourmaster interface', function () {
       }
     }, 100);
   });
-
+  // this is tricky to mock right now
+  // it('should respond to a flatten request', function (done) {
+  //   request.post({
+  //     url: 'http://localhost:4244/flatten',
+  //     qs: {
+  //       oldRepo: 'registry.runnable.com/runnable/old-repo-name',
+  //       newRepo: 'registry.runnable.com/runnable/new-repo-name',
+  //       layers: 5
+  //     }
+  //   }, function (err, res, body) {
+  //     if (err) {
+  //       done(err);
+  //     } else if (res.statusCode !== 201) {
+  //       done(new Error('bad statusCode: ' + res.statusCode));
+  //     } else {
+  //       done();
+  //     }
+  //   });
+  // });
 });

@@ -105,6 +105,21 @@ app.get('/images/:image/json', function (req, res, next) {
   }
 });
 
+app.get('/images/:registry?/:owner?/:name/history', function (req, res, next) {
+  res.json([
+    {Id:'1'},
+    {Id:'2'},
+    {Id:'3'},
+    {Id:'4'},
+    {Id:'5'},
+    {Id:'6'},
+    {Id:'7'},
+    {Id:'8'},
+    {Id:'9'},
+    {Id:'10'}
+  ]);
+});
+
 app.all('*', function (req, res, next) {
   console.log('Docker request:', req.method, req.url);
   next();
