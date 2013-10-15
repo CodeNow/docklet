@@ -2,6 +2,7 @@ configs = require './configs'
 request = require 'request'
 queue = require './queue'
 redis = require './client'
+ip = require './ip'
 images = {}
 
 cacheImages = (cb) ->
@@ -45,17 +46,22 @@ checkImage = (repo, cb) ->
 findImage = (data, cb) ->
   if checkCache data.repo
     process.nextTick ->
-      cb null
+      cb null, ip
   else
     checkImage data.repo, (err) ->
       if (err)
         if data.job
           data.job = false
+          pubsub = require('redis').createClient configs.redisPort, configs.redisHost
+          pubsub.subscribe "#{data.servicesToken}:dockletReady"
+          pubsub.on 'message', (key, ip) ->
+            cb null, ip
+            pubsub.quit null
           redis.publish 'dockletRequest', JSON.stringify data
-        # console.log "not found. pulling image #{repo}"
-        pullImage data.repo, cb
+        else 
+          pullImage data.repo, cb
       else
-        cb null
+        cb null, ip
 
 module.exports = {
   checkCache
