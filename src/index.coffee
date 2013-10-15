@@ -1,4 +1,7 @@
 configs = require './configs'
+rollbar = require 'rollbar'
+if configs.rollbar
+  rollbar.init configs.rollbar
 if configs.nodetime
   nodetime = require 'nodetime'
   nodetime.profile configs.nodetime
