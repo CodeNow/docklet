@@ -32,7 +32,8 @@
     "JSONStream": "~0.7.1",
     "shoe": "0.0.15",
     "express": "~3.4.0",
-    "kue": "~0.6.2"
+    "kue": "~0.6.2",
+    "flattenDockerImages": "git://github.com/Runnable/flattenDockerImages.git"
   },
   "devDependencies": {
     "express": "~3.4.0"
