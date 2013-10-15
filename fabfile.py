@@ -532,9 +532,9 @@ def integration():
   env.hosts = [
     'docker2-int',
     'docker3-int',
-    'docker4-int',
-    'docker5-int',
-    'docker6-int'
+    # 'docker4-int',
+    # 'docker5-int',
+    # 'docker6-int'
   ]
 
 """
