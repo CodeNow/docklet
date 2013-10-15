@@ -1,4 +1,7 @@
-flattenImage = require 'flattenDockerImages'
+flattenImage = if global.test 
+  require '../test/fixtures/flattenDockerImages'
+else
+  require 'flattenDockerImages'
 
 flatten = module.exports = (req, res, next) ->
   oldRepo = req.query.oldRepo
