@@ -57,7 +57,8 @@ findImage = (data, cb) ->
           pubsub.on 'message', (key, ip) ->
             cb null, ip
             pubsub.quit null
-          redis.publish 'dockletRequest', JSON.stringify data
+          pubsub.on 'ready', ->
+            redis.publish 'dockletRequest', JSON.stringify data
         else 
           pullImage data.repo, cb
       else
