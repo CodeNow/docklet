@@ -59,6 +59,10 @@ findImage = (data, cb) ->
             pubsub.quit null
           pubsub.on 'ready', ->
             redis.publish 'dockletRequest', JSON.stringify data
+          setTimeout ->
+            pubsub.quit null
+            cb new Error 'timed out searching for image'
+          , 1000 * 30
         else 
           pullImage data.repo, cb
       else

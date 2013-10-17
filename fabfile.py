@@ -664,7 +664,7 @@ def install_requirements():
   # sudo('npm install pm2 -g')
   sudo('rm -rf /home/ubuntu/tmp')
   with cd('docklet'):
-    # run('rm -rf node_modules')
+    sudo('rm -rf node_modules')
     run('npm install')
     run('make')
 @parallel
