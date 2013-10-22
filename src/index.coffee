@@ -12,5 +12,3 @@ docker.cacheImages (err) ->
   if err then throw err else
     require './pubsub'
     require './kue'
-
-rollbar.reportMessage "Hello world!"
