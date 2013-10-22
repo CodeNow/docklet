@@ -8,14 +8,7 @@
   	"user": "runnableProduction",
   	"password": "insertWittyPasswordHere"
   },
-  "rollbar": {
-    "key": "34dfc593cf14456985c66ffc12c6acc4",
-    "options":  {
-      "root": "/home/ubuntu/docklet",
-      "branch": "master",
-      "environment": "production"
-    }
-  },
+  "rollbar": "34dfc593cf14456985c66ffc12c6acc4",
   "networkInterface": "eth0",
   "domain": "runnable.com",
   "authToken": "8EM1dX06788BnRzZ9eaqrCLLmzokmgNe"
