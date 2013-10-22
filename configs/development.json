@@ -5,13 +5,5 @@
   "docker_host": "localhost",
   "docker_port": 4243,
   "networkInterface": "lo0",
-  "rollbar": {
-    "key": "34dfc593cf14456985c66ffc12c6acc4",
-    "options":  {
-      "root": "/home/ubuntu/docklet",
-      "branch": "master",
-      "environment": "integration"
-    }
-  },
   "authToken": "Hirqez43tqslj9vOu2X8a8r6An498VFS"
 }
