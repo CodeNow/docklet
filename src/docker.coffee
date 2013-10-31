@@ -62,7 +62,7 @@ findImage = (data, cb) ->
           setTimeout ->
             pubsub.quit null
             cb new Error 'timed out searching for image'
-          , 1000 * 30
+          , 1000 * 5
         else 
           pullImage data.repo, cb
       else
