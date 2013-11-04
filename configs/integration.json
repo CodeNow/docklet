@@ -2,6 +2,8 @@
   "checkImageInterval": "30 seconds",
   "redisPort": "6379",
   "redisHost": "10.0.1.14",
+  "kueRedisPort": "6379",
+  "kueRedisHost": "10.0.1.14",
   "docker_host": "localhost",
   "docker_port": 4243,
   "auth": {
