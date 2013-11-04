@@ -362,7 +362,7 @@ def production():
     'docker-5-92',  # temp
     'docker-5-93', # temp
     'docker-5-94', # temp
-    # 'docker-5-95', # down
+    'docker-5-95', # down
     # 'docker-5-96',
     # 'docker-5-97',
     # 'docker-5-98',
