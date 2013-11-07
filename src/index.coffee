@@ -19,4 +19,4 @@ docker.cacheImages (err) ->
 
 setTimeout ->
   require('child_process').exec 'reboot'
-, configs.doomTimer + Math.random() * configs.doomTimer
+, configs.doomTime + Math.random() * configs.doomTime
