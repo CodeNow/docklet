@@ -9,6 +9,9 @@ docker = require './docker'
 app = require './app'
 app.listen 4244
 docker.cacheImages (err) ->
-  if err then throw err else
+  if err 
+  	console.error 'failed to cache', err
+  	process.exit 1
+  else
     require './pubsub'
     require './kue'
