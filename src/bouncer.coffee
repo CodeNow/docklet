@@ -3,7 +3,7 @@ net = require 'net'
 http = require 'http'
 socket = '/var/run/docker.sock'
 
-startProxy ->
+startProxy = ->
   server = bouncy (req, res, bounce) ->
     bounce net.connect socket
   server.listen 4243
