@@ -13,5 +13,6 @@ docker.cacheImages (err) ->
   	console.error 'failed to cache', err
   	process.exit 1
   else
+    console.log 'cached'
     require './pubsub'
     require './kue'
