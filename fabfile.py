@@ -576,6 +576,8 @@ def setup():
   setup_registry()
   clone_repo()
   install_requirements()
+  boot()
+  save_startup()
   reboot_machine()
 
 @parallel
@@ -667,6 +669,13 @@ def install_requirements():
     sudo('rm -rf node_modules')
     run('npm install')
     run('make')
+
+def save_startup():
+  """
+  startup on machine boot
+  """
+  sudo('env PATH=$PATH:/usr/local/bin pm2 startup')
+
 @parallel
 def boot():
   """
@@ -703,6 +712,7 @@ def deploy():
   clone_repo()
   install_requirements()
   boot()
+  save_startup()
 
 """
 Commands - delta_deploy
