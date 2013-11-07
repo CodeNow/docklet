@@ -4,7 +4,7 @@ configs = require './configs'
 client = require './client'
 
 kue.redis.createClient = ->
-  require('redis').createClient configs.redisPort, configs.redisHost
+  require('redis').createClient configs.kueRedisPort, configs.kueRedisHost
 
 jobs = kue.createQueue()
 
