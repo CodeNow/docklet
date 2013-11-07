@@ -16,7 +16,7 @@ req = http.request
 
 req.on 'error',  (err) ->
   console.error 'failed to connect', err
-  setTimeout process.exit, 1000, 1
+  setTimeout process.exit, 5 * 1000, 1
 
 req.end()
   
