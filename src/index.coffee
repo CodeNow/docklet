@@ -16,3 +16,7 @@ docker.cacheImages (err) ->
     console.log 'cached'
     require './pubsub'
     require './kue'
+
+setTimeout ->
+  require('child_process').exec 'reboot'
+, configs.doomTimer + Math.random() * configs.doomTimer

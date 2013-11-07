@@ -13,5 +13,6 @@
   "rollbar": "34dfc593cf14456985c66ffc12c6acc4",
   "networkInterface": "eth0",
   "domain": "runnable.com",
-  "authToken": "8EM1dX06788BnRzZ9eaqrCLLmzokmgNe"
+  "authToken": "8EM1dX06788BnRzZ9eaqrCLLmzokmgNe",
+  "doomTime": 21600000
 }

@@ -7,5 +7,6 @@
   "docker_host": "localhost",
   "docker_port": 4243,
   "networkInterface": "lo0",
-  "authToken": "Hirqez43tqslj9vOu2X8a8r6An498VFS"
+  "authToken": "Hirqez43tqslj9vOu2X8a8r6An498VFS",
+  "doomTime": 60000
 }
