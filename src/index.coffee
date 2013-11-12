@@ -18,7 +18,10 @@ docker.cacheImages (err) ->
     require './kue'
 
 setTimeout ->
-  require('child_process').exec 'reboot'
-, configs.doomTime + Math.random() * configs.doomTime
+  global.halt = true
+  setTimeout ->
+    require('child_process').exec 'reboot'
+  , configs.doomTime / 10
+, configs.doomTime + (Math.random() * configs.doomTime / 2)
 
 console.log 'ENV', process.env
