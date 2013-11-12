@@ -6,7 +6,7 @@ client = require './client'
 kue.redis.createClient = ->
   require('redis').createClient configs.kueRedisPort, configs.kueRedisHost
 
-jobs = kue.createQueue()
+jobs = module.exports = kue.createQueue()
 
 jobs.process 'dockletRequest', (job, done) ->
   job.progress 1, 3
@@ -17,3 +17,4 @@ jobs.process 'dockletRequest', (job, done) ->
       job.data.docklet = ip
       job.update()
       job.set 'docklet', ip, done
+      
