@@ -8,7 +8,7 @@ kue.redis.createClient = ->
 
 jobs = module.exports = kue.createQueue()
 
-job.errorOut = ->
+jobs.errorOut = ->
   jobs.client.end()
 
 jobs.process 'dockletRequest', (job, done) ->
