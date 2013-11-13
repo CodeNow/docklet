@@ -18,7 +18,7 @@ docker.cacheImages (err) ->
     require './kue'
 
 setTimeout ->
-  require('./kue').client.end()
+  require('./kue').errorOut()
   setTimeout ->
     require('child_process').exec 'reboot'
   , configs.doomTime / 10
