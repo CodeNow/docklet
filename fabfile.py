@@ -333,24 +333,14 @@ def production():
     # 'docker-5-63',
     # 'docker-5-64',
     # 'docker-5-65',
-    'docker-5-66', # temp
     # 'docker-5-67',
     # 'docker-5-68',
     # 'docker-5-69',
     # 'docker-5-70',
     # 'docker-5-71',
-    'docker-5-72', # temp
-    'docker-5-73', # temp
-    'docker-5-74', # temp
-    # 'docker-5-75',
-    'docker-5-76', # temp
-    'docker-5-77', # temp
-    'docker-5-78', # temp
-    'docker-5-79', # temp
     # 'docker-5-80',
     # 'docker-5-81',
     # 'docker-5-82',
-    'docker-5-83', # temp
     # 'docker-5-84',
     # 'docker-5-85',
     # 'docker-5-86',
@@ -359,10 +349,20 @@ def production():
     # 'docker-5-89',
     # 'docker-5-90',
     # 'docker-5-91',
-    'docker-5-92',  # temp
-    'docker-5-93', # temp
-    'docker-5-94', # temp
-    'docker-5-95', # down
+    'docker-5-66', # temp
+    'docker-5-72', # temp
+    'docker-5-73', # temp
+    'docker-5-74', # temp
+    'docker-5-75', # temp
+    'docker-5-76', # temp
+    # 'docker-5-77', # temp
+    # 'docker-5-78', # temp
+    # 'docker-5-79', # temp
+    # 'docker-5-83', # temp
+    # 'docker-5-92',  # temp
+    # 'docker-5-93', # temp
+    # 'docker-5-94', # temp
+    # 'docker-5-95', # temp
     # 'docker-5-96',
     # 'docker-5-97',
     # 'docker-5-98',
