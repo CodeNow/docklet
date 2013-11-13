@@ -8,7 +8,11 @@ kue.redis.createClient = ->
 
 jobs = module.exports = kue.createQueue()
 
+job.errorOut = ->
+
 jobs.process 'dockletRequest', (job, done) ->
+  jobs.errorOut = ->
+    done new Error 'shutting down'
   job.progress 1, 3
   job.data.job = true
   docker.findImage job.data, (err, ip) ->
