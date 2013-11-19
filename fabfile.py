@@ -349,20 +349,20 @@ def production():
     # 'docker-5-89',
     # 'docker-5-90',
     # 'docker-5-91',
-    'docker-5-66', # temp
-    'docker-5-72', # temp
-    'docker-5-73', # temp
-    'docker-5-74', # temp
-    'docker-5-75', # temp
-    'docker-5-76', # temp
-    # 'docker-5-77', # temp
-    # 'docker-5-78', # temp
-    # 'docker-5-79', # temp
-    # 'docker-5-83', # temp
-    # 'docker-5-92',  # temp
-    # 'docker-5-93', # temp
-    # 'docker-5-94', # temp
-    # 'docker-5-95', # temp
+    # 'docker-5-66', # temp
+    # 'docker-5-72', # temp
+    # 'docker-5-73', # temp
+    # 'docker-5-74', # temp
+    # 'docker-5-75', # temp
+    # 'docker-5-76', # temp
+    'docker-5-77', # temp
+    'docker-5-78', # temp
+    'docker-5-79', # temp
+    'docker-5-83', # temp
+    'docker-5-92',  # temp
+    'docker-5-93', # temp
+    'docker-5-94', # temp
+    'docker-5-95', # temp
     # 'docker-5-96',
     # 'docker-5-97',
     # 'docker-5-98',
