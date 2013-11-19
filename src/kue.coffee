@@ -2,6 +2,7 @@ kue = require 'kue'
 docker = require './docker'
 configs = require './configs'
 client = require './client'
+shuttingDown = false
 
 kue.redis.createClient = ->
   require('redis').createClient configs.kueRedisPort, configs.kueRedisHost
