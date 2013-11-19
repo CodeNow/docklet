@@ -1,3 +1,4 @@
+env = require './env'
 configs = require './configs'
 rollbar = require 'rollbar'
 if configs.rollbar
@@ -9,7 +10,7 @@ docker = require './docker'
 app = require './app'
 app.listen 4244
 docker.cacheImages (err) ->
-  if err 
+  if err
   	console.error 'failed to cache', err
   	process.exit 1
   else
@@ -17,9 +18,11 @@ docker.cacheImages (err) ->
     require './pubsub'
     require './kue'
 
-setTimeout ->
-  require('./kue').errorOut()
+if !env('development')
   setTimeout ->
-    require('child_process').exec 'reboot'
-  , configs.doomTime / 10
-, configs.doomTime + (Math.random() * configs.doomTime / 2)
+    require('./kue').errorOut()
+    setTimeout ->
+      require('child_process').exec 'reboot'
+    , configs.doomTime / 10
+  , configs.doomTime + (Math.random() * configs.doomTime / 2)
+
