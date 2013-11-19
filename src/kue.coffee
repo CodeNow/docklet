@@ -9,18 +9,20 @@ kue.redis.createClient = ->
 jobs = module.exports = kue.createQueue()
 
 jobs.errorOut = ->
-  jobs.client.end()
+  shuttingDown = true
 
-jobs.process 'dockletRequest', (job, done) ->
-  jobs.errorOut = ->
-    done new Error 'shutting down'
-    jobs.client.end()
+jobs.process "dockletRequest", (job, done) ->
+  if shuttingDown
+    job.inactive() #put job back in queue
+    #never call done, this prevents worker from accepting new jobs
+    return
   job.progress 1, 3
   job.data.job = true
   docker.findImage job.data, (err, ip) ->
     job.progress 2, 3
-    if err then done err else
+    if err
+      done err
+    else
       job.data.docklet = ip
       job.update()
-      job.set 'docklet', ip, done
-      
+      job.set "docklet", ip, done
