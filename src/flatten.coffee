@@ -1,3 +1,5 @@
+uuid = require('node-uuid');
+
 flattenImage = if global.test 
   require '../test/fixtures/flattenDockerImages'
 else
