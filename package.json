@@ -4,8 +4,9 @@
   "description": "Listens for tasks and runs them as docker containers",
   "main": "/lib/index.js",
   "scripts": {
-    "start": "make && node lib/index.js",
-    "test": "make && NODE_ENV=testing DOCKLET_INDEX=0 ./node_modules/.bin/mocha -R spec"
+    "start": "npm run build && node lib/index.js",
+    "test": "npm run build && NODE_ENV=testing DOCKLET_INDEX=0 mocha -R spec",
+    "build": "coffee -m -o lib src"
   },
   "repository": {
     "type": "git",

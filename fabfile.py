@@ -349,12 +349,12 @@ def production():
     # 'docker-5-89',
     # 'docker-5-90',
     # 'docker-5-91',
-    # 'docker-5-66', # temp
-    # 'docker-5-72', # temp
-    # 'docker-5-73', # temp
-    # 'docker-5-74', # temp
-    # 'docker-5-75', # temp
-    # 'docker-5-76', # temp
+    # 'docker-5-75', 
+    'docker-5-66', # temp
+    'docker-5-72', # temp
+    'docker-5-73', # temp
+    'docker-5-74', # temp
+    'docker-5-76', # temp
     'docker-5-77', # temp
     'docker-5-78', # temp
     'docker-5-79', # temp
@@ -668,7 +668,7 @@ def install_requirements():
   with cd('docklet'):
     sudo('rm -rf node_modules')
     run('npm install')
-    run('make')
+    run('npm run build')
 
 def save_startup():
   """
