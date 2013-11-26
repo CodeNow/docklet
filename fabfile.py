@@ -343,7 +343,6 @@ def production():
     # 'docker-5-82',
     # 'docker-5-84',
     # 'docker-5-85',
-    # 'docker-5-86',
     # 'docker-5-87',
     # 'docker-5-88',
     # 'docker-5-89',
@@ -359,6 +358,7 @@ def production():
     'docker-5-78', # temp
     'docker-5-79', # temp
     'docker-5-83', # temp
+    'docker-5-86', # temp
     'docker-5-92',  # temp
     'docker-5-93', # temp
     'docker-5-94', # temp
