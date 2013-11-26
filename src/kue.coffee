@@ -26,4 +26,8 @@ jobs.process "dockletRequest", (job, done) ->
     else
       job.data.docklet = ip
       job.update()
-      job.set "docklet", ip, done
+      job.set "docklet", ip, (err) ->
+        if (err) 
+          done err
+        else
+          done()
