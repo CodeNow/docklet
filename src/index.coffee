@@ -19,7 +19,7 @@ docker.cacheImages (err) ->
 
 if !env('development')
   setTimeout ->
-    require('./kue').shutdown ->
+    app.server.close ->
       setTimeout ->
         require('child_process').exec 'reboot'
       , configs.doomTime / 10
