@@ -26,6 +26,7 @@ module.exports = async.queue (repo, cb) ->
     try
       data = JSON.parse json
       if data.error
+        console.error "data: #{data}"
         console.error "repo: #{repo}"
         respond new Error data.error
     catch err
