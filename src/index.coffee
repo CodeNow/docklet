@@ -8,7 +8,6 @@ if configs.nodetime
   nodetime.profile configs.nodetime
 docker = require './docker'
 app = require './app'
-app.listen 4244
 docker.cacheImages (err) ->
   if err
   	console.error 'failed to cache', err
@@ -16,7 +15,7 @@ docker.cacheImages (err) ->
   else
     console.log 'cached'
     require './pubsub'
-    require './kue'
+    app.listen 4244
 
 if !env('development')
   setTimeout ->
