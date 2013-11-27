@@ -15,4 +15,6 @@ vitals
   .unhealthyWhen('mem', 'free')
   .lessThan(500)
 
-console.log 'vitals', vitals.getReport()
+setTimeout ->
+  console.log 'vitals', vitals.getReport()
+, 6000
