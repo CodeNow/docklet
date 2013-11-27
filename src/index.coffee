@@ -15,6 +15,7 @@ docker.cacheImages (err) ->
   else
     console.log 'cached'
     require './pubsub'
+    require './register'
     app.listen 4244
 
 if !env('development')
