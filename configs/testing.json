@@ -8,5 +8,6 @@
   "docker_port": 4243,
   "networkInterface": "lo0",
   "authToken": "lPNpt8ig5b3C6FqIt6el8cmY6w57413A",
-  "doomTime": 60000
+  "doomTime": 60000,
+  "domain": "runnableapp.dev"
 }
