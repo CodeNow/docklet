@@ -15,14 +15,14 @@ pubsub.on 'message', (key, json) ->
       raceToFind data
     else if key is 'dockletPrune'
       whitelist = data
-      dockerClient.listContainers 
-        queryParams: 
-          all: true
-      , (err, containers) ->
-        if err 
-          console.error err 
-        else
-          pruneContainers whitelist, containers
+      dockerClient.listContainers queryParams:all:true, (err, containers) ->
+        if err then console.error err else
+          whitelistHash = {}
+          whitelist.forEach (containerId) -> whitelistHash[containerId] = true
+          containersToPrune = containers.filter (container) ->
+            containerId = container.Id.substring 0, 12
+            return not whitelistHash[containerId]
+          pruneContainers containersToPrune
     else
       throw new Error "Docklet received unknown message: #{key}"
   catch err
@@ -31,21 +31,16 @@ pubsub.on 'message', (key, json) ->
 pubsub.subscribe 'dockletPrune'
 pubsub.subscribe 'dockletRequest'
 
-pruneContainers = (whitelist, containers) ->
-  async.forEachSeries containers, (container, cb) ->
-    pruneContainer whitelist, container, cb
-  , (err) -> if err then console.error err
+pruneContainers = (containers) ->
+  async.forEachSeries containers, pruneContainer, (err) ->
+    if err then console.error err
 
-pruneContainer = (whitelist, container, cb) ->
+pruneContainer = (container, cb) ->
   containerId = container.Id.substring 0, 12
-  if containerId in whitelist 
-    cb() 
-  else
-    dockerClient.inspectContainer containerId, (err, res) ->
-      if err 
-        cb err 
-      else if not res.State or res.State.Running 
-        cb() 
+  dockerClient.inspectContainer containerId, (err, res) ->
+    if err then cb err else
+      if not res.State or res.State.Running
+        cb()
       else
         dockerClient.removeContainer containerId, cb
 
