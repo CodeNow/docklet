@@ -15,7 +15,7 @@ module.exports = async.queue (repo, cb) ->
   req = request
     method: 'POST'
     url: "http://#{configs.docker_host}:#{configs.docker_port}/images/create"
-    qs: 
+    qs:
       fromImage: repo
     headers:
       token: configs.authToken
@@ -25,6 +25,7 @@ module.exports = async.queue (repo, cb) ->
   req.on 'data', (json) ->
     try
       data = JSON.parse json
+      console.log data
       if data.error
         console.error 'data:', data
         console.error 'repo:', repo
@@ -32,5 +33,5 @@ module.exports = async.queue (repo, cb) ->
     catch err
       console.log json.toString()
       respond err
-  
+
   req.on 'end', respond
