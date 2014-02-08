@@ -14,5 +14,6 @@
   "networkInterface": "eth0",
   "domain": "runnable.com",
   "authToken": "8EM1dX06788BnRzZ9eaqrCLLmzokmgNe",
-  "doomTime": 21600000
+  "doomTime": 21600000,
+  "domain": "runnable.com"
 }

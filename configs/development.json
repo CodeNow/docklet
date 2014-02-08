@@ -8,5 +8,6 @@
   "docker_port": 4243,
   "networkInterface": "lo0",
   "authToken": "Hirqez43tqslj9vOu2X8a8r6An498VFS",
-  "doomTime": 60000
+  "doomTime": 60000,
+  "domain": "runnable2.net"
 }

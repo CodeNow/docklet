@@ -61,7 +61,9 @@ findImage = (data, cb) ->
             redis.publish 'dockletRequest', JSON.stringify data
           setTimeout ->
             pubsub.quit null
-            cb new Error 'timed out searching for image'
+            err = new Error 'timed out searching for image'
+            err.code = 404
+            cb err
           , 1000 * 5
         else 
           pullImage data.repo, cb
@@ -76,4 +78,4 @@ module.exports = {
 }
 
 
-setInterval cacheImages, 1000 * 60 * 4 + 1000 * 60 * 2 * Math.random(), ->
+# setInterval cacheImages, 1000 * 60 * 4 + 1000 * 60 * 2 * Math.random(), ->
