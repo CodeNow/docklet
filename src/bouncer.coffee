@@ -5,6 +5,7 @@ socket = '/var/run/docker.sock'
 
 startProxy = ->
   server = bouncy (req, res, bounce) ->
+  	console.log(req.url, req.method)
     bounce net.connect socket
     req.pipe(process.stdout)
   server.listen 4243
