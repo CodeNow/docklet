@@ -6,6 +6,7 @@ socket = '/var/run/docker.sock'
 startProxy = ->
   server = bouncy (req, res, bounce) ->
     bounce net.connect socket
+    req.resume()
   server.listen 4243
 
 req = http.request 
