@@ -7,7 +7,6 @@ startProxy = ->
   server = bouncy (req, res, bounce) ->
     console.log(req.url, req.method)
     bounce net.connect socket
-    req.resume()
   server.listen 4243
 
 req = http.request 

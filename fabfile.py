@@ -184,7 +184,7 @@ def install_requirements():
   """
   sudo('npm install n -g')
   sudo('n 0.8.26')
-  sudo('npm install pm2 -g')
+  sudo('npm install pm2@0.5.6 -g')
   sudo('rm -rf /home/ubuntu/tmp')
   with cd('docklet'):
     sudo('rm -rf node_modules')
@@ -202,7 +202,7 @@ def boot():
   """
   Start process with pm2
   """
-  sudo('pm2 kill')
+  sudo('pm2 kill || echo no pm2')
   sudo('NODE_ENV=%(settings)s pm2 start docklet/lib/index.js -n docklet' % env)
   sudo('NODE_ENV=%(settings)s pm2 start docklet/lib/bouncer.js -n bouncer -i 10' % env)
 
