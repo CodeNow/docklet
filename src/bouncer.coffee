@@ -11,9 +11,9 @@ proxy = httpProxy.createServer
   target: typeof configs.socket == 'string' && configs.socket || 'http://localhost:' + configs.socket
 
 startProxy = ->
-  # server = bouncy socket && socketBounce || portBounce
-  # server.listen 4243
-  proxy.listen 4243
+  server = bouncy socket && socketBounce || portBounce
+  server.listen 4243
+  # proxy.listen 4243
 
 req = http.request 
   socketPath: socket
