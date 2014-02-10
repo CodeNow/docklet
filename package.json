@@ -37,6 +37,8 @@
     "vitalsigns": "~0.2.2"
   },
   "devDependencies": {
-    "express": "~3.4.0"
+    "express": "~3.4.0",
+    "fstream": "~0.1.25",
+    "tar": "gyllstromk/node-tar"
   }
 }

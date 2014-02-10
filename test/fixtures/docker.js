@@ -120,12 +120,44 @@ app.get('/images/:registry?/:owner?/:name/history', function (req, res, next) {
   ]);
 });
 
+app.get('/version', function (req, res, next) {
+  res.json({
+    'json': true
+  });
+});
+
+app.post('/images/:repo?/:user?/:name/push', express.bodyParser(), function (req, res, next) {
+  res.send('pushed');
+});
+
+app.post('/containers/create', express.bodyParser(), function (req, res, next) {
+  res.json(201, {
+    "Id": "e90e34656806",
+    "Warnings": []
+  });
+});
+
+app.post('/containers/:id/stop', function (req, res, next) {
+  res.send('stopped');
+});
+
+app.post('/commit', function (req, res, next) {
+  res.json(201, {
+    "Id": "596069db4bf5"
+  });
+});
+
+app.post('/build', function (req, res, next) {
+  console.log('YOLO');
+  res.send('built');
+});
+
 app.all('*', function (req, res, next) {
   console.log('Docker request:', req.method, req.url);
   next();
 });
 
-app.listen(4243);
+app.listen(4245);
 
 module.exports.pruneCount = function () {
   return pruneCount;

@@ -3,8 +3,11 @@ var configs = require('../lib/configs');
 var redis = require('redis');
 var request = require('request');
 var client = redis.createClient(configs.redisPort, configs.redisHost);
+var fstream = require('fstream');
+var tar = require('tar');
 
 var docker = require('./fixtures/docker');
+var bouncer = require('../lib/bouncer');
 
 global.test = true;
 
@@ -70,11 +73,64 @@ describe('harbourmaster interface', function () {
       }
     });
   });
-  it('should repond to a /containers on bouncer', function (done) {
+  it('should repond to a /containers/create', function (done) {
     request.post({
-      url: 'http://localhost:4243/containers'
+      url: 'http://localhost:4243/containers/create',
+      json: {
+        json: true
+      }
     }, function (err, res, body) {
-      done(err);
+      if (err) {
+        done(err);
+      } else if (res.statusCode !== 201) {
+        done(new Error('bad status'));
+      } else {
+        done();
+      }
     });
   });
+  it('should repond to a /containers/:id/stop', function (done) {
+    request.post({
+      url: 'http://localhost:4243/containers/e90e34656806/stop',
+      json: {
+        json: true
+      }
+    }, function (err, res, body) {
+      if (err) {
+        done(err);
+      } else if (res.statusCode !== 200) {
+        done(new Error('bad status'));
+      } else {
+        done();
+      }
+    });
+  });
+  it('should repond to a /commit', function (done) {
+    request.post({
+      url: 'http://localhost:4243/commit?container=e90e34656806&m=message&repo=myrepo',
+      json: true
+    }, function (err, res, body) {
+      if (err) {
+        done(err);
+      } else if (res.statusCode !== 201) {
+        done(new Error('bad status'));
+      } else {
+        done();
+      }
+    });
+  });
+  // it('should build', function (done) {
+  //   this.timeout(0);
+  //   var f = fstream.Reader(__dirname + '/fixtures/myproject');
+  //   var t = tar.Pack({
+  //     fromBase: true
+  //   });
+  //   var r = request.post({
+  //     url: 'http://localhost:4243/build?t=myrepo'
+  //   });
+  //   f.pipe(t);
+  //   t.pipe(process.stdout);
+  //   t.pipe(r);
+  //   console.log(__dirname + '/fixtures/myproject');
+  // });
 });
