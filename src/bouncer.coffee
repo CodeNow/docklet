@@ -2,13 +2,18 @@ configs = require './configs'
 bouncy = require 'bouncy'
 net = require 'net'
 http = require 'http'
+httpProxy = require 'http-proxy'
 socket = typeof configs.socket == 'string' && configs.socket || undefined
 port = typeof configs.socket == 'number' && configs.socket || undefined
 hostname =  typeof configs.socket == 'number' && 'localhost' || undefined
 
+proxy = httpProxy.createServer
+  target: typeof configs.socket == 'string' && configs.socket || 'http://localhost:' + configs.socket
+
 startProxy = ->
-  server = bouncy socket && socketBounce || portBounce
-  server.listen 4243
+  # server = bouncy socket && socketBounce || portBounce
+  # server.listen 4243
+  proxy.listen 4243
 
 req = http.request 
   socketPath: socket

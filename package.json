@@ -34,7 +34,8 @@
     "shoe": "0.0.15",
     "express": "~3.4.0",
     "flattenDockerImages": "git://github.com/Runnable/flattenDockerImages.git",
-    "vitalsigns": "~0.2.2"
+    "vitalsigns": "~0.2.2",
+    "http-proxy": "~1.0.2"
   },
   "devDependencies": {
     "express": "~3.4.0",
