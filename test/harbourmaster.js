@@ -35,19 +35,6 @@ describe('harbourmaster interface', function () {
       }
     });
   });
-  // it('should respond to a kue request to create a container', function (done) {
-  //   var servicesToken = 'services-' + uuid();
-  //   var repo = 'base';
-  //   var kue = require('kue');
-  //   var jobs = kue.createQueue();
-  //   var job = jobs.create('dockletRequest', {
-  //     title: servicesToken,
-  //     repo: repo,
-  //     servicesToken: servicesToken
-  //   }).save();
-
-  //   job.on('complete', done);
-  // });
   it('should respond to a request to prune unused containers', function (done) {
     var containerIds = [
       '0',
@@ -81,6 +68,13 @@ describe('harbourmaster interface', function () {
       } else {
         done();
       }
+    });
+  });
+  it('should repond to a /containers on bouncer', function (done) {
+    request.post({
+      url: 'http://localhost:4243/containers'
+    }, function (err, res, body) {
+      done(err);
     });
   });
 });
