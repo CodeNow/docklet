@@ -148,8 +148,26 @@ app.post('/commit', function (req, res, next) {
 });
 
 app.post('/build', function (req, res, next) {
-  console.log('YOLO');
-  res.send('built');
+  var tar = require('tar');
+  var concat = require('concat-stream');
+  var dockfile = false;
+  req.pipe(tar.Parse())
+    .on('entry', function (entry) {
+      if (entry.props.path === 'Dockerfile') {
+        entry.pipe(concat(function (file) {
+          if (/FROM/.test(file) && /WORKDIR/.test(file) && /CMD/.test(file)) {
+            dockfile = true;
+          }
+        }));
+      }
+    })
+    .on('end', function () {
+      if (dockfile) {
+        res.send('Successfully built');
+      } else {
+        res.send('error');
+      }
+    });
 });
 
 app.all('*', function (req, res, next) {

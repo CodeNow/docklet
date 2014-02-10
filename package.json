@@ -39,6 +39,7 @@
   "devDependencies": {
     "express": "~3.4.0",
     "fstream": "~0.1.25",
-    "tar": "gyllstromk/node-tar"
+    "tar": "gyllstromk/node-tar",
+    "concat-stream": "~1.4.1"
   }
 }

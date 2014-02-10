@@ -3,8 +3,6 @@ var configs = require('../lib/configs');
 var redis = require('redis');
 var request = require('request');
 var client = redis.createClient(configs.redisPort, configs.redisHost);
-var fstream = require('fstream');
-var tar = require('tar');
 
 var docker = require('./fixtures/docker');
 var bouncer = require('../lib/bouncer');
@@ -119,18 +117,33 @@ describe('harbourmaster interface', function () {
       }
     });
   });
-  // it('should build', function (done) {
-  //   this.timeout(0);
-  //   var f = fstream.Reader(__dirname + '/fixtures/myproject');
-  //   var t = tar.Pack({
-  //     fromBase: true
-  //   });
-  //   var r = request.post({
-  //     url: 'http://localhost:4243/build?t=myrepo'
-  //   });
-  //   f.pipe(t);
-  //   t.pipe(process.stdout);
-  //   t.pipe(r);
-  //   console.log(__dirname + '/fixtures/myproject');
-  // });
+  it('should build', function (done) {
+    this.timeout(0);
+    var success = false;
+    var fstream = require('fstream');
+    var tar = require('tar');
+    fstream.Reader({
+      path: __dirname + '/fixtures/myproject',
+      type: "Directory"
+    })
+      .pipe(tar.Pack({
+        fromBase: true
+      }))
+      .pipe(request.post({
+        url: 'http://localhost:4243/build?t=myrepo'
+      }))
+      .on('data', function (data) {
+        if (/Successfully built/.test(data)) {
+          success = true;
+        }
+      })
+      .on('error', done)
+      .on('end', function () {
+        if (success) {
+          done();
+        } else {
+          done(new Error('failed to build'));
+        }
+      });
+  });
 });
