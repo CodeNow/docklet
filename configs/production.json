@@ -12,7 +12,7 @@
   "networkInterface": "eth0",
   "domain": "runnable.com",
   "authToken": "8EM1dX06788BnRzZ9eaqrCLLmzokmgNe",
-  "doomTime": 21600000,
   "domain": "runnable.com",
-  "socket": "/var/run/docker.sock"
+  "socket": "/var/run/docker.sock",
+  "bounceWorkerLifeSpan": 18000000
 }
