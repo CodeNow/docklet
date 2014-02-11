@@ -8,6 +8,12 @@ socket = configs.socket
 startProxy = ->
   server = bouncy socketBounce
   server.listen 4243
+  setTimeout ->
+    server.close()
+    setTimeout ->
+      process.exit()
+    , 1000 * 60
+  , configs.bounceWorkerLifeSpan + configs.bounceWorkerLifeSpan * Math.random()
 
 req = http.request 
   socketPath: socket

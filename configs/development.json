@@ -7,5 +7,6 @@
   "networkInterface": "lo0",
   "authToken": "Hirqez43tqslj9vOu2X8a8r6An498VFS",
   "domain": "runnable2.net",
-  "socket": "/var/run/docker.sock"
+  "socket": "/var/run/docker.sock",
+  "bounceWorkerLifeSpan": 60000
 }
