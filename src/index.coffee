@@ -17,12 +17,3 @@ docker.cacheImages (err) ->
     require './pubsub'
     require './register'
     app.listen 4244
-
-if !env('development')
-  setTimeout ->
-    app.server.close ->
-      setTimeout ->
-        require('child_process').exec 'reboot'
-      , configs.doomTime / 10
-    , configs.doomTime / 10
-  , configs.doomTime + (Math.random() * configs.doomTime / 2)
