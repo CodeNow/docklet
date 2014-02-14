@@ -75,6 +75,7 @@ app.del '/containers/:container', (req, res, next) ->
      res.send 204
 
 app.post '/containers/create', express.json(), (req, res, next) ->
+  console.log body: req.body, query: req.query
   docker.createContainer req.body, (err, container) ->
     if err
       next err
