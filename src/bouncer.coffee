@@ -5,7 +5,7 @@ express = require 'express'
 Docker = require 'dockerode'
 app = express()
 
-app.configure'integration', ->
+app.configure 'integration', ->
   app.use express.logger()
 
 socket = configs.socket
