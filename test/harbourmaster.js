@@ -91,6 +91,14 @@ describe('harbourmaster interface', function () {
       m: 'message'
     }, done);
   });
+  it('should repond to a /images/:repo?/:user?/:name/json', function (done) {
+    var image = harbourmaster.getImage('base');
+    image.inspect(done);
+  });
+  it('should repond to a /images/:repo?/:user?/:name/history', function (done) {
+    var image = harbourmaster.getImage('registry.runnable.com/runnable/myrepo');
+    image.history(done);
+  });
   it('should repond to a /images/:repo?/:user?/:name/push', function (done) {
     var image = harbourmaster.getImage('registry.runnable.com/runnable/myrepo');
     image.push({}, function (err, stream) {
