@@ -118,7 +118,6 @@ describe('harbourmaster interface', function () {
         pack.finalize();
       });
     function packEntry (entry) {
-      // console.log('entry', entry.props);
       var props = entry.props
       if (props.type === 'File') {
         entry.pipe(concat(function (contents) {

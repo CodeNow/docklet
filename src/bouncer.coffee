@@ -82,6 +82,7 @@ app.post '/containers/create', express.json(), (req, res, next) ->
     if err
       next err
     else
+      console.log container, Id: container.id
       res.json 201, Id: container.id
 
 app.post '/containers/:container/start', express.json(), (req, res, next) ->
