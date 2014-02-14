@@ -40,8 +40,9 @@ app.get '/containers/json', (req, res, next) ->
     else
       res.json containers
 
-app.get '/images/:image/json', (req, res, next) ->
-  image = docker.getImage req.params.image
+app.get '/images/:repo?/:user?/:name/json', (req, res, next) ->
+  name = req.url.replace(/^\/images\//, '').replace(/\/json$/, '')
+  image = docker.getImage name
   image.inspect (err, image) ->
     if err
       next err
