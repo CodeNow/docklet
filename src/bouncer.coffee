@@ -120,3 +120,7 @@ app.post '/build', (req, res, next) ->
 
 app.use (err, req, res, next) ->
   res.send err.statusCode || 500, err.reason || err.message
+
+app.all '*', (req, res) ->
+  console.error 'missing', req.method, req.url
+  req.send 500, 'not supported'
