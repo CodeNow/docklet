@@ -1,5 +1,4 @@
 configs = require './configs'
-bouncy = require 'bouncy'
 net = require 'net'
 http = require 'http'
 express = require 'express'
@@ -13,14 +12,7 @@ else
   new Docker host: 'http://localhost', port: socket
 
 startProxy = ->
-  server = bouncy socketBounce
-  server.listen 4243
-  setTimeout ->
-    server.close()
-    setTimeout ->
-      process.exit()
-    , 1000 * 60
-  , configs.bounceWorkerLifeSpan + configs.bounceWorkerLifeSpan * Math.random()
+  app.listen 4243
 
 req = http.request 
   socketPath: socket
@@ -33,10 +25,6 @@ req.on 'error',  (err) ->
   setTimeout process.exit, 5 * 1000, 1
 
 req.end()
-
-socketBounce = (req, res, bounce) ->
-  res.bounce = bounce
-  app req, res
 
 app.get '/images/json', (req, res, next) ->
   docker.listImages req.query, (err, images) ->
@@ -132,11 +120,3 @@ app.post '/build', (req, res, next) ->
 
 app.use (err, req, res, next) ->
   res.send err.statusCode || 500, err.reason || err.message
-  
-app.all '*', (req, res) ->
-  console.log 'MISSING', req.method, req.url
-  res.bounce net.connect socket
-
-
-
-

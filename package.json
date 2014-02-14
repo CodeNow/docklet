@@ -27,7 +27,6 @@
     "mocha": "~1.10.0",
     "superagent": "~0.14.7",
     "redis": "~0.8.4",
-    "bouncy": "~3.2.1",
     "emit-stream": "~0.1.2",
     "JSONStream": "~0.7.1",
     "shoe": "0.0.15",

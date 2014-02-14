@@ -13,6 +13,5 @@
   "domain": "runnable.com",
   "authToken": "8EM1dX06788BnRzZ9eaqrCLLmzokmgNe",
   "domain": "runnable.com",
-  "socket": "/var/run/docker.sock",
-  "bounceWorkerLifeSpan": 18000000
+  "socket": "/var/run/docker.sock"
 }
