@@ -5,7 +5,8 @@ express = require 'express'
 Docker = require 'dockerode'
 app = express()
 
-app.use express.logger()
+app.configure'integration', ->
+  app.use express.logger()
 
 socket = configs.socket
 docker = if typeof socket == 'string' 
@@ -79,7 +80,6 @@ app.post '/containers/create', express.json(), (req, res, next) ->
     if err
       next err
     else
-      console.dir container
       res.json 201, container
 
 app.post '/containers/:container/start', express.json(), (req, res, next) ->
