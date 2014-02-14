@@ -5,6 +5,8 @@ express = require 'express'
 Docker = require 'dockerode'
 app = express()
 
+app.use express.logger()
+
 socket = configs.socket
 docker = if typeof socket == 'string' 
   new Docker socketPath: socket
