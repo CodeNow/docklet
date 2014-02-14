@@ -2,6 +2,11 @@ var uuid = require('node-uuid');
 var configs = require('../lib/configs');
 var redis = require('redis');
 var request = require('request');
+var Docker = require('dockerode');
+var harbourmaster = new Docker({
+  host: 'http://localhost',
+  port: 4243
+});
 var client = redis.createClient(configs.redisPort, configs.redisHost);
 
 var docker = require('./fixtures/docker');
@@ -72,108 +77,83 @@ describe('harbourmaster interface', function () {
     });
   });
   it('should repond to a /containers/create', function (done) {
-    request.post({
-      url: 'http://localhost:4243/containers/create',
-      json: {
-        json: true
-      }
-    }, function (err, res, body) {
-      if (err) {
-        done(err);
-      } else if (res.statusCode !== 201) {
-        done(new Error('bad status'));
-      } else {
-        done();
-      }
-    });
+    harbourmaster.createContainer({}, done);
   });
   it('should repond to a /containers/:id/start', function (done) {
-    request.post({
-      url: 'http://localhost:4243/containers/e90e34656806/start',
-      json: {
-        json: true
-      }
-    }, function (err, res, body) {
-      if (err) {
-        done(err);
-      } else if (res.statusCode !== 200) {
-        done(new Error('bad status'));
-      } else {
-        done();
-      }
-    });
+    harbourmaster.getContainer('e90e34656806').start(done);
   });
   it('should repond to a /containers/:id/stop', function (done) {
-    request.post({
-      url: 'http://localhost:4243/containers/e90e34656806/stop',
-      json: {
-        json: true
-      }
-    }, function (err, res, body) {
-      if (err) {
-        done(err);
-      } else if (res.statusCode !== 200) {
-        done(new Error('bad status'));
-      } else {
-        done();
-      }
-    });
+    harbourmaster.getContainer('e90e34656806').stop(done);
   });
   it('should repond to a /commit', function (done) {
-    request.post({
-      url: 'http://localhost:4243/commit?container=e90e34656806&m=message&repo=myrepo',
-      json: true
-    }, function (err, res, body) {
-      if (err) {
-        done(err);
-      } else if (res.statusCode !== 201) {
-        done(new Error('bad status'));
-      } else {
-        done();
-      }
-    });
+    harbourmaster.getContainer('e90e34656806').commit({
+      repo: 'myrepo',
+      m: 'message'
+    }, done);
   });
   it('should repond to a /images/:repo?/:user?/:name/push', function (done) {
-    request.post({
-      url: 'http://localhost:4243/images/registry.runnable.com/runnable/myrepo/push',
-      json: true
-    }, function (err, res, body) {
+    var image = harbourmaster.getImage('registry.runnable.com/runnable/myrepo');
+    image.push({}, function (err, stream) {
       if (err) {
         done(err);
-      } else if (res.statusCode !== 200) {
-        done(new Error('bad status'));
       } else {
-        done();
+        stream.on('error', done);
+        stream.on('end', done);
+        stream.resume();
       }
     });
   });
   it('should build', function (done) {
-    this.timeout(0);
     var success = false;
     var fstream = require('fstream');
-    var tar = require('tar');
+    var pack = require('tar-stream').pack();
+    var concat = require('concat-stream');
+    var path = __dirname + '/fixtures/myproject/';
     fstream.Reader({
-      path: __dirname + '/fixtures/myproject',
+      path: path,
       type: "Directory"
     })
-      .pipe(tar.Pack({
-        fromBase: true
-      }))
-      .pipe(request.post({
-        url: 'http://localhost:4243/build?t=myrepo'
-      }))
-      .on('data', function (data) {
-        if (/Successfully built/.test(data)) {
-          success = true;
-        }
-      })
-      .on('error', done)
+      .on('entry', packEntry)
       .on('end', function () {
-        if (success) {
-          done();
-        } else {
-          done(new Error('failed to build'));
-        }
+        pack.finalize();
       });
+    function packEntry (entry) {
+      // console.log('entry', entry.props);
+      var props = entry.props
+      if (props.type === 'File') {
+        entry.pipe(concat(function (contents) {
+          pack.entry({
+            name: props.path.replace(path, ''),
+            type: props.type
+          }, contents);
+        }));
+      } else if (props.type === 'Directory') {
+        entry.on('entry', packEntry);
+      }
+    }
+
+    harbourmaster.buildImage(pack, {
+      t: 'my repo' 
+    }, function (err, stream) {
+      if (err) {
+        done(err);
+      } else {
+        stream
+          .on('data', function (data) {
+            if (/Successfully built/.test(data)) {
+              success = true;
+            }
+          })
+          .on('error', done)
+          .on('end', function () {
+            if (success) {
+              done();
+            } else {
+              done(new Error('failed to build'));
+            }
+          });
+      }
+    });
+      
   });
 });

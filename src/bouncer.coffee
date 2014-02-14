@@ -44,7 +44,9 @@ app.get '/containers/json', (req, res, next) ->
       res.json containers
 
 app.get '/images/:repo?/:user?/:name/json', (req, res, next) ->
-  name = req.url.replace(/^\/images\//, '').replace(/\/json$/, '')
+  name = req.params.name
+  if req.params.user then name = req.params.user + '/' + name
+  if req.params.repo then name = req.params.repo + '/' + name
   image = docker.getImage name
   image.inspect (err, image) ->
     if err
@@ -80,23 +82,23 @@ app.post '/containers/create', express.json(), (req, res, next) ->
     if err
       next err
     else
-      res.json 201, container
+      res.json 201, Id: container.id
 
 app.post '/containers/:container/start', express.json(), (req, res, next) ->
   container = docker.getContainer req.params.container
-  container.start req.body, (err, container) ->
+  container.start req.body, (err) ->
     if err
       next err
     else
-      res.json container
+      res.send 204
 
 app.post '/containers/:container/stop', express.json(), (req, res, next) ->
   container = docker.getContainer req.params.container
-  container.stop req.body, (err, container) ->
+  container.stop req.body, (err) ->
     if err
       next err
     else
-      res.json container
+      res.send 204
 
 app.post '/commit', (req, res, next) ->
   container = docker.getContainer req.query.container
@@ -107,7 +109,9 @@ app.post '/commit', (req, res, next) ->
       res.json 201, container
 
 app.post '/images/:repo?/:user?/:name/push', express.json(), (req, res, next) ->
-  name = req.url.replace(/^\/images\//, '').replace(/\/push$/, '')
+  name = req.params.name
+  if req.params.user then name = req.params.user + '/' + name
+  if req.params.repo then name = req.params.repo + '/' + name
   image = docker.getImage name
   image.push req.body, (err, stream) ->
     if err

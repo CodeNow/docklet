@@ -138,11 +138,11 @@ app.post('/containers/create', express.bodyParser(), function (req, res, next) {
 });
 
 app.post('/containers/:id/start', function (req, res, next) {
-  res.send('started');
+  res.send(204);
 });
 
 app.post('/containers/:id/stop', function (req, res, next) {
-  res.send('stopped');
+  res.send(204);
 });
 
 app.post('/commit', function (req, res, next) {
