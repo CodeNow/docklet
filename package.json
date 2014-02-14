@@ -34,10 +34,10 @@
     "express": "~3.4.0",
     "flattenDockerImages": "git://github.com/Runnable/flattenDockerImages.git",
     "vitalsigns": "~0.2.2",
-    "request": "~2.33.0"
+    "request": "~2.33.0",
+    "dockerode": "~1.2.7"
   },
   "devDependencies": {
-    "express": "~3.4.0",
     "fstream": "~0.1.25",
     "tar": "gyllstromk/node-tar",
     "concat-stream": "~1.4.1"

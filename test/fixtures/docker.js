@@ -49,7 +49,7 @@ app.post('/images/create', function (req, res, next) {
   images.push({
     Repository: req.query.fromImage
   });
-  res.json({});
+  res.json({"status":"Pulling", "progress":"1 B/ 100 B", "progressDetail":{"current":1, "total":100}});
 });
 
 app.get('/events', function (req, res, next) {
@@ -135,6 +135,10 @@ app.post('/containers/create', express.bodyParser(), function (req, res, next) {
     "Id": "e90e34656806",
     "Warnings": []
   });
+});
+
+app.post('/containers/:id/start', function (req, res, next) {
+  res.send('started');
 });
 
 app.post('/containers/:id/stop', function (req, res, next) {

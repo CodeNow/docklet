@@ -87,6 +87,22 @@ describe('harbourmaster interface', function () {
       }
     });
   });
+  it('should repond to a /containers/:id/start', function (done) {
+    request.post({
+      url: 'http://localhost:4243/containers/e90e34656806/start',
+      json: {
+        json: true
+      }
+    }, function (err, res, body) {
+      if (err) {
+        done(err);
+      } else if (res.statusCode !== 200) {
+        done(new Error('bad status'));
+      } else {
+        done();
+      }
+    });
+  });
   it('should repond to a /containers/:id/stop', function (done) {
     request.post({
       url: 'http://localhost:4243/containers/e90e34656806/stop',
@@ -111,6 +127,20 @@ describe('harbourmaster interface', function () {
       if (err) {
         done(err);
       } else if (res.statusCode !== 201) {
+        done(new Error('bad status'));
+      } else {
+        done();
+      }
+    });
+  });
+  it('should repond to a /images/:repo?/:user?/:name/push', function (done) {
+    request.post({
+      url: 'http://localhost:4243/images/registry.runnable.com/runnable/myrepo/push',
+      json: true
+    }, function (err, res, body) {
+      if (err) {
+        done(err);
+      } else if (res.statusCode !== 200) {
         done(new Error('bad status'));
       } else {
         done();
