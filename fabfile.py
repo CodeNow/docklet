@@ -193,7 +193,7 @@ def save_startup():
   """
   startup on machine boot
   """
-  sudo('env PATH=$PATH:/usr/local/bin pm2 startup')
+  sudo('env PATH=$PATH:/usr/local/bin pm2 startup ubuntu')
 
 @parallel
 def boot():
