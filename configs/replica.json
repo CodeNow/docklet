@@ -1,0 +1,18 @@
+{
+  "checkImageInterval": "30 seconds",
+  "redisPort": "6379",
+  "redisHost": "10.0.1.125",
+  "docker_host": "127.0.0.1",
+  "docker_port": 4243,
+  "auth": {
+        "user": "runnableProduction",
+        "password": "insertWittyPasswordHere"
+  },
+  "rollbar": "34dfc593cf14456985c66ffc12c6acc4",
+  "networkInterface": "eth0",
+  "domain": "runnable.pw",
+  "authToken": "8EM1dX06788BnRzZ9eaqrCLLmzokmgNe",
+  "doomTime": 21600000,
+  "domain": "runnable.pw"
+}
+
