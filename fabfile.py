@@ -58,6 +58,16 @@ def integration():
     # 'docker6-int'
   ]
 
+def staging():
+  """
+  Work on staging environment
+  """
+  env.settings = 'integration'
+  env.registry = '54.193.83.5'
+  env.hosts = [
+    'docker-rep_int'
+  ]
+
 """
 Branches
 """
@@ -87,7 +97,7 @@ def setup():
   """
   Install and start the server.
   """
-  require('settings', provided_by=[production, integration])
+  require('settings', provided_by=[production, integration, staging])
   require('branch', provided_by=[stable, master, branch])
 
   install_github()
@@ -161,7 +171,7 @@ def setup_registry():
   """
   Fix registry dns entry.
   """
-  require('settings', provided_by=[production, integration])
+  require('settings', provided_by=[production, integration, staging])
   sudo('echo "%(registry)s registry.runnable.com" >> /etc/hosts' % env)
   sudo('/etc/init.d/dns-clean start')
 
@@ -170,11 +180,11 @@ def clone_repo():
   Do initial clone of the git repository.
   """
   if run('[ -d docklet ] && echo true || echo false') == 'false':
-    run('git clone git@github.com:CodeNow/docklet.git')
+    run('git clone https://github.com/CodeNow/docklet.git')
 
   with cd('docklet'):
-    run('git fetch')
     run('git reset --hard')
+    run('git fetch')
     run('git checkout %(branch)s;' % env)
     run('git pull origin %(branch)s' % env)
 
@@ -228,7 +238,7 @@ def deploy():
   """
   update the server.
   """
-  require('settings', provided_by=[production, integration])
+  require('settings', provided_by=[production, integration, staging])
   require('branch', provided_by=[stable, master, branch])
   clone_repo()
   install_requirements()
@@ -243,7 +253,7 @@ def delta_deploy():
   """
   increment the server.
   """
-  require('settings', provided_by=[production, integration])
+  require('settings', provided_by=[production, integration, staging])
   require('branch', provided_by=[stable, master, branch])
   clone_repo()
   reboot()
@@ -256,7 +266,7 @@ def delta_deploy_no_make():
   """
   increment the server.
   """
-  require('settings', provided_by=[production, integration])
+  require('settings', provided_by=[production, integration, staging])
   require('branch', provided_by=[stable, master, branch])
   clone_repo()
   pm2_restartAll()
@@ -265,36 +275,36 @@ def delta_deploy_no_make():
 Commands - docker stuff
 """
 def stopAll():
-  require('settings', provided_by=[production, integration])
+  require('settings', provided_by=[production, integration, staging])
   sudo('docker stop `docker ps -q | xargs echo`')
 
 def killAll():
-  require('settings', provided_by=[production, integration])
+  require('settings', provided_by=[production, integration, staging])
   sudo('docker kill `docker ps -q | xargs echo`')
 
 def ps():
-  require('settings', provided_by=[production, integration])
+  require('settings', provided_by=[production, integration, staging])
   sudo('docker ps')
 
 def psa():
-  require('settings', provided_by=[production, integration])
+  require('settings', provided_by=[production, integration, staging])
   sudo('docker ps -a')
 
 def max_fds():
-  require('settings', provided_by=[production, integration])
+  require('settings', provided_by=[production, integration, staging])
   sudo('ulimit -n')
 
 def curr_fds():
-  require('settings', provided_by=[production, integration])
+  require('settings', provided_by=[production, integration, staging])
   sudo('lsof | wc -l')
 
 @parallel
 def version():
-  require('settings', provided_by=[production, integration])
+  require('settings', provided_by=[production, integration, staging])
   sudo('docker version')
 
 def images():
-  require('settings', provided_by=[production, integration])
+  require('settings', provided_by=[production, integration, staging])
   sudo('docker images')
 ######################### BASE IMAGE ENDS HERE ##############################
 
