@@ -28,6 +28,10 @@ def production():
     'docker-2-87', # new
     'docker-2-203', # newer
     'docker-2-152', # newer
+    'docker-2-31',  # newest
+    'docker-2-210', # newest
+    'docker-2-215', # newest
+    'docker-2-78'   # newest
     # 'docker-5-66', # temp
     # 'docker-5-72', # temp
     # 'docker-5-73', # temp
@@ -100,8 +104,8 @@ def setup():
   require('settings', provided_by=[production, integration, staging])
   require('branch', provided_by=[stable, master, branch])
 
-  install_github()
-  install_docker()
+  # install_github()
+  # install_docker()
   install_node()
   remove_nginx()
   setup_registry()
@@ -125,8 +129,12 @@ def install_github():
   sudo('apt-get install -y git')
   put('~/.runnable/github_deploy', '~/.ssh/id_rsa')
   put('~/.runnable/ssh_config', '~/.ssh/config')
+  setup_github_ssh_key()
+
+def setup_github_ssh_key():
   run('chmod 700 ~/.ssh/id_rsa')
   run('chmod 700 ~/.ssh/config')
+  run('killall ssh-agent')
   with prefix('eval `ssh-agent -s`'):
     run('ssh-add')
 
@@ -180,7 +188,7 @@ def clone_repo():
   Do initial clone of the git repository.
   """
   if run('[ -d docklet ] && echo true || echo false') == 'false':
-    run('git clone https://github.com/CodeNow/docklet.git')
+    run('git clone git@github.com:CodeNow/docklet.git')
 
   with cd('docklet'):
     run('git reset --hard')
@@ -193,8 +201,8 @@ def install_requirements():
   Install the required packages using npm.
   """
   sudo('npm install n -g')
-  sudo('n 0.8.26')
-  sudo('npm install pm2@0.5.6 -g')
+  sudo('n 0.10.22')
+  sudo('npm install pm2@0.7.7 -g')
   sudo('rm -rf /home/ubuntu/tmp')
   with cd('docklet'):
     sudo('rm -rf node_modules')
