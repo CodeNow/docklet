@@ -138,7 +138,7 @@ app.post '/build', (req, res, next) ->
       stream.pipe res
 
 app.use (err, req, res, next) ->
-  res.send err.statusCode || 500, err.reason || err.message
+  res.send err.statusCode || 500, err.json || err.reason || err.message
 
 app.all '*', (req, res) ->
   console.error 'missing', req.method, req.url
