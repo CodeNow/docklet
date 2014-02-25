@@ -34,10 +34,6 @@ function editRepositories (cb) {
     })
     .forEach(function (key) {
       delete reg[key];
-      //var split = key.split('/');
-      //var id = split.pop();
-      //split.push(decode(id));
-      //reg[split.join('/')] = reg[key];
     });
   fs.writeFile('/var/lib/docker/repositories', JSON.stringify(reg), cb);
 }
