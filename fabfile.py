@@ -201,9 +201,7 @@ def install_requirements():
   """
   Install the required packages using npm.
   """
-  sudo('npm install n -g')
-  sudo('n 0.10.22')
-  sudo('npm install pm2@0.7.7 -g')
+  # sudo('npm install pm2 -g')
   sudo('rm -rf /home/ubuntu/tmp')
   with cd('docklet'):
     sudo('rm -rf node_modules')

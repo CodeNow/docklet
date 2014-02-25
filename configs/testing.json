@@ -7,6 +7,5 @@
   "networkInterface": "lo0",
   "authToken": "lPNpt8ig5b3C6FqIt6el8cmY6w57413A",
   "domain": "runnableapp.dev",
-  "socket": 4245,
-  "bounceWorkerLifeSpan": 60000
+  "socket": 4245
 }

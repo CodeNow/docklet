@@ -27,19 +27,18 @@
     "mocha": "~1.10.0",
     "superagent": "~0.14.7",
     "redis": "~0.8.4",
-    "bouncy": "~3.2.1",
     "emit-stream": "~0.1.2",
     "JSONStream": "~0.7.1",
     "shoe": "0.0.15",
     "express": "~3.4.0",
     "flattenDockerImages": "git://github.com/Runnable/flattenDockerImages.git",
     "vitalsigns": "~0.2.2",
-    "request": "~2.33.0"
+    "request": "~2.33.0",
+    "dockerode": "~1.2.7"
   },
   "devDependencies": {
-    "express": "~3.4.0",
     "fstream": "~0.1.25",
-    "tar": "gyllstromk/node-tar",
-    "concat-stream": "~1.4.1"
+    "concat-stream": "~1.4.1",
+    "tar-stream": "~0.2.5"
   }
 }

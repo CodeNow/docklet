@@ -49,7 +49,7 @@ app.post('/images/create', function (req, res, next) {
   images.push({
     Repository: req.query.fromImage
   });
-  res.json({});
+  res.json({"status":"Pulling", "progress":"1 B/ 100 B", "progressDetail":{"current":1, "total":100}});
 });
 
 app.get('/events', function (req, res, next) {
@@ -65,10 +65,17 @@ app.get('/events', function (req, res, next) {
   }, 100);
 });
 
-app.get('/images/:image/json', function (req, res, next) {
+app.get('/images/:registry?/:owner?/:name/json', function (req, res, next) {
+  var name = req.params.name;
+  if (req.params.user) {
+    name = req.params.user + '/' + name;
+  }
+  if (req.params.repo) {
+    name = req.params.repo + '/' + name;
+  }
   var responded = false;
   images.forEach(function (image) {
-    if (image.Repository = req.params.image) {
+    if (image.Repository === name) {
       res.json({
            "id":"b750fe79269d2ec9a3c593ef05b4332b1d1a02a62b4accb2c21d589ff2f5f2dc",
            "parent":"27cf784147099545",
@@ -137,8 +144,12 @@ app.post('/containers/create', express.bodyParser(), function (req, res, next) {
   });
 });
 
+app.post('/containers/:id/start', function (req, res, next) {
+  res.send(204);
+});
+
 app.post('/containers/:id/stop', function (req, res, next) {
-  res.send('stopped');
+  res.send(204);
 });
 
 app.post('/commit', function (req, res, next) {
