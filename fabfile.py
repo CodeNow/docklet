@@ -24,10 +24,10 @@ def production():
   env.settings = 'production'
   env.registry = '54.241.154.140'
   env.hosts = [
-    'docker-2-86', # new
-    'docker-2-87', # new
-    'docker-2-203', # newer
-    'docker-2-152', # newer
+    # 'docker-2-86', # new
+    # 'docker-2-87', # new
+    # 'docker-2-203', # newer
+    # 'docker-2-152', # newer
     'docker-2-31',  # newest
     'docker-2-210', # newest
     'docker-2-215', # newest
@@ -69,7 +69,8 @@ def staging():
   env.settings = 'integration'
   env.registry = '54.193.83.5'
   env.hosts = [
-    'docker-rep_int'
+    'docker-rep_int',
+    'docker-rep_int2'
   ]
 
 """
@@ -213,7 +214,7 @@ def save_startup():
   """
   startup on machine boot
   """
-  sudo('env PATH=$PATH:/usr/local/bin pm2 startup')
+  sudo('env PATH=$PATH:/usr/local/bin pm2 startup ubuntu')
 
 @parallel
 def boot():
