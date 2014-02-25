@@ -1,11 +1,11 @@
 var redis = require('redis');
 var fs = require('fs');
 var decode = require('hex64').decode;
-var config = require('.config');
-var ip = require('./lib/ip');
+var configs = require('../../lib/configs');
+var ip = require('../../lib/ip');
 var exec = require('child_process').exec;
 var async = require('async');
-var client = redis.createClient();
+var client = redis.createClient(configs.redisPort, configs.redisHost);
 
 async.series([
   removeEntry,
