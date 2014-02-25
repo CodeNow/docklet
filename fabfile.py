@@ -66,8 +66,8 @@ def staging():
   """
   Work on staging environment
   """
-  env.settings = 'integration'
-  env.registry = '54.193.83.5'
+  env.settings = 'staging'
+  env.registry = '54.241.167.140'
   env.hosts = [
     'docker-rep_int',
     'docker-rep_int2'
@@ -106,7 +106,7 @@ def setup():
   require('branch', provided_by=[stable, master, branch])
 
   # install_github()
-  # install_docker()
+  install_docker()
   install_node()
   remove_nginx()
   setup_registry()
