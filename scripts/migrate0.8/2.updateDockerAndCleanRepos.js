@@ -27,13 +27,14 @@ function stopDocker (cb) {
 function editRepositories (cb) {
   var reg = JSON.parse(fs.readFileSync('/var/lib/docker/repositories'));
   fs.writeFile('/var/lib/docker/repositories.bak', JSON.stringify(reg), cb);
+  var repos = reg.Repositories;
   Object
-    .keys(reg)
+    .keys(repos)
     .filter(function (key) {
       return key.length === 47;
     })
     .forEach(function (key) {
-      delete reg[key];
+      delete repos[key];
     });
   fs.writeFile('/var/lib/docker/repositories', JSON.stringify(reg), cb);
 }

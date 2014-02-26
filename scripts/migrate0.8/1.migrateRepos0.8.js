@@ -25,8 +25,9 @@ function stopDocker (cb) {
 
 function editRepositories (cb) {
   var reg = JSON.parse(fs.readFileSync('/var/lib/docker/repositories'));
+  var repos = reg.Repositories;
   Object
-    .keys(reg)
+    .keys(repos)
     .filter(function (key) {
       return key.length === 47;
     })
@@ -34,7 +35,7 @@ function editRepositories (cb) {
       var split = key.split('/');
       var id = split.pop();
       split.push(decode(id));
-      reg[split.join('/')] = reg[key];
+      repos[split.join('/')] = repos[key];
     });
   fs.writeFile('/var/lib/docker/repositories', JSON.stringify(reg), cb);
 }
