@@ -2,10 +2,10 @@
   "name": "docklet",
   "version": "0.1.0",
   "description": "Listens for tasks and runs them as docker containers",
-  "main": "/lib/index.js",
+  "main": "/lib/app/index.js",
   "scripts": {
-    "start": "npm run build && node lib/index.js",
-    "test": "npm run build && NODE_ENV=testing DOCKLET_INDEX=0 mocha -R spec",
+    "start": "node lib/app/index.js",
+    "test": "NODE_ENV=testing DOCKLET_INDEX=0 mocha -R spec",
     "build": "coffee -m -o lib src"
   },
   "repository": {
