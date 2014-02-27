@@ -13,5 +13,6 @@
   "domain": "runnable.com",
   "authToken": "8EM1dX06788BnRzZ9eaqrCLLmzokmgNe",
   "domain": "runnable.com",
-  "socket": "/var/run/docker.sock"
+  "socket": "/var/run/docker.sock",
+  "healthCheckInterval": 6000
 }
