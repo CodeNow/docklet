@@ -34,7 +34,8 @@
     "flattenDockerImages": "git://github.com/Runnable/flattenDockerImages.git",
     "vitalsigns": "~0.2.2",
     "request": "~2.33.0",
-    "dockerode": "~1.2.7"
+    "dockerode": "~1.2.7",
+    "hex64": "~0.4.0"
   },
   "devDependencies": {
     "fstream": "~0.1.25",
