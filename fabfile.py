@@ -69,8 +69,9 @@ def staging():
   env.settings = 'staging'
   env.registry = '54.241.167.140'
   env.hosts = [
-    'docker-rep_int',
-    'docker-rep_int2'
+    # 'docker-rep_int',
+    # 'docker-rep_int2',
+    'docker-rep_int3'
   ]
 
 """
