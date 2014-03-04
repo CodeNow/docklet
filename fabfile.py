@@ -69,8 +69,9 @@ def staging():
   env.settings = 'staging'
   env.registry = '54.241.167.140'
   env.hosts = [
-    'docker-rep_int',
-    'docker-rep_int2'
+    # 'docker-rep_int',
+    # 'docker-rep_int2'
+    'docker-rep_int3'
   ]
 
 """
@@ -139,17 +140,27 @@ def setup_github_ssh_key():
   with prefix('eval `ssh-agent -s`'):
     run('ssh-add')
 
+def install_backported_kernal():
+  """
+  Install ubuntu backported kernal for docker
+  """
+  # install the backported kernel
+  sudo("apt-get update")
+  sudo("apt-get install linux-image-generic-lts-raring linux-headers-generic-lts-raring")
+  # reboot
+  sudo("reboot")
+
 def install_docker():
   """
   Install docker.io stable
   """
-  sudo('apt-get install -y linux-image-extra-`uname -r` curl')
-  sudo('curl https://get.docker.io/ubuntu/info | sh -x')
-  sudo('echo "*                soft    nofile          10000" >> /etc/security/limits.conf')
-  sudo('echo "*                hard    nofile          10000" >> /etc/security/limits.conf')
-  run('wget --output-document=docker https://get.docker.io/builds/Linux/x86_64/docker-0.6.1')
-  run('chmod +x docker')
-  sudo('mv ./docker /usr/bin/docker')
+  # first add the Docker repository key to your local keychain.
+  sudo('apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9')
+  sudo('sh -c "echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list"')
+  sudo('apt-get update')
+  sudo('apt-get install lxc-docker-0.8.1')
+  sudo('echo "*                soft    nofile          65536" >> /etc/security/limits.conf')
+  sudo('echo "*                hard    nofile          65536" >> /etc/security/limits.conf')
 
 def install_node():
   """
@@ -161,13 +172,6 @@ def install_node():
   sudo('apt-get update')
   sudo('apt-get install -y nodejs')
 
-# def install_nginx():
-#   """
-#   Install and configure nginx
-#   """
-#   sudo('apt-get install -y nginx')
-#   sudo('killall nginx || echo no nginx')
-#   sudo('nginx -c /home/ubuntu/docklet/nginx.conf')
 
 def remove_nginx():
   """
@@ -203,7 +207,7 @@ def install_requirements():
   """
   sudo('npm install n -g')
   sudo('n 0.10.22')
-  sudo('npm install pm2@0.7.7 -g')
+  sudo('npm install pm2@0.7.8 -g')
   sudo('rm -rf /home/ubuntu/tmp')
   with cd('docklet'):
     sudo('rm -rf node_modules')
