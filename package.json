@@ -16,7 +16,7 @@
   "license": "BSD",
   "dependencies": {
     "docker.js": "git://github.com/CodeNow/docker.js.git",
-    "rollbar": "~0.2.8",
+    "rollbar": "~0.2.10",
     "async": "~0.2.9",
     "source-map-support": "~0.2.3",
     "eson": "~0.4.1",

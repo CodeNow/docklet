@@ -1,8 +1,11 @@
+path = require 'path'
 env = require './env'
 configs = require './configs'
 rollbar = require 'rollbar'
-if configs.rollbar
-  rollbar.init configs.rollbar
+rollbar.init configs.rollbar,
+  environment: process.env.NODE_ENV || "development"
+  branch: "master"
+  root: path.resolve __dirname, '..'
 if configs.nodetime
   nodetime = require 'nodetime'
   nodetime.profile configs.nodetime
