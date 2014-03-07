@@ -13,8 +13,8 @@ docker = require './docker'
 app = require './app'
 docker.cacheImages (err) ->
   if err
-  	console.error 'failed to cache', err
-  	process.exit 1
+    console.error 'failed to cache', err
+    process.exit 1
   else
     console.log 'cached'
     require './pubsub'
