@@ -4,7 +4,7 @@ from fabric.api import *
 
 env.user = "ubuntu"
 env.use_ssh_config = True
-
+env.note = ""
 
 """
 
@@ -21,6 +21,7 @@ def production():
   """
   Work on production environment
   """
+  env.requireNote = True;
   env.settings = 'production'
   env.registry = '54.241.154.140'
   env.hosts = [
@@ -52,6 +53,7 @@ def integration():
   """
   Work on staging environment
   """
+  env.requireNote = False;
   env.settings = 'integration'
   env.registry = '54.215.162.19'
   env.hosts = [
@@ -67,12 +69,24 @@ def staging():
   """
   Work on staging environment
   """
+  env.requireNote = False;
   env.settings = 'staging'
   env.registry = '54.241.167.140'
   env.hosts = [
     # 'docker-rep_int',
     # 'docker-rep_int2',
     'docker-rep_int3'
+  ]
+
+def runnable3():
+  """
+  Work on staging environment
+  """
+  env.requireNote = True;
+  env.settings = 'runnable3'
+  env.registry = 'runnable3.net'
+  env.hosts = [
+    'runnable3.net'
   ]
 
 """
@@ -241,17 +255,64 @@ def pm2_restartAll():
   """
   sudo('pm2 restartAll')
 
+def validateNote(input):
+  """
+  ensures note is not empty
+  """
+  if(bool(not input or input.isspace())):
+    raise Exception('release note is REQUIRED. just jot down what is in this release alright')
+  if ";" in input:
+    raise Exception('can not use ; in note')
+  return input
+
+def addNote():
+  """
+  add note to deployment
+  """
+  if(env.requireNote):
+    prompt("add release note: ", "note", validate=validateNote)
+
+def track_deployment():
+  """
+  Update deployments for tracking
+  """
+  run('echo Track Deployment:')
+  if run('[ -d deployments ] && echo True || echo False') == 'False':
+    run('git clone https://github.com/Runnable/deployments.git')
+  with cd('deployments'):
+    run('git fetch --all')
+    run('git reset --hard origin/master')
+  with cd('runnable-web'):
+    run(
+      'echo { branch: `git rev-parse --abbrev-ref HEAD`, ' \
+      'commit: `git log origin/master | head -1 | awk \'{print $2}\'`, ' \
+      'push_date: `date +%d-%m-%Y`, ' \
+      'push_time: `date +%H:%M:%S`, ' \
+      'project: Docklet, ' \
+      'author: `cat ~/.name`, '\
+      'note: '+env.note+' } ' \
+      '> ~/.notetmp')
+    run('cat ~/.notetmp | sed \'s_, _\", \"_g\' | sed \'s_: _\": \"_g\' | sed \'s_{ _{ \"_g\' | sed \'s_ }_\" }_g\' >> ~/deployments/'+env.settings)
+  with cd('deployments'):
+    run('git add '+env.settings)
+    run('git commit -m "update file"')
+    run('git push origin master')
+
 """
 Commands - deploy
 """
-@parallel
 def deploy():
   """
   update the server.
   """
   require('settings', provided_by=[production, integration, staging])
   require('branch', provided_by=[stable, master, branch])
+  
   clone_repo()
+  if (env.host == env.hosts[0]):
+    addNote()
+    track_deployment()
+
   install_requirements()
   boot()
   save_startup()
