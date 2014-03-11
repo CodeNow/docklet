@@ -282,7 +282,7 @@ def track_deployment():
   with cd('deployments'):
     run('git fetch --all')
     run('git reset --hard origin/master')
-  with cd('runnable-web'):
+  with cd('docklet'):
     run(
       'echo { branch: `git rev-parse --abbrev-ref HEAD`, ' \
       'commit: `git log origin/master | head -1 | awk \'{print $2}\'`, ' \
