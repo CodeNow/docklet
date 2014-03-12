@@ -11,10 +11,6 @@ var uuid = require('uuid');
 var ShoeClient = require('./libs/ShoeClient');
 var MuxDemux = require('mux-demux');
 
-var ip = require("os").networkInterfaces().eth0.filter(function(iface) {
-  return iface.family === "IPv4";
-})[0].address;
-
 var container;
 function toEnv (obj) {
   return Object.keys(obj).reduce(function (env, key) {
@@ -28,8 +24,8 @@ describe('docklet', function () {
   this.timeout(0);
   before(function () {
     this.repo = process.env.docker8 ?
-      'registry.runnable.com/runnable/53114add52f4df0039412fbb':
-      'registry.runnable.com/runnable/UXgzNO_v2oZyAADG';
+      'registry.runnable.com/runnable/65f84dd5-3382-4e46-bcc5-5fdddd61a915':
+      'registry.runnable.com/runnable/Ux-z4huQ95wmgCrv';
   });
 
   it('should find a container', function (done) {
@@ -38,7 +34,7 @@ describe('docklet', function () {
       .expect(200)
       .end(function (err, res) {
         if (err) return done(err);
-        res.body.should.equal(ip);
+        res.body.should.equal("localhost");
         done();
       });
   });
@@ -131,7 +127,7 @@ describe('docklet', function () {
         console.log(dockworkerUrl);
         doit();
         function doit () {
-          var dockworkerGetToken = dockworker.get('/api/servicesToken')
+          var dockworkerGetToken = dockworker.get('/api/servicesToken');
           dockworkerGetToken.expect(200)
             .end(function (err, res) {
               if (err) {
@@ -140,7 +136,7 @@ describe('docklet', function () {
                 }
                 return done(err);
               }
-              res.text.should.equal(serviceToken)
+              res.text.should.equal(serviceToken);
               done();
             });
         }
@@ -158,11 +154,14 @@ describe('docklet', function () {
         function onTerminal(stream) {
           var count = 0;
           stream.on('data', function (data) {
-            if (/npm start\r\n/.test(data)) {
+            console.log("data: "+data);
+            var output = data.split("\r\n")[1];
+            if ("TEST" === output) {
+              console.log("DONE");
               done();
             }
           });
-          stream.write('echo $RUNNABLE_START_CMD\n');
+          stream.write('echo TEST\n');
         }
       });
     });

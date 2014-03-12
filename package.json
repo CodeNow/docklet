@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run build && node lib/index.js",
     "test": "npm run build && NODE_ENV=testing DOCKLET_INDEX=0 mocha -R spec",
-    "testInt": "npm run build && NODE_ENV=testing mocha testInt",
+    "testInt": "mocha --ui bdd --bail --reporter spec --require should testInt",
     "build": "coffee -m -o lib src"
   },
   "repository": {
