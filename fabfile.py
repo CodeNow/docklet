@@ -82,7 +82,7 @@ def runnable3():
   """
   Work on staging environment
   """
-  env.requireNote = True;
+  env.requireNote = False;
   env.settings = 'runnable3'
   env.registry = 'runnable3.net'
   env.hosts = [
@@ -298,6 +298,10 @@ def track_deployment():
     run('git commit -m "update file"')
     run('git push origin master')
 
+def test_deployment():
+  with cd('docklet'):
+    run("npm run testInt")
+
 """
 Commands - deploy
 """
@@ -316,6 +320,7 @@ def deploy():
   install_requirements()
   boot()
   save_startup()
+  test_deployment()
 
 """
 Commands - delta_deploy

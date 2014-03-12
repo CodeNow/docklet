@@ -123,25 +123,37 @@ describe('docklet', function () {
     // dockworker
     describe('dockworker', function () {
       it('should get the containers service token', function (done) {
+        setTimeout(function() {
+          done(new Error("timeout"));
+        }, 6000);
         var self = this;
         console.log(dockworkerUrl);
+        var retryCnt = 0;
         doit();
         function doit () {
+          retryCnt++;
           var dockworkerGetToken = dockworker.get('/api/servicesToken');
           dockworkerGetToken.expect(200)
             .end(function (err, res) {
               if (err) {
-                if (err.message.indexOf('ECONNRESET')) {
-                  return doit(); // try again
+                if (err.message.indexOf('ECONNRESET') && (retryCnt < 10)) {
+                  setTimeout(function () {
+                    doit();
+                  }, 500);
+                } else {
+                  done(err);
                 }
-                return done(err);
+              } else {
+                res.text.should.equal(serviceToken);
+                done();
               }
-              res.text.should.equal(serviceToken);
-              done();
             });
         }
       });
       it('should run echo', function (done) {
+        setTimeout(function() {
+          done(new Error("timeout"));
+        }, 6000);
         var socket = 'ws://'+dockworkerUrl.split('//')[1];
         var stream = new ShoeClient(socket+'/streams/terminal');
         var muxDemux = new MuxDemux(onStream);
@@ -154,10 +166,8 @@ describe('docklet', function () {
         function onTerminal(stream) {
           var count = 0;
           stream.on('data', function (data) {
-            console.log("data: "+data);
             var output = data.split("\r\n")[1];
             if ("TEST" === output) {
-              console.log("DONE");
               done();
             }
           });
