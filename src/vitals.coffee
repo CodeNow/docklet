@@ -17,4 +17,4 @@ vitals
 
 setInterval ->
   console.log 'vitals', vitals.getReport()
-, 6000
+, 1000 * 60 * 5

@@ -20,6 +20,7 @@ module.exports.register = ->
         if err then throw err
 
 module.exports.deregister = ->
+  console.error 'DEGREGISTERING'
   client.lrem frontend, 0, url, (err) ->
     if err
       rollbar.reportMessage "Failed to deregister. message: #{err.message}" +
