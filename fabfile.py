@@ -32,7 +32,7 @@ def production():
     'docker-2-210', # newest
     'docker-2-215', # newest
     'docker-2-78'   # newest
-    # 'docker-5-66', # temp
+    'docker-2-234', # temp
     # 'docker-5-72', # temp
     # 'docker-5-73', # temp
     # 'docker-5-74', # temp
