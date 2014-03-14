@@ -23,7 +23,7 @@ req = http.request
 
 req.on 'error',  (err) ->
   console.error 'failed to connect', err
-  setTimeout process.exit, 5 * 1000, 1
+  (require './register').deregister()
 
 req.end()
 

@@ -18,5 +18,6 @@ docker.cacheImages (err) ->
   else
     console.log 'cached'
     require './pubsub'
-    require './register'
+    (require './register').register()
     app.listen 4244
+    setInterval docker.checkUp, 1000 * 60

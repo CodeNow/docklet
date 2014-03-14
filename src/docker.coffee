@@ -70,11 +70,23 @@ findImage = (data, cb) ->
       else
         cb null, ip
 
+checkUp = ->
+  request 
+    method: 'GET'
+    url: "http://#{configs.docker_host}:#{configs.docker_port}/version"
+    json: true
+    headers:
+      token: configs.authToken
+  , (err) ->
+    if err
+      (require './register').deregister()
+      
 module.exports = {
   checkCache
   findImage
   cacheImages
   pullImage
+  checkUp
 }
 
 
