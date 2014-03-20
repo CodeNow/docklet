@@ -3,7 +3,7 @@ request = require 'request'
 queue = require './queue'
 redis = require './client'
 ip = require './ip'
-images = {}
+images = require './imageCache'
 
 cacheImages = (cb) ->
   request
@@ -65,14 +65,14 @@ findImage = (data, cb) ->
             err.code = 404
             cb err
           , 1000 * 5
-        else 
+        else
           pullImage data.repo, cb
       else
         cb null, ip
 
 checkUp = ->
   up = false
-  request 
+  request
     method: 'GET'
     url: "http://#{configs.docker_host}:#{configs.docker_port}/version"
     json: true
@@ -81,7 +81,7 @@ checkUp = ->
   , (err, res) ->
     if err or res.statusCode isnt 200
       (require './register').deregister()
-    else 
+    else
       up = true
   setTimeout ->
     if not up
