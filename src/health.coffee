@@ -1,13 +1,15 @@
 async = require 'async'
 cls = require('continuation-local-storage')
-createNamespace = cls.createNamespace
-getNamespace    = cls.getNamespace
+uuid = require('uuid')
+createNamespace  = cls.createNamespace
+getNamespace     = cls.getNamespace
+destroyNamespace = cls.destroyNamespace
 request = require 'request'
 docker = require('./dockerProxy')()
 ShoeClient = require './ShoeClient'
 MuxDemux = require 'mux-demux'
 # imageCache = require './imageCache'
-# cbTimeout = require 'callback-timeout'
+cbTimeout = require 'callback-timeout'
 
 localhost = 'http://localhost'
 
@@ -25,9 +27,25 @@ toHttpClient = (host, port) ->
       console.log(url)
       return fn(url, opts, cb)
   client = makeAcceptPath(request)
+  client.host = host
   ['get', 'post', 'patch', 'put', 'del'].forEach (method)->
     client[method]   = makeAcceptPath(request[method].bind(request))
   return client
+
+timeIt = (fn, timeout) ->
+  session = getNamespace('health')
+  return () ->
+    start = Date.now();
+    args = Array.prototype.slice.call(arguments)
+    cb = args.pop()
+    newCb = () ->
+      timings = session.get('timings')
+      timings = timings || {}
+      timings[fn._name || fn.name || uuid()] = Date.now() - start
+      session.set('timings', timings)
+      cb.apply(null, arguments)
+    args.push newCb
+    fn.apply(null, args)
 
 # [code ,] step, messageOrErr
 stepError = (code, messageOrErr, step) ->
@@ -37,17 +55,19 @@ stepError = (code, messageOrErr, step) ->
     code = null
   if (typeof messageOrErr is 'string')
     err = new Error(messageOrErr) #messageOrErr is message
-    step = message
+    step = messageOrErr
   else
     err = messageOrErr #messageOrErr is error
     code = 500
   err.step = step
   err.code = code
+  return err
 
-dockerCheckUp = (cb) ->
+dockerVersion = (cb) ->
   docker.version (err, versionInfo) ->
     if (err) then err = stepError(err, 'Checking docker version')
     cb(err)
+dockerVersion._name = 'dockerVersion'
 
 getReliableRepo = () ->
   return 'registry.runnable.com/runnable/53114add52f4df0039412fbb'
@@ -55,13 +75,14 @@ getReliableRepo = () ->
 createContainer = (cb) ->
   session = getNamespace('health')
   self = this
+  servicesToken = 'services-'+uuid.v4()
   body =
     Image: getReliableRepo(),
     Volumes: { '/dockworker': {} },
     PortSpecs: [ '80', '15000' ],
     Cmd: [ '/dockworker/bin/node', '/dockworker' ],
     Env: toEnv({
-      SERVICES_TOKEN: serviceToken,
+      SERVICES_TOKEN: servicesToken,
       RUNNABLE_START_CMD: 'npm start'
     })
   docker.createContainer body, (err, container) ->
@@ -70,7 +91,9 @@ createContainer = (cb) ->
       cb(err)
     else
       session.set('container', container)
+      session.set('servicesToken', servicesToken)
       cb()
+createContainer._name = 'createContainer'
 
 startContainer = (cb) ->
   session = getNamespace('health')
@@ -84,6 +107,7 @@ startContainer = (cb) ->
   }, (err) ->
     if err then err = stepError(err, 'Starting container')
     cb(err)
+startContainer._name = 'startContainer' # ...coffeescript is stupid
 
 getDockworker = (cb) ->
   session = getNamespace('health')
@@ -91,75 +115,101 @@ getDockworker = (cb) ->
   container.inspect (err, data) ->
     if err
       cb stepError(err, 'Inspecting container')
-    else
-      if (!data or
+    else if (!data or
           !data.NetworkSettings or
-          !data.NetworkSettings.PortMapping or
-          !data.NetworkSettings.PortMapping.Tcp or
-          !data.NetworkSettings.PortMapping.Tcp[15000])
-        cb stepError('Inspecting container (missing ports)')
-      else
-        port = data.NetworkSettings.PortMapping.Tcp[15000]
-        dockworker = toHttpClient(localhost, port)
-        dockworker.url = (localhost +':'+ port)
-        session.set 'dockworker', dockworker
-        cb null, dockworker
+          !data.NetworkSettings.Ports or
+          !data.NetworkSettings.Ports['15000/tcp'] or
+          !data.NetworkSettings.Ports['15000/tcp'][0] or
+          !data.NetworkSettings.Ports['15000/tcp'][0].HostPort)
+      cb stepError('Inspecting container (missing ports)')
+    else
+      port = data.NetworkSettings.Ports['15000/tcp'][0].HostPort
+      dockworker = toHttpClient(localhost, port)
+      session.set('dockworker', dockworker)
+      cb()
+getDockworker._name = 'inspectContainer' # ...coffeescript is stupid
 
 dockworkerGetServiceToken = (cb) ->
   session = getNamespace('health')
   dockworker = session.get('dockworker')
   servicesToken = session.get('servicesToken')
-  dockworker.get '/api/serviceToken', (err, res, body) ->
+  dockworker.get '/api/servicesToken', (err, res, body) ->
     if err
-      cb stepError('Getting dockworker servicesToken', err)
+      if ~err.message.indexOf('ECONNRESET') or ~err.message.indexOf('hang up') # then try again
+        setTimeout () ->
+          dockworkerGetServiceToken(cb)
+        , 200
+        return
+      cb stepError(err, 'Getting dockworker servicesToken')
     else if res.statusCode != 200
       cb stepError(400, 'Failed to get dockworker servicesToken (statusCode:'+res.statusCode+')')
-    else if body !== servicesToken
+    else if body != servicesToken
       cb stepError(400, 'Dockworker servicesToken mismatch')
     else
-      cb(null, body)
+      cb()
+dockworkerGetServiceToken._name = 'dockworkerGetServiceToken' # ...coffeescript is stupid
 
 dockworkerTestTerminal = (cb) ->
   session = getNamespace('health')
-  dockworkerUrl = session.get('dockworker').url
+  dockworkerHost = session.get('dockworker').host
   onStream = (stream) ->
     if stream.meta is "terminal" then onTerminal stream
   onTerminal = (stream) ->
     count = 0
+    unique = uuid();
+    re = new RegExp(unique+'\r\n');
     stream.on "data", (data) ->
-      if /hello\r\n/.test(data) then cb()
-    stream.write "echo hello\n"
-  socket = "ws://" + dockworkerUrl.split("//")[1]
+      if re.test(data)
+        cb()
+        cb = () -> # prevent multicallbacks
+    stream.write "echo "+unique+"\n"
+  socket = "ws://" + dockworkerHost.split("//")[1]
   stream = new ShoeClient(socket + "/streams/terminal")
   muxDemux = new MuxDemux(onStream)
   stream.pipe(muxDemux).pipe stream
+dockworkerTestTerminal._name = 'dockworkerTestTerminal' # ...coffeescript is stupid
 
 testDockworker = (cb) ->
-  async.parallel [
-    dockworkerGetServiceToken,
-    dockworkerTestTerminal
+  async.series [
+    timeIt(dockworkerGetServiceToken),
+    timeIt(dockworkerTestTerminal)
   ], cb
+testDockworker._name = 'testDockworker' # ...coffeescript is stupid
+
+stopContainer = (cb) ->
+  session = getNamespace('health')
+  container = session.get('container')
+  container.stop (err) ->
+    if err
+      cb stepError(err, 'Stopping container')
+    else
+      cb()
+stopContainer._name = 'stopContainer' # ...coffeescript is stupid
 
 module.exports = (req, res, next) ->
-  createNamespace('health')
-  async.series [
-    dockerCheckUp,
-    createContainer,
-    startContainer,
-    getDockworker,
-    testDockworker
-  ], (err) ->
-    if err
-      res.json err.code || 500, {
-        message: err.message,
-        step: err.step
-      }
-    else
-      res.send(200, 'healthy')
-
-req = {
-  send: console.log.bind(console, 'SEND')
-}
-res = {}
-next = console.log.bind(console, 'NEXT')
-module.exports(req ,res, next)
+  health = createNamespace('health')
+  health.run () ->
+    async.series [
+      timeIt(dockerVersion),
+      timeIt(createContainer),
+      timeIt(startContainer),
+      timeIt(getDockworker),
+      timeIt(testDockworker),
+      timeIt(stopContainer)
+    ], (err) ->
+      timings = health.get('timings')
+      if err
+        res.json err.code || 500, {
+          message: err.message
+          step: err.step
+          timings: timings
+          stack: err.stack
+        }
+      else
+        # console.log((new Error('stack')).stack);
+        res.json(200, {
+          status: 'healthy'
+          timings: timings
+        })
+      try # cls throws errors occasionally
+        destroyNamespace('health')
