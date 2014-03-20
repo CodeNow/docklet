@@ -1,8 +1,12 @@
+async = require 'async'
+cls = require('continuation-local-storage')
+createNamespace = cls.createNamespace
+getNamespace    = cls.getNamespace
 request = require 'request'
 docker = require('./dockerProxy')()
-# imageCache = require './imageCache'
-ShoeClient = require './lib/ShoeClient'
+ShoeClient = require './ShoeClient'
 MuxDemux = require 'mux-demux'
+# imageCache = require './imageCache'
 # cbTimeout = require 'callback-timeout'
 
 localhost = 'http://localhost'
@@ -25,15 +29,31 @@ toHttpClient = (host, port) ->
     client[method]   = makeAcceptPath(request[method].bind(request))
   return client
 
+# [code ,] step, messageOrErr
+stepError = (code, messageOrErr, step) ->
+  if (typeof code isnt 'number')
+    step = messageOrErr
+    messageOrErr = code
+    code = null
+  if (typeof messageOrErr is 'string')
+    err = new Error(messageOrErr) #messageOrErr is message
+    step = message
+  else
+    err = messageOrErr #messageOrErr is error
+    code = 500
+  err.step = step
+  err.code = code
+
 dockerCheckUp = (cb) ->
   docker.version (err, versionInfo) ->
-    if (err) then err.stage = 'dockerCheckUp'
+    if (err) then err = stepError(err, 'Checking docker version')
     cb(err)
 
 getReliableRepo = () ->
   return 'registry.runnable.com/runnable/53114add52f4df0039412fbb'
 
 createContainer = (cb) ->
+  session = getNamespace('health')
   self = this
   body =
     Image: getReliableRepo(),
@@ -44,9 +64,17 @@ createContainer = (cb) ->
       SERVICES_TOKEN: serviceToken,
       RUNNABLE_START_CMD: 'npm start'
     })
-  docker.createContainer body, cb
+  docker.createContainer body, (err, container) ->
+    if (err)
+      err.step = 'createContainer'
+      cb(err)
+    else
+      session.set('container', container)
+      cb()
 
-startContainer = (container, cb) ->
+startContainer = (cb) ->
+  session = getNamespace('health')
+  container = session.get('container')
   container.start {
     Binds: ["/home/ubuntu/dockworker:/dockworker:ro"],
     PortBindings: {
@@ -54,24 +82,46 @@ startContainer = (container, cb) ->
       "15000/tcp": [{}]
     }
   }, (err) ->
-    if err then cb err else
-      cb null, container
+    if err then err = stepError(err, 'Starting container')
+    cb(err)
 
-getDockworker = (container, cb) ->
+getDockworker = (cb) ->
+  session = getNamespace('health')
+  container = session.get('container')
   container.inspect (err, data) ->
-    if err then cb err else
-      port = data.NetworkSettings.PortMapping.Tcp[15000]
-      dockworker = toHttpClient(localhost, port)
-      cb null, dockworker
+    if err
+      cb stepError(err, 'Inspecting container')
+    else
+      if (!data or
+          !data.NetworkSettings or
+          !data.NetworkSettings.PortMapping or
+          !data.NetworkSettings.PortMapping.Tcp or
+          !data.NetworkSettings.PortMapping.Tcp[15000])
+        cb stepError('Inspecting container (missing ports)')
+      else
+        port = data.NetworkSettings.PortMapping.Tcp[15000]
+        dockworker = toHttpClient(localhost, port)
+        dockworker.url = (localhost +':'+ port)
+        session.set 'dockworker', dockworker
+        cb null, dockworker
 
 dockworkerGetServiceToken = (cb) ->
+  session = getNamespace('health')
+  dockworker = session.get('dockworker')
+  servicesToken = session.get('servicesToken')
   dockworker.get '/api/serviceToken', (err, res, body) ->
-    if err then cb err else
-      statusErrMsg = 'failed to get dockworker serviceToken'
-      if res.statusCode != 200 then cb(new Error(statusErrMsg)) else
-        cb(null, body)
+    if err
+      cb stepError('Getting dockworker servicesToken', err)
+    else if res.statusCode != 200
+      cb stepError(400, 'Failed to get dockworker servicesToken (statusCode:'+res.statusCode+')')
+    else if body !== servicesToken
+      cb stepError(400, 'Dockworker servicesToken mismatch')
+    else
+      cb(null, body)
 
 dockworkerTestTerminal = (cb) ->
+  session = getNamespace('health')
+  dockworkerUrl = session.get('dockworker').url
   onStream = (stream) ->
     if stream.meta is "terminal" then onTerminal stream
   onTerminal = (stream) ->
@@ -79,25 +129,37 @@ dockworkerTestTerminal = (cb) ->
     stream.on "data", (data) ->
       if /hello\r\n/.test(data) then cb()
     stream.write "echo hello\n"
-
   socket = "ws://" + dockworkerUrl.split("//")[1]
   stream = new ShoeClient(socket + "/streams/terminal")
   muxDemux = new MuxDemux(onStream)
   stream.pipe(muxDemux).pipe stream
 
-testDockworker = (dockworker, cb) ->
+testDockworker = (cb) ->
   async.parallel [
     dockworkerGetServiceToken,
     dockworkerTestTerminal
   ], cb
 
 module.exports = (req, res, next) ->
-  async.waterfall [
+  createNamespace('health')
+  async.series [
     dockerCheckUp,
     createContainer,
     startContainer,
     getDockworker,
     testDockworker
   ], (err) ->
-    if err then next err else
+    if err
+      res.json err.code || 500, {
+        message: err.message,
+        step: err.step
+      }
+    else
       res.send(200, 'healthy')
+
+req = {
+  send: console.log.bind(console, 'SEND')
+}
+res = {}
+next = console.log.bind(console, 'NEXT')
+module.exports(req ,res, next)
