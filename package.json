@@ -49,8 +49,6 @@
     "fstream": "~0.1.25",
     "tar": "gyllstromk/node-tar",
     "supertest": "~0.9.0",
-    "ws": "~0.4.31",
-    "mux-demux": "~3.7.8",
     "concat-stream": "~1.4.1"
   }
 }
