@@ -48,7 +48,6 @@
     "express": "~3.4.0",
     "fstream": "~0.1.25",
     "tar": "gyllstromk/node-tar",
-    "dockerode": "~1.2.8",
     "supertest": "~0.9.0",
     "ws": "~0.4.31",
     "mux-demux": "~3.7.8",
