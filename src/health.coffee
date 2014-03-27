@@ -77,6 +77,7 @@ createContainer = (cb) ->
   servicesToken = 'services-'+uuid.v4()
   body =
     Image: getReliableRepo(),
+    Tty: true,
     Volumes: { '/dockworker': {} },
     PortSpecs: [ '80', '15000' ],
     Cmd: [ '/dockworker/bin/node', '/dockworker' ],
@@ -163,7 +164,7 @@ dockworkerTestTerminal = (cb) ->
 
   async.parallel [
     (cb) -> dockworker.get '/api/checkTermUp', noErrExpectSuccess(cb)
-    (cb) -> dockworker.get '/api/checkWebUp', noErrExpectSuccess(cb)
+    (cb) -> dockworker.get '/api/checkLogUp', noErrExpectSuccess(cb)
   ], cb
 dockworkerTestTerminal._name = 'dockworkerTestTerminal' # ...coffeescript is stupid
 
