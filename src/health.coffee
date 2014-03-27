@@ -1,5 +1,4 @@
 async = require 'async'
-cls = require('continuation-local-storage')
 uuid = require('uuid')
 createNamespace  = cls.createNamespace
 getNamespace     = cls.getNamespace
@@ -31,17 +30,16 @@ toHttpClient = (host, port) ->
   return client
 
 timeIt = (fn, timeout) ->
-  session = getNamespace('health')
   return () ->
     start = Date.now()
     args = Array.prototype.slice.call(arguments)
     cb = args.pop()
     newCb = () ->
-      timings = session.get('timings')
+      timings = session.timings;
       timings = timings || {}
       timings[fn._name || fn.name || uuid()] = Date.now() - start
       console.log(fn._name || fn.name || uuid(), timings[fn._name || fn.name || uuid()])
-      session.set('timings', timings)
+      session.timings = timings;
       cb.apply(null, arguments)
     args.push newCb
     fn.apply(null, args)
@@ -71,8 +69,7 @@ dockerVersion._name = 'dockerVersion'
 getReliableRepo = () ->
   return 'registry.runnable.com/runnable/53114add52f4df0039412fbb'
 
-createContainer = (cb) ->
-  session = getNamespace('health')
+createContainer = (session, cb) ->
   self = this
   servicesToken = 'services-'+uuid.v4()
   body =
@@ -90,14 +87,13 @@ createContainer = (cb) ->
       err.step = 'createContainer'
       cb(err)
     else
-      session.set('container', container)
-      session.set('servicesToken', servicesToken)
+      session.container = container;
+      session.servicesToken = servicesToken;
       cb()
 createContainer._name = 'createContainer'
 
-startContainer = (cb) ->
-  session = getNamespace('health')
-  container = session.get('container')
+startContainer = (session, cb) ->
+  container = session.container;
   container.start {
     Binds: ["/home/ubuntu/dockworker:/dockworker:ro"],
     PortBindings: {
@@ -109,9 +105,8 @@ startContainer = (cb) ->
     cb(err)
 startContainer._name = 'startContainer' # ...coffeescript is stupid
 
-getDockworker = (cb) ->
-  session = getNamespace('health')
-  container = session.get('container')
+getDockworker = (session, cb) ->
+  container = session.container;
   container.inspect (err, data) ->
     if err
       cb stepError(err, 'Inspecting container')
@@ -125,14 +120,13 @@ getDockworker = (cb) ->
     else
       port = data.NetworkSettings.Ports['15000/tcp'][0].HostPort
       dockworker = toHttpClient(localhost, port)
-      session.set('dockworker', dockworker)
+      session.dockworker = dockworker;
       cb()
 getDockworker._name = 'inspectContainer' # ...coffeescript is stupid
 
-dockworkerGetServiceToken = (cb) ->
-  session = getNamespace('health')
-  dockworker = session.get('dockworker')
-  servicesToken = session.get('servicesToken')
+dockworkerGetServiceToken = (session, cb) ->
+  dockworker = session.dockworker;
+  servicesToken = session.servicesToken;
   dockworker.get '/api/servicesToken', (err, res, body) ->
     if err
       if ~err.message.indexOf('ECONNRESET') or ~err.message.indexOf('hang up') # then try again
@@ -149,9 +143,8 @@ dockworkerGetServiceToken = (cb) ->
       cb()
 dockworkerGetServiceToken._name = 'dockworkerGetServiceToken' # ...coffeescript is stupid
 
-dockworkerTestTerminal = (cb) ->
-  session = getNamespace('health')
-  dockworker = session.get('dockworker')
+dockworkerTestTerminal = (session, cb) ->
+  dockworker = session.dockworker;
   noErrExpectSuccess = (cb) ->
     return (err, res, body) ->
       if err then cb err else
@@ -168,16 +161,15 @@ dockworkerTestTerminal = (cb) ->
   ], cb
 dockworkerTestTerminal._name = 'dockworkerTestTerminal' # ...coffeescript is stupid
 
-testDockworker = (cb) ->
+testDockworker = (session, cb) ->
   async.series [
-    timeIt(dockworkerGetServiceToken),
-    timeIt(dockworkerTestTerminal)
+    timeIt(dockworkerGetServiceToken.bind(null, session)),
+    timeIt(dockworkerTestTerminal.bind(null, session))
   ], cb
 testDockworker._name = 'testDockworker' # ...coffeescript is stupid
 
-stopContainer = (cb) ->
-  session = getNamespace('health')
-  container = session.get('container')
+stopContainer = (session, cb) ->
+  container = session.container;
   container.stop (err) ->
     if err
       cb stepError(err, 'Stopping container')
@@ -186,29 +178,26 @@ stopContainer = (cb) ->
 stopContainer._name = 'stopContainer' # ...coffeescript is stupid
 
 module.exports = (req, res, next) ->
-  health = createNamespace('health')
-  health.run () ->
-    async.series [
-      timeIt(dockerVersion),
-      timeIt(createContainer),
-      timeIt(startContainer),
-      timeIt(getDockworker),
-      timeIt(testDockworker),
-      timeIt(stopContainer)
-    ], (err) ->
-      timings = health.get('timings')
-      if err
-        res.json err.code || 500, {
-          message: err.message
-          step: err.step
-          timings: timings
-          stack: err.stack
-        }
-      else
-        # console.log((new Error('stack')).stack);
-        res.json(200, {
-          status: 'healthy'
-          timings: timings
-        })
-      try # cls throws errors occasionally
-        destroyNamespace('health')
+  session = {};
+  async.series [
+    timeIt(dockerVersion),
+    timeIt(createContainer.bind(null, session)),
+    timeIt(startContainer.bind(null, session)),
+    timeIt(getDockworker.bind(null, session)),
+    timeIt(testDockworker.bind(null, session)),
+    timeIt(stopContainer.bind(null, session))
+  ], (err) ->
+    timings = health.get('timings')
+    if err
+      res.json err.code || 500, {
+        message: err.message
+        step: err.step
+        timings: timings
+        stack: err.stack
+      }
+    else
+      # console.log((new Error('stack')).stack);
+      res.json(200, {
+        status: 'healthy'
+        timings: timings
+      })
