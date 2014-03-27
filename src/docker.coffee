@@ -17,7 +17,8 @@ cacheImages = (cb) ->
       if res.statusCode isnt 200 then cb new Error "docker error #{res.body}" else
         images = {}
         res.body.forEach (image) ->
-          images[image.RepoTags][0].replace(':latest', '') = true
+          tag = image.RepoTags[0].replace(':latest', '')
+          images[tag] = true
         cb()
 
 pullImage = (repo, cb) ->
