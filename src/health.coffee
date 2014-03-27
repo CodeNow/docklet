@@ -35,7 +35,7 @@ toHttpClient = (host, port) ->
 timeIt = (fn, timeout) ->
   session = getNamespace('health')
   return () ->
-    start = Date.now();
+    start = Date.now()
     args = Array.prototype.slice.call(arguments)
     cb = args.pop()
     newCb = () ->
@@ -47,7 +47,7 @@ timeIt = (fn, timeout) ->
     args.push newCb
     fn.apply(null, args)
 
-# [code ,] step, messageOrErr
+# [code ,] messageOrErr, step
 stepError = (code, messageOrErr, step) ->
   if (typeof code isnt 'number')
     step = messageOrErr
