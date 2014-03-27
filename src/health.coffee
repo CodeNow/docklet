@@ -6,8 +6,6 @@ getNamespace     = cls.getNamespace
 destroyNamespace = cls.destroyNamespace
 request = require 'request'
 docker = require('./dockerProxy')()
-ShoeClient = require './ShoeClient'
-MuxDemux = require 'mux-demux'
 # imageCache = require './imageCache'
 cbTimeout = require 'callback-timeout'
 
@@ -42,6 +40,7 @@ timeIt = (fn, timeout) ->
       timings = session.get('timings')
       timings = timings || {}
       timings[fn._name || fn.name || uuid()] = Date.now() - start
+      console.log(fn._name || fn.name || uuid(), timings[fn._name || fn.name || uuid()])
       session.set('timings', timings)
       cb.apply(null, arguments)
     args.push newCb
@@ -151,22 +150,21 @@ dockworkerGetServiceToken._name = 'dockworkerGetServiceToken' # ...coffeescript 
 
 dockworkerTestTerminal = (cb) ->
   session = getNamespace('health')
-  dockworkerHost = session.get('dockworker').host
-  onStream = (stream) ->
-    if stream.meta is "terminal" then onTerminal stream
-  onTerminal = (stream) ->
-    count = 0
-    unique = uuid();
-    re = new RegExp(unique+'\r\n');
-    stream.on "data", (data) ->
-      if re.test(data)
-        cb()
-        cb = () -> # prevent multicallbacks
-    stream.write "echo "+unique+"\n"
-  socket = "ws://" + dockworkerHost.split("//")[1]
-  stream = new ShoeClient(socket + "/streams/terminal")
-  muxDemux = new MuxDemux(onStream)
-  stream.pipe(muxDemux).pipe stream
+  dockworker = session.get('dockworker')
+  noErrExpectSuccess = (cb) ->
+    return (err, res, body) ->
+      if err then cb err else
+        if res.statusCode != 200 and res.statusCode != 204
+          err = new Error('dockworker unexpected status code '+res.statusCode)
+          err.stack = body;
+          cb(err)
+        else
+          cb()
+
+  async.parallel [
+    (cb) -> dockworker.get '/api/checkTermUp', noErrExpectSuccess(cb)
+    (cb) -> dockworker.get '/api/checkWebUp', noErrExpectSuccess(cb)
+  ], cb
 dockworkerTestTerminal._name = 'dockworkerTestTerminal' # ...coffeescript is stupid
 
 testDockworker = (cb) ->

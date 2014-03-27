@@ -31,7 +31,6 @@
     "bouncy": "~3.2.1",
     "emit-stream": "~0.1.2",
     "JSONStream": "~0.7.1",
-    "shoe": "0.0.15",
     "express": "~3.4.0",
     "flattenDockerImages": "git://github.com/Runnable/flattenDockerImages.git",
     "vitalsigns": "~0.2.2",
@@ -39,7 +38,6 @@
     "hex64": "~0.4.0",
     "dockerode": "~1.2.8",
     "callback-timeout": "~0.1.0",
-    "mux-demux": "~3.7.8",
     "ws": "~0.4.31",
     "continuation-local-storage": "~3.0.0",
     "uuid": "~1.4.1"
