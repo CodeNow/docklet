@@ -1,3 +1,4 @@
+require 'newrelic'
 path = require 'path'
 env = require './env'
 configs = require './configs'
