@@ -5,16 +5,11 @@ configs = require './configs'
 rollbar = require 'rollbar'
 path = require 'path'
 rollbar.init(configs.rollbar, {
-    environment process.env.NODE_ENV || "development",
-    branch "master",
-    root path.resolve(__dirname, '..')
-  });
+    environment: process.env.NODE_ENV || "development",
+    branch: "master",
+    root: path.resolve(__dirname, '..')
+  })
 
-var path = require('path');
-
-  environment: process.env.NODE_ENV || "development"
-  branch: "master"
-  root: path.resolve __dirname, '..'
 if configs.nodetime
   nodetime = require 'nodetime'
   nodetime.profile configs.nodetime
