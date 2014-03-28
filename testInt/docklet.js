@@ -23,9 +23,7 @@ var serviceToken = 'services-' + uuid.v4();
 describe('docklet', function () {
   this.timeout(0);
   before(function () {
-    this.repo = process.env.docker8 ?
-      'registry.runnable.com/runnable/65f84dd5-3382-4e46-bcc5-5fdddd61a915':
-      'registry.runnable.com/runnable/Ux-z4huQ95wmgCrv';
+    this.repo = 'registry.runnable.com/runnable/5320c7e2be28fdcc6917cb82'; // node hello world, hope all boxes have this.
   });
 
   it('should find a container', function (done) {
@@ -38,88 +36,48 @@ describe('docklet', function () {
         done();
       });
   });
-  if (process.env.docker8) {
-    it('should create a container', function (done) {
-      var self = this;
-      var body =  {
-        Image: this.repo,
-        Volumes: { '/dockworker': {} },
-        ExposedPorts: {
-          "80/tcp": {},
-          "15000/tcp": {}
-        },
-        Cmd: [ '/dockworker/bin/node', '/dockworker' ],
-        Env: toEnv({
-          SERVICES_TOKEN: serviceToken,
-          RUNNABLE_START_CMD: 'npm start'
-        })
-      };
-      docker.createContainer(body, function (err, body) {
-        if (err) return done(err);
-        container = body;
-        done();
-      });
+  it('should create a container', function (done) {
+    var self = this;
+    var body =  {
+      Image: this.repo,
+      Volumes: { '/dockworker': {} },
+      ExposedPorts: {
+        "80/tcp": {},
+        "15000/tcp": {}
+      },
+      Cmd: [ '/dockworker/bin/node', '/dockworker' ],
+      Env: toEnv({
+        SERVICES_TOKEN: serviceToken,
+        RUNNABLE_START_CMD: 'npm start'
+      })
+    };
+    docker.createContainer(body, function (err, body) {
+      if (err) return done(err);
+      container = body;
+      done();
     });
-  }
-  else {
-    it('should create a container', function (done) {
-      var self = this;
-      var body =  {
-        Image: this.repo,
-        Volumes: { '/dockworker': {} },
-        PortSpecs: [ '80', '15000' ],
-        Cmd: [ '/dockworker/bin/node', '/dockworker' ],
-        Env: toEnv({
-          SERVICES_TOKEN: serviceToken,
-          RUNNABLE_START_CMD: 'npm start'
-        })
-      };
-      docker.createContainer(body, function (err, body) {
-        if (err) return done(err);
-        container = body;
-        done();
-      });
-    });
-  }
+  });
   describe('running container', function () {
-    if (process.env.docker8) {
-      it('should start', function (done) {
-        container.start({
-          Binds: ["/home/ubuntu/dockworker:/dockworker:ro"],
-          PortBindings: {
-            "80/tcp": [{}],
-            "15000/tcp": [{}]
-          }
-        }, done);
+    it('should start', function (done) {
+      container.start({
+        Binds: ["/home/ubuntu/dockworker:/dockworker:ro"],
+        PortBindings: {
+          "80/tcp": [{}],
+          "15000/tcp": [{}]
+        }
+      }, done);
+    });
+    it('should find its ports', function (done) {
+      container.inspect(function (err, data) {
+        if (err) return done(err);
+        var port = data.NetworkSettings.Ports['15000/tcp'][0].HostPort;
+        port.should.be.type('string');
+        dockworkerUrl = host+':'+port;
+        dockworker = request(dockworkerUrl);
+        done();
       });
-      it('should find its ports', function (done) {
-        container.inspect(function (err, data) {
-          if (err) return done(err);
-          var port = data.NetworkSettings.Ports['15000/tcp'][0].HostPort;
-          port.should.be.type('string');
-          dockworkerUrl = host+':'+port;
-          dockworker = request(dockworkerUrl);
-          done();
-        });
-      });
-    }
-    else {
-      it('should start', function (done) {
-        container.start({
-          Binds: ["/home/ubuntu/dockworker:/dockworker:ro"]
-        }, done);
-      });
-      it('should find its ports', function (done) {
-        container.inspect(function (err, data) {
-          if (err) return done(err);
-          var port = data.NetworkSettings.PortMapping.Tcp[15000];
-          port.should.be.type('string');
-          dockworkerUrl = host+':'+port;
-          dockworker = request(dockworkerUrl);
-          done();
-        });
-      });
-    }
+    });
+
     // dockworker
     describe('dockworker', function () {
       it('should get the containers service token', function (done) {
