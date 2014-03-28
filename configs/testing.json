@@ -9,5 +9,4 @@
   "domain": "runnableapp.dev",
   "socket": 4245,
   "bounceWorkerLifeSpan": 60000,
-  "rollbar": "34dfc593cf14456985c66ffc12c6acc4"
 }

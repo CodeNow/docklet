@@ -1,9 +1,12 @@
-require 'newrelic'
 path = require 'path'
 env = require './env'
 configs = require './configs'
 rollbar = require 'rollbar'
 path = require 'path'
+
+if configs.newRelicEnabled
+  require 'newrelic'
+
 if configs.rollbar
   rollbar.init(configs.rollbar, {
       environment: process.env.NODE_ENV || "development",
@@ -16,7 +19,7 @@ if configs.nodetime
   nodetime.profile configs.nodetime
 docker = require './docker'
 app = require './app'
-app.use rollbar.errorHandler
+app.use rollbar.errorHandler()
 docker.cacheImages (err) ->
   if err
     console.error 'failed to cache', err

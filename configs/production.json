@@ -9,10 +9,12 @@
   	"password": "insertWittyPasswordHere"
   },
   "rollbar": "34dfc593cf14456985c66ffc12c6acc4",
+  "newRelicEnabled": true,
   "networkInterface": "eth0",
   "domain": "runnable.com",
   "authToken": "8EM1dX06788BnRzZ9eaqrCLLmzokmgNe",
   "domain": "runnable.com",
   "socket": "/var/run/docker.sock",
+  "newRelicEnabled": true,
   "bounceWorkerLifeSpan": 18000000
 }
