@@ -4,11 +4,12 @@ env = require './env'
 configs = require './configs'
 rollbar = require 'rollbar'
 path = require 'path'
-rollbar.init(configs.rollbar, {
-    environment: process.env.NODE_ENV || "development",
-    branch: "master",
-    root: path.resolve(__dirname, '..')
-  })
+if configs.rollbar
+  rollbar.init(configs.rollbar, {
+      environment: process.env.NODE_ENV || "development",
+      branch: "master",
+      root: path.resolve(__dirname, '..')
+    })
 
 if configs.nodetime
   nodetime = require 'nodetime'
