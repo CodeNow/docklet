@@ -8,5 +8,6 @@
   "authToken": "Hirqez43tqslj9vOu2X8a8r6An498VFS",
   "domain": "runnable2.net",
   "socket": "/var/run/docker.sock",
-  "bounceWorkerLifeSpan": 60000
+  "bounceWorkerLifeSpan": 60000,
+  "rollbar": "34dfc593cf14456985c66ffc12c6acc4"
 }
