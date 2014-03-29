@@ -1,5 +1,5 @@
 var express = require('express');
-var configs = require('configs');
+var configs = require('../../lib/configs');
 var dockerHost = configs.docker_host;
 var dockerPort = configs.socket;
 var app = express();
