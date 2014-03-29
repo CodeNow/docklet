@@ -96,4 +96,4 @@ module.exports = {
 }
 
 
-# setInterval cacheImages, 1000 * 60 * 4 + 1000 * 60 * 2 * Math.random(), ->
+setInterval cacheImages, 1000 * 60 * 4 + 1000 * 60 * 2 * Math.random(), ->

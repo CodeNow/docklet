@@ -1,4 +1,7 @@
 var express = require('express');
+var configs = require('configs');
+var dockerHost = configs.docker_host;
+var dockerPort = configs.socket;
 var app = express();
 var images = [];
 
@@ -47,7 +50,7 @@ app.del('/containers/:id', function (req, res, next) {
 
 app.post('/images/create', function (req, res, next) {
   images.push({
-    Repository: req.query.fromImage
+    RepoTags: [req.query.fromImage]
   });
   res.json({});
 });
@@ -68,7 +71,7 @@ app.get('/events', function (req, res, next) {
 app.get('/images/:image/json', function (req, res, next) {
   var responded = false;
   images.forEach(function (image) {
-    if (image.Repository = req.params.image) {
+    if (image.RepoTags[0] === req.params.image) {
       res.json({
            "id":"b750fe79269d2ec9a3c593ef05b4332b1d1a02a62b4accb2c21d589ff2f5f2dc",
            "parent":"27cf784147099545",
@@ -88,8 +91,8 @@ app.get('/images/:image/json', function (req, res, next) {
                            "OpenStdin":true,
                            "StdinOnce":false,
                            "Env":null,
-                           "Cmd": ["/bin/bash"]
-                           ,"Dns":null,
+                           "Cmd": ["/bin/bash"],
+                           "Dns":null,
                            "Image":"base",
                            "Volumes":null,
                            "VolumesFrom":"",
@@ -175,7 +178,10 @@ app.all('*', function (req, res, next) {
   next();
 });
 
-app.listen(4245);
+app.listen(dockerPort, function (err) {
+  if (err) throw err;
+  console.log('mock docker listening');
+});
 
 module.exports.pruneCount = function () {
   return pruneCount;
