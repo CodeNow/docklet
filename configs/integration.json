@@ -14,5 +14,7 @@
   "rollbar": "34dfc593cf14456985c66ffc12c6acc4",
   "domain": "cloudcosmos.com",
   "socket": "/var/run/docker.sock",
-  "bounceWorkerLifeSpan": 18000000
+  "bounceWorkerLifeSpan": 18000000,
+  "newRelicEnabled": true,
+  "rollbar": "34dfc593cf14456985c66ffc12c6acc4"
 }
