@@ -3,7 +3,7 @@ request = require 'request'
 queue = require './queue'
 redis = require './client'
 ip = require './ip'
-images = {}
+images = require './imageCache'
 
 cacheImages = (cb) ->
   request
@@ -15,7 +15,6 @@ cacheImages = (cb) ->
   , (err, res) ->
     if err then cb err else
       if res.statusCode isnt 200 then cb new Error "docker error #{res.body}" else
-        images = {}
         res.body.forEach (image) ->
           tag = image.RepoTags[0].replace(':latest', '')
           images[tag] = true
@@ -97,4 +96,4 @@ module.exports = {
 }
 
 
-# setInterval cacheImages, 1000 * 60 * 4 + 1000 * 60 * 2 * Math.random(), ->
+setInterval cacheImages, 1000 * 60 * 4 + 1000 * 60 * 2 * Math.random(), ->

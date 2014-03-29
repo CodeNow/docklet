@@ -46,7 +46,7 @@ describe('harbourmaster interface', function () {
     client.publish('dockletPrune', JSON.stringify(containerIds));
     setTimeout(function () {
       if (docker.pruneCount() !== 3) {
-        console.error('count', docker.pruneCount())
+        console.error('count', docker.pruneCount());
         done(new Error('expected prune count to equal 3'));
       } else {
         done();

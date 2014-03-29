@@ -29,4 +29,3 @@ docker.cacheImages (err) ->
     require './pubsub'
     (require './register').register()
     app.listen 4244
-    setInterval docker.checkUp, 1000 * 60
