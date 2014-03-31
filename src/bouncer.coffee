@@ -15,7 +15,7 @@ startProxy = ->
     , 1000 * 60
   , configs.bounceWorkerLifeSpan + configs.bounceWorkerLifeSpan * Math.random()
 
-req = http.request 
+req = http.request
   socketPath: socket
   path: '/version'
   method: 'GET'
@@ -23,9 +23,11 @@ req = http.request
 
 req.on 'error',  (err) ->
   console.error 'failed to connect', err
-  (require './register').deregister()
 
 req.end()
 
 socketBounce = (req, res, bounce) ->
+  console.log('req.url', req.url);
+  console.log('req.url', req.url);
+  console.log('req.url', req.url);
   bounce net.connect socket

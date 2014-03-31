@@ -3,7 +3,7 @@ request = require 'request'
 queue = require './queue'
 redis = require './client'
 ip = require './ip'
-images = {}
+images = require './imageCache'
 
 cacheImages = (cb) ->
   request
@@ -15,10 +15,9 @@ cacheImages = (cb) ->
   , (err, res) ->
     if err then cb err else
       if res.statusCode isnt 200 then cb new Error "docker error #{res.body}" else
-        images = {}
         res.body.forEach (image) ->
-          images[image.Repository] = true
-        # console.log 'CACHE', images
+          tag = image.RepoTags[0].replace(':latest', '')
+          images[tag] = true
         cb()
 
 pullImage = (repo, cb) ->
@@ -65,14 +64,14 @@ findImage = (data, cb) ->
             err.code = 404
             cb err
           , 1000 * 5
-        else 
+        else
           pullImage data.repo, cb
       else
         cb null, ip
 
 checkUp = ->
   up = false
-  request 
+  request
     method: 'GET'
     url: "http://#{configs.docker_host}:#{configs.docker_port}/version"
     json: true
@@ -81,7 +80,7 @@ checkUp = ->
   , (err, res) ->
     if err or res.statusCode isnt 200
       (require './register').deregister()
-    else 
+    else
       up = true
   setTimeout ->
     if not up
@@ -97,4 +96,4 @@ module.exports = {
 }
 
 
-# setInterval cacheImages, 1000 * 60 * 4 + 1000 * 60 * 2 * Math.random(), ->
+setInterval cacheImages, 1000 * 60 * 4 + 1000 * 60 * 2 * Math.random(), ->

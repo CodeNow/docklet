@@ -73,9 +73,9 @@ def staging():
   env.settings = 'staging'
   env.registry = '54.241.167.140'
   env.hosts = [
-    # 'docker-rep_int',
-    # 'docker-rep_int2',
-    'docker-rep_int3'
+   'docker-rep_int',
+   'docker-rep_int2',
+   'docker-rep_int4'
   ]
 
 def runnable3():
@@ -311,7 +311,7 @@ def deploy():
   """
   require('settings', provided_by=[production, integration, staging])
   require('branch', provided_by=[stable, master, branch])
-  
+
   clone_repo()
   if (env.host == env.hosts[0]):
     addNote()
@@ -320,7 +320,7 @@ def deploy():
   install_requirements()
   boot()
   save_startup()
-  test_deployment()
+#  test_deployment()
 
 """
 Commands - delta_deploy

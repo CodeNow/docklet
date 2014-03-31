@@ -16,6 +16,7 @@
   "author": "Runnable",
   "license": "BSD",
   "dependencies": {
+    "newrelic": "~1.4.0",
     "docker.js": "git://github.com/CodeNow/docker.js.git",
     "rollbar": "~0.2.10",
     "async": "~0.2.9",
@@ -31,20 +32,23 @@
     "bouncy": "~3.2.1",
     "emit-stream": "~0.1.2",
     "JSONStream": "~0.7.1",
-    "shoe": "0.0.15",
     "express": "~3.4.0",
     "flattenDockerImages": "git://github.com/Runnable/flattenDockerImages.git",
     "vitalsigns": "~0.2.2",
     "request": "~2.33.0",
-    "hex64": "~0.4.0"
+    "hex64": "~0.4.0",
+    "dockerode": "~1.2.8",
+    "callback-timeout": "~0.1.0",
+    "ws": "~0.4.31",
+    "continuation-local-storage": "~3.0.0",
+    "uuid": "~1.4.1",
+    "array-find": "~0.1.1"
   },
   "devDependencies": {
     "express": "~3.4.0",
     "fstream": "~0.1.25",
     "tar": "gyllstromk/node-tar",
-    "dockerode": "~1.2.8",
-    "supertest": "~0.9.0",
-    "uuid": "~1.4.1",
+    "supertest": "~0.9.0","ws": "~0.4.31",
     "ws": "~0.4.31",
     "mux-demux": "~3.7.8",
     "concat-stream": "~1.4.1"

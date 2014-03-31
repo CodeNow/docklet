@@ -12,4 +12,5 @@ if (configs.rollbar)
 
 app.post '/flatten', require './flatten'
 app.post '/find', express.json(), require './find'
-app.get '/health', vitals.express
+app.get '/health', require './health'
+app.get '/vitals', vitals.express
