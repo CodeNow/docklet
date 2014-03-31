@@ -1,0 +1,20 @@
+{
+  "name": "docklet",
+  "version": "0.1.0",
+  "description": "adds proxy between docker and the outside world",
+  "main": "/index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CodeNow/docklet.git"
+  },
+  "author": "Anandkumar",
+  "license": "BSD",
+  "dependencies": {
+    "dockerode": "~1.2.9",
+    "http-proxy": "~1.0.3"
+  },
+  "devDependencies": {}
+}
