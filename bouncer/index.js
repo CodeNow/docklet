@@ -3,9 +3,10 @@ var net = require('net');
 var http = require('http');
 var retryCount = 0;
 
+// sends command to docker to ensure it is alive and start proxy if its alive
 function connectToDocker() {
     var req = http.request({
-    hostname: '10.171.7.2',
+    hostname: 'localhost',
     port: 4242,
     path: '/version',
     method: 'GET'
@@ -20,12 +21,10 @@ function connectToDocker() {
   req.end();
 }
 
+// start proxying to docker
 function startProxy(req, res) {
-//
-// Create a proxy server for websockets
-//
   console.log("startProxy");
-  httpProxy.createProxyServer({target:'http://10.171.7.2:4242'}).listen(4243);
+  httpProxy.createProxyServer({target:'http://localhost:4242'}).listen(4243);
 }
 connectToDocker()
 
