@@ -5,7 +5,9 @@ var request = require('request');
 var client = redis.createClient(configs.redisPort, configs.redisHost);
 
 var docker = require('./fixtures/docker');
-var bouncer = require('../lib/bouncer');
+
+// this is used to start bouncer
+require('../bouncer/index.js');
 
 global.test = true;
 
@@ -14,7 +16,7 @@ describe('harbourmaster interface', function () {
     client.del('docks');
     setTimeout(function () {
       require('../lib');
-    }, 10);
+    }, 100);
     setTimeout(done, 500);
   });
   it('should respond to a http request to find a dock', function (done) {

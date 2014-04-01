@@ -2,7 +2,7 @@ configs = require './configs'
 async = require 'async'
 pubsub = require('redis').createClient configs.redisPort, configs.redisHost
 dockerClient = require('docker.js')
-  host: "http://" + configs.docker_host + ":" + configs.docker_port
+  host: "http://" + configs.docker_host + ":" + configs.bouncer_port
   token: configs.authToken
 docker = require './docker'
 client = require './client'

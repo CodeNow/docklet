@@ -3,7 +3,8 @@
   "redisPort": "6379",
   "redisHost": "10.0.1.20",
   "docker_host": "localhost",
-  "docker_port": 4243,
+  "docker_port": 4242,
+  "bouncer_port": 4243,
   "auth": {
   	"user": "runnableProduction",
   	"password": "insertWittyPasswordHere"

@@ -14,7 +14,7 @@ module.exports = async.queue (repo, cb) ->
 
   req = request
     method: 'POST'
-    url: "http://#{configs.docker_host}:#{configs.docker_port}/images/create"
+    url: "http://#{configs.docker_host}:#{configs.bouncer_port}/images/create"
     qs: 
       fromImage: repo
     headers:
