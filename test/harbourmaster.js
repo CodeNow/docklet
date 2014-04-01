@@ -5,7 +5,6 @@ var request = require('request');
 var client = redis.createClient(configs.redisPort, configs.redisHost);
 
 var docker = require('./fixtures/docker');
-var bouncer = require('../lib/bouncer');
 
 global.test = true;
 
