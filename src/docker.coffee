@@ -8,7 +8,7 @@ images = require './imageCache'
 cacheImages = (cb) ->
   request
     method: 'GET'
-    url: "http://#{configs.docker_host}:#{configs.docker_port}/images/json"
+    url: "http://#{configs.docker_host}:#{configs.bouncer_port}/images/json"
     json: true
     headers:
       token: configs.authToken
@@ -32,7 +32,7 @@ checkCache = (repo) ->
 checkImage = (repo, cb) ->
   request
     method: 'GET'
-    url: "http://#{configs.docker_host}:#{configs.docker_port}/images/#{repo}/json"
+    url: "http://#{configs.docker_host}:#{configs.bouncer_port}/images/#{repo}/json"
     json: true
     headers:
       token: configs.authToken
@@ -73,7 +73,7 @@ checkUp = ->
   up = false
   request
     method: 'GET'
-    url: "http://#{configs.docker_host}:#{configs.docker_port}/version"
+    url: "http://#{configs.docker_host}:#{configs.bouncer_port}/version"
     json: true
     headers:
       token: configs.authToken

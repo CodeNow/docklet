@@ -1,13 +1,18 @@
 var httpProxy = require('http-proxy');
 var net = require('net');
 var http = require('http');
+var configs = require('../lib/configs');
+var dockerHost = configs.docker_host;
+var dockerPort = configs.docker_port;
+var bouncerPort = configs.bouncer_port;
+
 var retryCount = 0;
 
 // sends command to docker to ensure it is alive and start proxy if its alive
 function connectToDocker() {
-    var req = http.request({
-    hostname: 'localhost',
-    port: 4242,
+  var req = http.request({
+    hostname: dockerHost,
+    port: dockerPort,
     path: '/version',
     method: 'GET'
   }, startProxy);
@@ -15,7 +20,7 @@ function connectToDocker() {
   req.on('error', function(err) {
     retryCount++;
     console.log('failed to connect to docker, retryCount = '+retryCount+' err:', err);
-    setTimeout(connectToDocker, 100);
+    setTimeout(connectToDocker, 10);
   });
 
   req.end();
@@ -24,7 +29,9 @@ function connectToDocker() {
 // start proxying to docker
 function startProxy(req, res) {
   console.log("startProxy");
-  httpProxy.createProxyServer({target:'http://localhost:4242'}).listen(4243);
+  httpProxy.createProxyServer({
+    target:'http://'+dockerHost+':'+dockerPort
+  }).listen(bouncerPort);
 }
-connectToDocker()
 
+connectToDocker();

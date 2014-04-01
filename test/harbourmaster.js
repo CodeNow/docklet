@@ -16,7 +16,7 @@ describe('harbourmaster interface', function () {
     client.del('docks');
     setTimeout(function () {
       require('../lib');
-    }, 10);
+    }, 500);
     setTimeout(done, 500);
   });
   it('should respond to a http request to find a dock', function (done) {

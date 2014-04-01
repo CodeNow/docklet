@@ -1,7 +1,7 @@
 var express = require('express');
 var configs = require('../../lib/configs');
 var dockerHost = configs.docker_host;
-var dockerPort = configs.socket;
+var dockerPort = configs.docker_port;
 var app = express();
 var images = [];
 
@@ -124,6 +124,7 @@ app.get('/images/:registry?/:owner?/:name/history', function (req, res, next) {
 });
 
 app.get('/version', function (req, res, next) {
+  console.log("here");
   res.json({
     'json': true
   });
