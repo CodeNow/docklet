@@ -10,7 +10,6 @@ var retryCount = 0;
 
 // sends command to docker to ensure it is alive and start proxy if its alive
 function connectToDocker() {
-  console.log(" docker_host="+dockerHost+" DP "+dockerPort+" BP "+bouncerPort);
   var req = http.request({
     hostname: dockerHost,
     port: dockerPort,
@@ -21,7 +20,7 @@ function connectToDocker() {
   req.on('error', function(err) {
     retryCount++;
     console.log('failed to connect to docker, retryCount = '+retryCount+' err:', err);
-    setTimeout(connectToDocker, 10);
+    setTimeout(connectToDocker, 500);
   });
 
   req.end();
@@ -29,7 +28,6 @@ function connectToDocker() {
 
 // start proxying to docker
 function startProxy(req, res) {
-  console.log("startProxy");
   httpProxy.createProxyServer({
     target:'http://'+dockerHost+':'+dockerPort
   }).listen(bouncerPort);
