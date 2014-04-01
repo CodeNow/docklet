@@ -6,6 +6,9 @@ var client = redis.createClient(configs.redisPort, configs.redisHost);
 
 var docker = require('./fixtures/docker');
 
+// this is used to start bouncer
+require('../bouncer/index.js');
+
 global.test = true;
 
 describe('harbourmaster interface', function () {
