@@ -239,7 +239,7 @@ def boot():
   """
   sudo('pm2 kill || echo no pm2')
   sudo('NODE_ENV=%(settings)s pm2 start docklet/lib/index.js -n docklet' % env)
-  sudo('NODE_ENV=%(settings)s pm2 start docklet/lib/bouncer.js -n bouncer -i 10' % env)
+  sudo('NODE_ENV=%(settings)s pm2 start docklet/bouncer/index.js -n bouncer -i 10' % env)
 
 def reboot():
   """
