@@ -19,6 +19,19 @@ describe('harbourmaster interface', function () {
     }, 100);
     setTimeout(done, 500);
   });
+  it('should say hi (ip)', function (done) {
+    request.get({
+      url: 'http://localhost:4244/ip'
+    }, function (err, res, body) {
+      if (err) {
+        done(err);
+      } else if (res.statusCode !== 200) {
+        done(new Error('bad statusCode: ' + res.statusCode));
+      } else {
+        done();
+      }
+    });
+  });
   it('should respond to a http request to find a dock', function (done) {
     var servicesToken = 'services-' + uuid();
     var repo = 'base';

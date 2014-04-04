@@ -14,3 +14,5 @@ app.post '/flatten', require './flatten'
 app.post '/find', express.json(), require './find'
 app.get '/health', require './health'
 app.get '/vitals', vitals.express
+app.get '/ip', (req, res, next) ->
+  res.send require './ip'
