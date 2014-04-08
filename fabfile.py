@@ -222,7 +222,6 @@ def install_requirements():
   sudo('npm install pm2@0.7.7 -g')
   sudo('rm -rf /home/ubuntu/tmp')
   with cd('docklet'):
-    sudo('rm -rf node_modules')
     run('npm rebuild')
 
 def save_startup():

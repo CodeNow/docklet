@@ -29,7 +29,7 @@ function connectToDocker() {
 // start proxying to docker
 function startProxy(req, res) {
   httpProxy.createProxyServer({
-    target:'http://'+dockerHost+':'+dockerPort
+    target: dockerHost+':'+dockerPort
   }).listen(bouncerPort);
 }
 
