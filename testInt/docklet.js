@@ -2,7 +2,7 @@ var request = require('supertest');
 var Docker = require('dockerode');
 var host = 'http://localhost';
 var docklet = request(host+':4244');
-var configs = require('configs');
+var configs = require('../configs');
 var dockerHost = configs.docker_host;
 var dockerPort = configs.docker_port;
 var dockworker, dockworkerUrl;
