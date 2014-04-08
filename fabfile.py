@@ -222,7 +222,9 @@ def install_requirements():
   sudo('npm install pm2@0.7.7 -g')
   sudo('rm -rf /home/ubuntu/tmp')
   with cd('docklet'):
-    run('npm rebuild')
+    sudo('rm -rf node_modules')
+    run('npm install')
+    run('npm run build')
 
 def save_startup():
   """
@@ -351,36 +353,36 @@ Commands - docker stuff
 """
 def stopAll():
   require('settings', provided_by=[production, integration, staging])
-  sudo('docker stop `docker ps -q | xargs echo`')
+  run('docker stop `docker ps -q | xargs echo`')
 
 def killAll():
   require('settings', provided_by=[production, integration, staging])
-  sudo('docker kill `docker ps -q | xargs echo`')
+  run('docker kill `docker ps -q | xargs echo`')
 
 def ps():
   require('settings', provided_by=[production, integration, staging])
-  sudo('docker ps')
+  run('docker ps')
 
 def psa():
   require('settings', provided_by=[production, integration, staging])
-  sudo('docker ps -a')
+  run('ifconfig | grep veth | wc -l')
 
 def max_fds():
   require('settings', provided_by=[production, integration, staging])
-  sudo('ulimit -n')
+  run('ulimit -n')
 
 def curr_fds():
   require('settings', provided_by=[production, integration, staging])
-  sudo('lsof | wc -l')
+  run('lsof | wc -l')
 
 @parallel
 def version():
   require('settings', provided_by=[production, integration, staging])
-  sudo('docker version')
+  run('docker version')
 
 def images():
   require('settings', provided_by=[production, integration, staging])
-  sudo('docker images')
+  run('docker images')
 ######################### BASE IMAGE ENDS HERE ##############################
 
 # git clone https://github.com/CodeNow/docklet
