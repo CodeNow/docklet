@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "dockerProxy.js",
+  "sourceRoot": "..",
+  "sources": [
+    "src/dockerProxy.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;CAAA,KAAA,kCAAA;;CAAA,CAAA,CAAU,IAAV,IAAU;;CAAV,CACA,CAAa,IAAO,GAApB,CADA;;CAAA,CAEA,CAAc,IAAO,IAArB,CAFA;;CAAA,CAGA,CAAS,GAAT,CAAS,IAAA;;CAHT,CAKA,CAAiB,GAAX,CAAN,EAAiB;CACf,GAAW,EAAA,KAAA;CAAO,CACV,EAAN,EAAA,IADgB;CAAA,CAEV,EAAN,EAAA,KAFgB;CAAlB,KAAW;CANb,EAKiB;CALjB"
+}

@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "imageCache.js",
+  "sourceRoot": "..",
+  "sources": [
+    "src/imageCache.coffee"
+  ],
+  "names": [],
+  "mappings": ";AACA;CAAA,KAAA,IAAA;;CAAA,CAAA,CAAa,GAAM,CAAN,GAAb;CAAA"
+}

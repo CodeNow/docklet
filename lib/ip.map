@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "ip.js",
+  "sourceRoot": "..",
+  "sources": [
+    "src/ip.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;CAAA,KAAA,KAAA;;CAAA,CAAA,CAAU,IAAV,IAAU;;CAAV,CACA,CAAK,CAGH,CAHmD,CAA1C,CAAN,EAKQ,EALS,KAAG,CAGvB;CAGU,IAAD,CAAL,KAAA;CAHJ,EAEU,IANZ;CAAA"
+}
