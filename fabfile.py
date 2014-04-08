@@ -223,8 +223,7 @@ def install_requirements():
   sudo('rm -rf /home/ubuntu/tmp')
   with cd('docklet'):
     sudo('rm -rf node_modules')
-    run('npm install')
-    run('npm run build')
+    run('npm rebuild')
 
 def save_startup():
   """
