@@ -11,7 +11,7 @@ var retryCount = 0;
 // sends command to docker to ensure it is alive and start proxy if its alive
 function connectToDocker() {
   var req = http.request({
-    url: configs.docker_host + ":" + configs.bouncer_port + "/version",
+    url: dockerHost + ":" + dockerPort + "/version",
     method: 'GET'
   }, startProxy);
 
