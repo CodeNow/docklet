@@ -224,7 +224,6 @@ def install_requirements():
   with cd('docklet'):
     sudo('rm -rf node_modules')
     run('npm install')
-    run('npm run build')
 
 def save_startup():
   """
