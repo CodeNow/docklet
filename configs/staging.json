@@ -2,7 +2,7 @@
   "checkImageInterval": "30 seconds",
   "redisPort": "6379",
   "redisHost": "10.0.1.125",
-  "docker_host": "localhost",
+  "docker_host": "http://localhost",
   "docker_port": 4242,
   "bouncer_port": 4243,
   "auth": {

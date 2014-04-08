@@ -1,7 +1,7 @@
 var async = require('async');
 var configs = require('../lib/configs');
 var docker = require('docker.js')({
-  host: 'http://' + configs.docker_host + ':' + configs.docker_port
+  host: configs.docker_host + ':' + configs.docker_port
 });
 
 
