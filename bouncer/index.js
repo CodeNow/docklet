@@ -1,4 +1,4 @@
-var require = ('newrelic');
+var require = require('newrelic');
 var httpProxy = require('http-proxy');
 var net = require('net');
 var http = require('http');
