@@ -2,12 +2,16 @@
   "checkImageInterval": "30 seconds",
   "redisPort": "6379",
   "redisHost": "10.0.1.14",
-  "docker_host": "localhost",
+  "docker_host": "http://localhost",
   "docker_port": 4242,
   "bouncer_port": 4243,
   "auth": {
     "user": "runnableIntegration",
     "password": "calculus"
+  },
+  "newrelic": {
+    "name": "docklet-integration",
+    "key": "338516e0826451c297d44dc60aeaf0a0ca4bfead"
   },
   "networkInterface": "eth0",
   "domain": "cloudcosmos.com",
@@ -16,6 +20,5 @@
   "domain": "cloudcosmos.com",
   "socket": "/var/run/docker.sock",
   "bounceWorkerLifeSpan": 18000000,
-  "newRelicEnabled": true,
   "rollbar": "34dfc593cf14456985c66ffc12c6acc4"
 }

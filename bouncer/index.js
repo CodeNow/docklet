@@ -2,34 +2,38 @@ var httpProxy = require('http-proxy');
 var net = require('net');
 var http = require('http');
 var configs = require('../lib/configs');
+if (configs.newrelic) {
+  require('newrelic');
+}
 var dockerHost = configs.docker_host;
 var dockerPort = configs.docker_port;
 var bouncerPort = configs.bouncer_port;
+var Docker = require('dockerode');
+var docker = new Docker({
+    host: dockerHost,
+    port: dockerPort
+  });
 
 var retryCount = 0;
 
 // sends command to docker to ensure it is alive and start proxy if its alive
 function connectToDocker() {
-  var req = http.request({
-    hostname: dockerHost,
-    port: dockerPort,
-    path: '/version',
-    method: 'GET'
-  }, startProxy);
-
-  req.on('error', function(err) {
-    retryCount++;
-    console.log('failed to connect to docker, retryCount = '+retryCount+' err:', err);
-    setTimeout(connectToDocker, 500);
+  docker.version(function(err, versionInfo) {
+    if (err) {
+      retryCount++;
+      console.log('failed to connect to docker, retryCount = '+retryCount+' err:', err);
+      setTimeout(connectToDocker, 500);
+      return err;
+    }
+    startProxy();
   });
-
-  req.end();
 }
 
 // start proxying to docker
 function startProxy(req, res) {
+  console.log("connected to docker. listening on port: "+bouncerPort);
   httpProxy.createProxyServer({
-    target:'http://'+dockerHost+':'+dockerPort
+    target: dockerHost+':'+dockerPort
   }).listen(bouncerPort);
 }
 

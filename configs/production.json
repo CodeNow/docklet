@@ -2,15 +2,18 @@
   "checkImageInterval": "30 seconds",
   "redisPort": "6379",
   "redisHost": "10.0.1.20",
-  "docker_host": "localhost",
+  "docker_host": "http://localhost",
   "docker_port": 4242,
   "bouncer_port": 4243,
   "auth": {
   	"user": "runnableProduction",
   	"password": "insertWittyPasswordHere"
   },
+  "newrelic": {
+    "name": "docklet-production",
+    "key": "338516e0826451c297d44dc60aeaf0a0ca4bfead"
+  },
   "rollbar": "34dfc593cf14456985c66ffc12c6acc4",
-  "newRelicEnabled": true,
   "networkInterface": "eth0",
   "domain": "runnable.com",
   "authToken": "8EM1dX06788BnRzZ9eaqrCLLmzokmgNe",
