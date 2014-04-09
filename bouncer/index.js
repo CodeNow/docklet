@@ -1,3 +1,4 @@
+var require = ('newrelic');
 var httpProxy = require('http-proxy');
 var net = require('net');
 var http = require('http');
@@ -5,7 +6,6 @@ var configs = require('../lib/configs');
 var dockerHost = configs.docker_host;
 var dockerPort = configs.docker_port;
 var bouncerPort = configs.bouncer_port;
-
 var Docker = require('dockerode');
 var docker = new Docker({
     host: dockerHost,
