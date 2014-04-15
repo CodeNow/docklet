@@ -15,7 +15,6 @@
   "author": "Runnable",
   "license": "BSD",
   "dependencies": {
-    "newrelic": "~1.4.0",
     "docker.js": "git://github.com/CodeNow/docker.js.git",
     "rollbar": "~0.2.10",
     "async": "~0.2.9",
@@ -32,7 +31,8 @@
     "express": "~3.4.0",
     "dockerode": "~1.2.9",
     "http-proxy": "~1.0.3",
-    "array-find": "~0.1.1"
+    "array-find": "~0.1.1",
+    "node-statsd": "0.0.7"
   },
   "devDependencies": {
     "mocha": "~1.17.1",

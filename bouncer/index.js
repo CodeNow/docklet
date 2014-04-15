@@ -2,9 +2,7 @@ var httpProxy = require('http-proxy');
 var net = require('net');
 var http = require('http');
 var configs = require('../lib/configs');
-if (configs.newrelic) {
-  require('newrelic');
-}
+
 var dockerHost = configs.docker_host;
 var dockerPort = configs.docker_port;
 var bouncerPort = configs.bouncer_port;
@@ -30,7 +28,7 @@ function connectToDocker() {
 }
 
 // start proxying to docker
-function startProxy(req, res) {
+function startProxy() {
   console.log("connected to docker. listening on port: "+bouncerPort);
   httpProxy.createProxyServer({
     target: dockerHost+':'+dockerPort
