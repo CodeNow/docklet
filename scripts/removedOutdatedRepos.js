@@ -50,7 +50,7 @@ function editRepositories (cb) {
     .filter(startsWith('54.215.162.19'))
     .forEach(function (key) {
       var newKey = key.replace('54.215.162.19', 'registry.runnable.com');
-      if (!repos[newKey]) {
+      if (!repos[newKey] && !oldRepo(newKey)) {
         console.log('moving:', key, '->', newKey);
         repos[newKey] = repos[key];
       }
@@ -100,12 +100,6 @@ function and (/* fns */) {
 }
 
 function oldRepo () {
-  return function (repo) {
-    return repo.length !== ('registry.runnable.com/runnable/52766b0a39cb7b3754000021'.length);
-  };
-}
-
-function ipOldRepo () {
   return function (repo) {
     return repo.length !== ('registry.runnable.com/runnable/52766b0a39cb7b3754000021'.length);
   };
