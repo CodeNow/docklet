@@ -9,9 +9,9 @@
     "user": "runnableIntegration",
     "password": "calculus"
   },
-  "newrelic": {
-    "name": "docklet-integration",
-    "key": "338516e0826451c297d44dc60aeaf0a0ca4bfead"
+  "statsd": {
+    "name": "docklet.integration.",
+    "host": "ec2-54-241-57-94.us-west-1.compute.amazonaws.com"
   },
   "networkInterface": "eth0",
   "domain": "cloudcosmos.com",

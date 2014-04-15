@@ -9,9 +9,9 @@
     "user": "runnableIntegration",
     "password": "calculus"
   },
-  "newrelic": {
-    "name": "docklet-staging",
-    "key": "338516e0826451c297d44dc60aeaf0a0ca4bfead"
+  "statsd": {
+    "name": "docklet.staging.",
+    "host": "ec2-54-241-57-94.us-west-1.compute.amazonaws.com"
   },
   "rollbar": "34dfc593cf14456985c66ffc12c6acc4",
   "networkInterface": "eth0",
