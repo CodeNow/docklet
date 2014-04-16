@@ -7,14 +7,14 @@ var exec = require('child_process').exec;
 var async = require('async');
 var client = redis.createClient(configs.redisPort, configs.redisHost);
 
-var dryrun = true;
+var dryrun = false;
 
 async.series([
-  removeEntry,
-  stopDocker,
+  // removeEntry,
+  // stopDocker,
   editRepositories,
-  startDocker,
-  addEntry
+  // startDocker,
+  // addEntry
 ], done);
 
 function removeEntry (cb) {
