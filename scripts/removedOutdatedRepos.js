@@ -30,7 +30,7 @@ function stopDocker (cb) {
 function editRepositories (cb) {
   var file = '/var/lib/docker/repositories-aufs';
   var json = JSON.parse(fs.readFileSync(file));
-  fs.writeFile(file+'-'+Date.now()+'.bak', JSON.stringify(json), cb);
+  fs.writeFileSync(file+'-'+Date.now()+'.bak', JSON.stringify(json));
 
   var repos = json.Repositories;
   var repoKeys = Object.keys(repos);
