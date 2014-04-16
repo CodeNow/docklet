@@ -39,7 +39,7 @@ function editRepositories (cb) {
   repoKeys
     .filter(and(
       startsWith('registry.runnable.com'),
-      oldRepo()
+      oldRepo
     ))
     .forEach(function (key) {
       console.log('deleting:', key);
@@ -86,7 +86,7 @@ function done (err) {
 
 function startsWith (start) {
   return function (str) {
-    return str.indexOf(str) === 0;
+    return str.indexOf(start) === 0;
   };
 }
 
@@ -99,8 +99,6 @@ function and (/* fns */) {
   };
 }
 
-function oldRepo () {
-  return function (repo) {
-    return repo.length !== ('registry.runnable.com/runnable/52766b0a39cb7b3754000021'.length);
-  };
+function oldRepo (repo) {
+  return repo.length !== ('registry.runnable.com/runnable/52766b0a39cb7b3754000021'.length);
 }
