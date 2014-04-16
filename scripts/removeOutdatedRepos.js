@@ -67,7 +67,7 @@ function startDocker (cb) {
   exec('service docker start', cb);
 }
 
-function addEntry () {
+function addEntry (cb) {
   if (dryrun) return cb();
   client.rpush('frontend:docklet.runnable.com', 1, ('http://' + ip + ':4244'), cb);
 }
