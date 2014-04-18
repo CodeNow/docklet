@@ -25,28 +25,18 @@ def production():
   env.settings = 'production'
   env.registry = '54.241.154.140'
   env.hosts = [
-    'docker-2-86', # new
-    'docker-2-87', # new
-    'docker-2-203', # newer
-    'docker-2-152', # newer
-    'docker-2-31',  # newest
-    'docker-2-210', # newest
-    'docker-2-215', # newest
-    'docker-2-78',   # newest
-    'docker-2-234', # temp
-    # 'docker-5-72', # temp
-    # 'docker-5-73', # temp
-    # 'docker-5-74', # temp
-    # 'docker-5-76', # temp
-    # 'docker-5-77', # temp
-    # 'docker-5-78', # temp
-    # 'docker-5-79', # temp
-    # 'docker-5-83', # temp
-    # 'docker-5-86', # temp
-    # 'docker-5-92', # temp
-    # 'docker-5-93', # temp
-    # 'docker-5-94', # temp
-    # 'docker-5-95', # temp
+    'docker-2-86', # oldest
+    'docker-2-87', # oldest
+    'docker-2-203', # old
+    'docker-2-152', # old
+    'docker-2-31',  # norm
+    'docker-2-210', # norm
+    'docker-2-78',   # norm
+    'docker-2-234', # norm
+    'dock1', # new
+    'dock2', # new
+    'dock3', # new
+    'dock4', # new
   ]
 
 def integration():
