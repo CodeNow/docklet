@@ -25,18 +25,18 @@ def production():
   env.settings = 'production'
   env.registry = '54.241.154.140'
   env.hosts = [
-    'docker-2-86', # oldest
-    'docker-2-87', # oldest
-    'docker-2-203', # old
-    'docker-2-152', # old
-    'docker-2-31',  # norm
-    'docker-2-210', # norm
-    'docker-2-78',   # norm
-    'docker-2-234', # norm
     'dock1', # new
     'dock2', # new
     'dock3', # new
     'dock4', # new
+    'dock5', # new
+    'dock6', # new
+    'dock7', # new
+    'dock8', # new
+    'dock9', # new
+    'dock10', # new
+    'dock11', # new
+    'dock12', # new
   ]
 
 def integration():
@@ -64,8 +64,7 @@ def staging():
   env.registry = '54.241.167.140'
   env.hosts = [
    'docker-rep_int',
-   'docker-rep_int2',
-   'docker-rep_int4'
+   'docker-rep_int2'
   ]
 
 def runnable3():
