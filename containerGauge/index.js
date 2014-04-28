@@ -1,4 +1,4 @@
-var docker = require('../lib/dockerProxy');
+var docker = require('../lib/dockerProxy')();
 var Dogstatsy = require('dogstatsy');
 var stats = new Dogstatsy({
   service: 'containerGauge'
