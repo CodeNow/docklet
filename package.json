@@ -21,6 +21,7 @@
     "docker.js": "git://github.com/CodeNow/docker.js.git",
     "dockerode": "~1.2.9",
     "dogerode": "0.0.3",
+    "dogstatsy": "0.0.1",
     "dogstatsyware": "0.0.1",
     "eson": "~0.4.1",
     "express": "~3.4.0",
