@@ -19,5 +19,10 @@
   "authToken": "8EM1dX06788BnRzZ9eaqrCLLmzokmgNe",
   "domain": "runnable.com",
   "socket": "/var/run/docker.sock",
-  "bounceWorkerLifeSpan": 18000000
+  "bounceWorkerLifeSpan": 18000000,
+  "dockerLog": "/var/log/upstart/docker.log",
+  "datadog": {
+    "apiKey": "69afa1c29f4ace631d5042baa694aade",
+    "appKey": "b780aeaaa33e4389c87ee5d221da0037de86a36d"
+  }
 }
