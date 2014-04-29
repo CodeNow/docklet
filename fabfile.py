@@ -373,6 +373,11 @@ def version():
 def images():
   require('settings', provided_by=[production, integration, staging])
   run('docker images')
+
+@parallel
+def info():
+  require('settings', provided_by=[production, integration, staging])
+  run('docker -D -H=127.0.0.1:4242 info')
 ######################### BASE IMAGE ENDS HERE ##############################
 
 # git clone https://github.com/CodeNow/docklet
