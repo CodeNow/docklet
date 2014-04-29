@@ -46,7 +46,7 @@ function gaugeInfo () {
       stats.gauge('docker.info.images', info.Images, tags);
       stats.gauge('docker.info.neventslistener', info.NEventsListener, tags);
       stats.gauge('docker.info.nfd', info.NFd, tags);
-      stats.gauge('docker.info.ngoroutines', info.NGoRoutines, tags);
+      stats.gauge('docker.info.ngoroutines', info.NGoroutines, tags);
     }
   }
 }
