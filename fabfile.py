@@ -23,7 +23,7 @@ def production():
   """
   env.requireNote = True;
   env.settings = 'production'
-  env.registry = '54.241.154.140'
+  env.registry = '10.0.0.60'
   env.hosts = [
     'dock1', # new
     'dock2', # new
