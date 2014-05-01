@@ -25,18 +25,18 @@ def production():
   env.settings = 'production'
   env.registry = '10.0.0.60'
   env.hosts = [
-    'dock1', # new
-    'dock2', # new
-    'dock3', # new
-    'dock4', # new
-    'dock5', # new
-    'dock6', # new
-    'dock7', # new
-    'dock8', # new
-    'dock9', # new
-    'dock10', # new
-    'dock11', # new
-    'dock12', # new
+    'prod-dock1', # new
+    'prod-dock2', # new
+    'prod-dock3', # new
+    'prod-dock4', # new
+    'prod-dock5', # new
+    'prod-dock6', # new
+    'prod-dock7', # new
+    'prod-dock8', # new
+    'prod-dock9', # new
+    'prod-dock10', # new
+    'prod-dock11', # new
+    'prod-dock12', # new
   ]
 
 def integration():
@@ -351,7 +351,7 @@ def killAll():
 
 def ps():
   require('settings', provided_by=[production, integration, staging])
-  run('docker ps')
+  run('docker -H=127.0.0.1:4242 ps')
 
 def psa():
   require('settings', provided_by=[production, integration, staging])
@@ -378,6 +378,11 @@ def images():
 def info():
   require('settings', provided_by=[production, integration, staging])
   run('docker -D -H=127.0.0.1:4242 info')
+
+@parallel
+def uptime():
+  require('settings', provided_by=[production, integration, staging])
+  run('uptime')
 ######################### BASE IMAGE ENDS HERE ##############################
 
 # git clone https://github.com/CodeNow/docklet
