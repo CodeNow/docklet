@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 # DOWN_SPEED in kilobits / second
-DOWN_SPEED=40960
+DOWN_SPEED=10000
 # UP_SPEED in kilobits / second
-UP_SPEED=40960
+UP_SPEED=10000
 
 if [[ "${INTERFACE}" == veth* ]]; then
   if [[ "${ACTION}" == "add" ]]; then

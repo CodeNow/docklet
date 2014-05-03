@@ -1,2 +1,2 @@
 # this runs the script when there is a network change
-SUBSYSTEM=="net",           RUN+="/user/ubuntu/docklet/scripts/container-network-limiter.sh"
+SUBSYSTEM=="net",           RUN+="/home/ubuntu/docklet/scripts/container-network-limiter.sh"
