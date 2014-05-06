@@ -308,6 +308,11 @@ def info():
 def uptime():
   require('settings', provided_by=[production, integration, staging])
   run('uptime')
+
+def add_network_limiter():
+  require('settings', provided_by=[production, integration, staging])
+  with cd('docklet'):
+    run("git pull && sudo ./scripts/setupContainerNetworkLimiting.sh")
 ######################### BASE IMAGE ENDS HERE ##############################
 
 # git clone https://github.com/CodeNow/docklet
