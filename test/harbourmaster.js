@@ -171,7 +171,6 @@ describe('harbourmaster interface', function () {
       if (err) {
         done(err);
       } else if (res.statusCode !== 201) {
-        console.log(res.statusCode, body);
         done(new Error('bad status'));
       } else if (!imageCache['registry.runnable.com/runnable/id']) {
         done(new Error('image cache not updated'));
