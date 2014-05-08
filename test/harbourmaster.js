@@ -3,7 +3,7 @@ var configs = require('../lib/configs');
 var redis = require('redis');
 var request = require('request');
 var client = redis.createClient(configs.redisPort, configs.redisHost);
-
+var imageCache = require('../lib/imageCache');
 var docker = require('./fixtures/docker');
 
 // this is used to start bouncer
@@ -160,5 +160,23 @@ describe('harbourmaster interface', function () {
           done(new Error('failed to build'));
         }
       });
+  });
+  it('should update imageCache', function (done) {
+    request.put({
+      url: 'http://localhost:4244/imageCache',
+      json: {
+        repo: 'registry.runnable.com/runnable/id'
+      }
+    }, function (err, res, body) {
+      if (err) {
+        done(err);
+      } else if (res.statusCode !== 201) {
+        done(new Error('bad status'));
+      } else if (!imageCache['registry.runnable.com/runnable/id']) {
+        done(new Error('image cache not updated'));
+      } else {
+        done();
+      }
+    });
   });
 });
