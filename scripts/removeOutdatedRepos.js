@@ -1,34 +1,16 @@
-var redis = require('redis');
 var fs = require('fs');
 var decode = require('hex64').decode;
 var configs = require('../lib/configs');
 var ip = require('../lib/ip');
 var exec = require('child_process').exec;
 var async = require('async');
-var client = redis.createClient(configs.redisPort, configs.redisHost);
 
 var dryrun = false;
 
-async.series([
-  // removeEntry,
-  // stopDocker,
-  editRepositories,
-  // startDocker,
-  // addEntry
-], done);
-
-function removeEntry (cb) {
-  if (dryrun) return cb();
-  client.lrem('frontend:docklet.runnable.com', 1, ('http://' + ip + ':4244'), cb);
-}
-
-function stopDocker (cb) {
-  if (dryrun) return cb();
-  exec('service docker stop', cb);
-}
+  editRepositories(done)
 
 function editRepositories (cb) {
-  var file = '/var/lib/docker/repositories-aufs';
+  var file = '/docker/docker/repositories-aufs';
   var json = JSON.parse(fs.readFileSync(file));
   fs.writeFileSync(file+'-'+Date.now()+'.bak', JSON.stringify(json));
 
@@ -62,15 +44,6 @@ function editRepositories (cb) {
   fs.writeFile(file, JSON.stringify(json), cb);
 }
 
-function startDocker (cb) {
-  if (dryrun) return cb();
-  exec('service docker start', cb);
-}
-
-function addEntry (cb) {
-  if (dryrun) return cb();
-  client.rpush('frontend:docklet.runnable.com', 1, ('http://' + ip + ':4244'), cb);
-}
 
 function done (err) {
   if (err) {
