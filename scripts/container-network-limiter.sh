@@ -10,3 +10,5 @@ if [[ "${INTERFACE}" == veth* ]]; then
     sudo /sbin/wondershaper ${INTERFACE} $DOWN_SPEED $UP_SPEED
   fi
 fi
+
+sudo renice -n 20 -p $(pgrep -P `pgrep -f /usr/bin/docker`) >> /var/log/docker_limit
