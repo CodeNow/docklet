@@ -4,8 +4,7 @@ var stats = new Dogstatsy({
   service: 'containerGauge'
 });
 
-setInterval(gaugePs, 1000 * 60);
-setInterval(gaugePsa, 1000 * 60 * 10);
+setInterval(gaugePs, 7000);
 setInterval(gaugeInfo, 1000 * 60);
 
 function gaugePs () {
@@ -15,19 +14,6 @@ function gaugePs () {
       console.error(err);
     } else {
       stats.gauge('docker.containers.running', containers.length);
-    }
-  }
-}
-
-function gaugePsa () {
-  docker.listContainers({
-    all: true
-  }, reportContainers);
-  function reportContainers (err, containers) {
-    if (err) {
-      console.error(err);
-    } else {
-      stats.gauge('docker.containers.total', containers.length);
     }
   }
 }
