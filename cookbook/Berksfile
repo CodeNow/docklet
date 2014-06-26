@@ -1,0 +1,10 @@
+source 'https://api.berkshelf.com'
+
+metadata
+
+cookbook 'hostsfile', github: 'customink-webops/hostsfile'
+
+group :integration do
+  cookbook 'chef-solo-search', github: 'edelight/chef-solo-search'
+  cookbook 'minitest-handler', github: 'btm/minitest-handler-cookbook'
+end
