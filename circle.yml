@@ -13,6 +13,6 @@ dependencies:
 test:
   override:
     - npm test
-    - 'echo "$CIRCLE_BRANCH" | grep -q -w -P "(.*chef.*)|(master)" && (bundle exec rake test) || true':
+    - 'test `echo "$CIRCLE_BRANCH" | grep -q -w -P "(.*chef.*)|(master)"` && bundle exec rake test':
         pwd: cookbook
         timeout: 99999
