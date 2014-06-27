@@ -8,7 +8,10 @@ version          '0.1.1'
 
 supports 'ubuntu'
 
-%w{hostsfile}.each do |cb|
+%w{
+  hostsfile
+  runnable_nodejs
+  }.each do |cb|
   depends cb
 end
 

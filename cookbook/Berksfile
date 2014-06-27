@@ -3,6 +3,7 @@ source 'https://api.berkshelf.com'
 metadata
 
 cookbook 'hostsfile', github: 'customink-webops/hostsfile'
+cookbook 'runnable_nodejs', git: 'git@github.com:CodeNow/runnable_nodejs-cookbook.git'
 
 group :integration do
   cookbook 'chef-solo-search', github: 'edelight/chef-solo-search'
