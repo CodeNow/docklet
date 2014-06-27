@@ -76,6 +76,14 @@ deploy node['runnable_docklet']['deploy_path'] do
   notifies :restart, 'service[containerGauge]', :delayed
 end
 
+file 'docklet_config' do
+  path "#{node['runnable_docklet']['deploy']['deploy_path']}/current/configs/#{node.chef_environment}.json"
+  content JSON.pretty_generate node['runnable_docklet']['config']
+  action :nothing
+  notifies :run, 'execute[npm install]', :immediately
+  notifies :restart, 'service[docklet]', :delayed 
+end
+
 execute 'npm install' do
   cwd "#{node['runnable_docklet']['deploy_path']}/current"
   action :nothing
