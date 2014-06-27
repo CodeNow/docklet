@@ -9,6 +9,8 @@ default['runnable_docklet']['config'] 		= {
   'bouncer_port' 			=> 4243,
   # port for redis
   'redisPort' 				=> '6379',
+  # ip of redis server
+  'redisHost' => search(:node, "chef_environment:#{node.chef_environment} AND recipes:runnable\:\:redis_master").first.ipaddress,
   # network interface which connects to outside world. this value is sent to client wanting to know how to contact it
   'networkInterface' 		=> 'eth0',
   # application key for rollbar
@@ -36,22 +38,16 @@ case node.chef_environment
 when 'integration'
   # ip of docker registry server
   default['runnable_docklet']['registry']	= '54.215.162.19'
-  # ip of redis server
-  default['runnable_docklet']['config']['redisHost'] = '10.0.1.14'
   # domain name this app is running on
   default['runnable_docklet']['config']['domain'] = 'cloudcosmos.com'
 when 'staging'
   # ip of docker registry server
   default['runnable_docklet']['registry']	= '54.241.167.140'
-  # ip of redis server
-  default['runnable_docklet']['config']['redisHost'] = '10.0.1.125',
   # domain name this app is running on
   default['runnable_docklet']['config']['domain'] = 'runnable.pw'
 when 'production'
   # ip of docker registry server
   default['runnable_docklet']['registry']	= '10.0.0.60'
-  # ip of redis server
-  default['runnable_docklet']['config']['redisHost'] = '10.0.1.20'
   # domain name this app is running on
   default['runnable_docklet']['config']['domain'] = 'runnable.com'
 else
