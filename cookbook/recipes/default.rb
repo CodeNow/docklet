@@ -20,7 +20,7 @@ end
 
 execute 'npm install pm2@0.7.7 -g' do
   action :run
-  unless shell_out('npm list -g pm2').exitstatus == 0
+  not_if shell_out('npm list -g pm2').exitstatus == 0
 end
 
 file '/tmp/git_sshwrapper.sh' do
