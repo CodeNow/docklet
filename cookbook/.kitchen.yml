@@ -28,3 +28,5 @@ suites:
       - recipe[runnable_docklet]
       - recipe[minitest-handler]
     attributes:
+      runnable_nodejs:
+        version: '0.10.22'
