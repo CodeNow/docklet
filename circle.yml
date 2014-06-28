@@ -5,14 +5,14 @@ dependencies:
   override:
     - npm install
     - npm run build
-    - 'echo "$CIRCLE_BRANCH" | grep -q -w -P "(.*chef.*)|(master)" && (bundle check --path=vendor/bundle || bundle install --path=vendor/bundle  --clean) || true':
+    - 'echo "$CIRCLE_BRANCH" | grep -q -w -P "(.*chef.*)|(master)"; if [ $? -eq 0 ]; then (bundle check --path=vendor/bundle || bundle install --path=vendor/bundle  --clean); fi':
         pwd: cookbook
         timeout: 99999
-    - 'echo "$CIRCLE_BRANCH" | grep -q -w -P "(.*chef.*)|(master)" && (bundle exec berks install) || true ':
+    - 'echo "$CIRCLE_BRANCH" | grep -q -w -P "(.*chef.*)|(master)"; if [ $? -eq 0 ]; then bundle exec berks install; fi':
         pwd: cookbook
 test:
   override:
     - npm test
-    - 'test `echo "$CIRCLE_BRANCH" | grep -q -w -P "(.*chef.*)|(master)"` && bundle exec rake test':
+    - 'echo "$CIRCLE_BRANCH" | grep -q -w -P "(.*chef.*)|(master)"; if [ $? -eq 0 ]; then bundle exec rake test; fi':
         pwd: cookbook
         timeout: 99999
