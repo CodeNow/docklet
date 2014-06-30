@@ -26,7 +26,9 @@ describe_recipe 'runnable_docklet::default' do
   end
 
   it 'generates json configuration' do
-    assert_includes_content("#{node['runnable_docklet']['deploy_path']}/current/configs/#{node.chef_environment}.json", node['runnable_docklet']['config'].to_json)
+    node['runnable_docklet']['config'].each do |k,v|
+      file("#{node['runnable_docklet']['deploy_path']}/current/configs/#{node.chef_environment}.json").must_include k
+    end
   end
 
   it 'listens on port 4243' do
