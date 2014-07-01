@@ -31,8 +31,22 @@ describe_recipe 'runnable_docklet::default' do
     end
   end
 
-it 'starts the docklet service' do
+  it 'starts the docklet service' do
     r = Chef::Resource::Service.new("docklet", @run_context)
+    r.provider Chef::Provider::Service::Upstart
+    current_resource = r.provider_for_action(:start).load_current_resource
+    current_resource.running.must_equal true
+  end
+
+  it 'starts the bouncer service' do
+    r = Chef::Resource::Service.new("bouncer", @run_context)
+    r.provider Chef::Provider::Service::Upstart
+    current_resource = r.provider_for_action(:start).load_current_resource
+    current_resource.running.must_equal true
+  end
+
+  it 'starts the containerGauge service' do
+    r = Chef::Resource::Service.new("containerGauge", @run_context)
     r.provider Chef::Provider::Service::Upstart
     current_resource = r.provider_for_action(:start).load_current_resource
     current_resource.running.must_equal true

@@ -14,7 +14,7 @@ script
   touch $LOG_FILE
   chdir $APP_DIR
   echo $$ > /var/run/<%= @name %>.pid
-  exec npm start >> $LOG_FILE 2>&1
+  exec <%= @start_command || 'npm start' %> >> $LOG_FILE 2>&1
 end script
 
 pre-start script

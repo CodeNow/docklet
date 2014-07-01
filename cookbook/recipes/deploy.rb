@@ -18,18 +18,19 @@ deploy node['runnable_docklet']['deploy_path'] do
   symlink_before_migrate({})
   symlinks({})
   action :deploy
-  notifies :run, 'execute[npm install]', :immediately
+  notifies :create, 'file[docklet_config]', :immediately
+  notifies :create, 'template[/etc/init/docklet.conf]', :immediately
+  notifies :run, 'execute[npm install]', :delayed
 end
 
 file 'docklet_config' do
   path "#{node['runnable_docklet']['deploy_path']}/current/configs/#{node.chef_environment}.json"
   content JSON.pretty_generate node['runnable_docklet']['config']
   action :nothing
-  notifies :run, 'execute[npm install]', :immediately
 end
 
 template '/etc/init/docklet.conf' do
-  source 'docklet.conf.erb'
+  source 'upstart.conf.erb'
   variables({
     :name     => 'docklet',
     :deploy_path  => "#{node['runnable_docklet']['deploy_path']}/current",
@@ -41,6 +42,34 @@ template '/etc/init/docklet.conf' do
   notifies :run, 'execute[npm install]', :immediately
 end
 
+template '/etc/init/bouncer.conf' do
+  source 'upstart.conf.erb'
+  variables({
+    :name     => 'bouncer',
+    :deploy_path  => "#{node['runnable_docklet']['deploy_path']}/current",
+    :log_file   => '/var/log/bouncer.log',
+    :start_command => 'npm run bouncer',
+    :node_env     => node.chef_environment
+  })
+  action :create
+  notifies :restart, 'service[bouncer]', :delayed
+  notifies :run, 'execute[npm install]', :immediately
+end
+
+template '/etc/init/containerGauge.conf' do
+  source 'upstart.conf.erb'
+  variables({
+    :name     => 'containerGauge',
+    :deploy_path  => "#{node['runnable_docklet']['deploy_path']}/current",
+    :log_file   => '/var/log/containerGauge.log',
+    :start_command => 'npm run containerGauge',
+    :node_env     => node.chef_environment
+  })
+  action :create
+  notifies :restart, 'service[containerGauge]', :delayed
+  notifies :run, 'execute[npm install]', :immediately
+end
+
 execute 'npm install' do
   cwd "#{node['runnable_docklet']['deploy_path']}/current"
   action :nothing
@@ -49,29 +78,17 @@ execute 'npm install' do
   notifies :restart, 'service[containerGauge]', :immediately
 end
 
-service 'docklet' do
-  action :start
-  stop_command 'pm2 stop docklet'
-  start_command "bash -c 'NODE_ENV=#{node.chef_environment} pm2 start #{node['runnable_docklet']['deploy_path']}/current/lib/index.js -n docklet'"
-  status_command 'pm2 status | grep docklet | grep online'
-  restart_command 'pm2 restart docklet'
-  supports :start => true, :stop => true, :status => true, :restart => true
+service 'frontdoor' do
+  provider Chef::Provider::Service::Upstart
+  action [:start, :enable]
 end
 
 service 'bouncer' do
-	action :start
-	stop_command 'pm2 stop bouncer'
-	start_command "bash -c 'NODE_ENV=#{node.chef_environment} pm2 start #{node['runnable_docklet']['deploy_path']}/current/bouncer/index.js -n bouncer -i 10'"
-	status_command 'pm2 status | grep bouncer | grep online'
-	restart_command 'pm2 restart bouncer'
-	supports :start => true, :stop => true, :status => true, :restart => true
+  provider Chef::Provider::Service::Upstart
+  action [:start, :enable]
 end
 
 service 'containerGauge' do
-	action :start
-	stop_command 'pm2 stop containerGauge'
-	start_command "bash -c 'NODE_ENV=#{node.chef_environment} pm2 start #{node['runnable_docklet']['deploy_path']}/current/containerGauge/index.js -n containerGauge'"
-	status_command 'pm2 status | grep containerGauge | grep online'
-	restart_command 'pm2 restart containerGauge'
-	supports :start => true, :stop => true, :status => true, :restart => true
+  provider Chef::Provider::Service::Upstart
+  action [:start, :enable]
 end
