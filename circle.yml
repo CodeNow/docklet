@@ -2,6 +2,9 @@ machine:
   node:
     version: v0.10.26
 dependencies:
+  cache_directories:
+    - "cookbook/vendor/bundle"
+    - "node_modules"
   override:
     - npm install
     - npm run build
