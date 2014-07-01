@@ -25,8 +25,11 @@ suites:
       solo_rb:
         environment: integration
     run_list:
+      - recipe[runnable_redis]
       - recipe[runnable_docklet]
       - recipe[minitest-handler]
     attributes:
       runnable_nodejs:
         version: '0.10.22'
+      runnable_redis:
+        bind_address: 127.0.0.1
