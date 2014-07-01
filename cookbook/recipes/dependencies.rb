@@ -17,8 +17,3 @@ hostsfile_entry node['runnable_docklet']['registry'] do
 	action :create
 	unique true
 end
-
-execute 'npm install pm2@0.7.7 -g' do
-  action :run
-  not_if 'npm list -g pm2'
-end

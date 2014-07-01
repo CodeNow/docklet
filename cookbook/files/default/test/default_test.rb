@@ -31,6 +31,13 @@ describe_recipe 'runnable_docklet::default' do
     end
   end
 
+it 'starts the docklet service' do
+    r = Chef::Resource::Service.new("docklet", @run_context)
+    r.provider Chef::Provider::Service::Upstart
+    current_resource = r.provider_for_action(:start).load_current_resource
+    current_resource.running.must_equal true
+  end
+
   it 'listens on port 4243' do
     assert shell_out('lsof -n -i :4243').exitstatus == 0
   end

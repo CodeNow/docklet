@@ -28,6 +28,19 @@ file 'docklet_config' do
   notifies :run, 'execute[npm install]', :immediately
 end
 
+template '/etc/init/docklet.conf' do
+  source 'docklet.conf.erb'
+  variables({
+    :name     => 'docklet',
+    :deploy_path  => "#{node['runnable_docklet']['deploy_path']}/current",
+    :log_file   => '/var/log/docklet.log',
+    :node_env     => node.chef_environment
+  })
+  action :create
+  notifies :restart, 'service[docklet]', :delayed
+  notifies :run, 'execute[npm install]', :immediately
+end
+
 execute 'npm install' do
   cwd "#{node['runnable_docklet']['deploy_path']}/current"
   action :nothing
