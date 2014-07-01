@@ -5,6 +5,8 @@
   "main": "/lib/index.js",
   "scripts": {
     "start": "node lib/index.js",
+    "bouncer": "node bouncer/index.js",
+    "containerGauge": "node containerGauge/index.js",
     "test": "NODE_ENV=testing DOCKLET_INDEX=0 mocha -R spec",
     "testInt": "mocha --ui bdd --bail --reporter spec --require should testInt"
   },
