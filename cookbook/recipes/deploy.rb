@@ -78,7 +78,7 @@ execute 'npm install' do
   notifies :restart, 'service[containerGauge]', :immediately
 end
 
-service 'frontdoor' do
+service 'docklet' do
   provider Chef::Provider::Service::Upstart
   action [:start, :enable]
 end
