@@ -9,8 +9,6 @@ default['runnable_docklet']['config'] 		= {
   'bouncer_port' 			=> 4243,
   # port for redis
   'redisPort' 				=> '6379',
-  # ip of redis server
-  'redisHost' => search(:node, "chef_environment:#{node.chef_environment} AND recipes:runnable\:\:redis_master").first.ipaddress,
   # network interface which connects to outside world. this value is sent to client wanting to know how to contact it
   'networkInterface' 		=> 'eth0',
   # application key for rollbar
