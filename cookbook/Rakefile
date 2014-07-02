@@ -25,7 +25,7 @@ end
 
 desc 'Run foodcritic on the current cookbook'
 task :foodcritic do
-  sh 'bundle exec foodcritic -f any .'
+  sh 'bundle exec foodcritic -f any . --tags ~FC023'
 end
 
 desc 'Run kitchen test'
