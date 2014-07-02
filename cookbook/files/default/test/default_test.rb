@@ -8,7 +8,9 @@ describe_recipe 'runnable_docklet::default' do
   include Chef::Mixin::ShellOut
 
   it 'creates a hostsfile entry for registry' do
-    file('/etc/hosts').must_match /^#{node['runnable_docklet']['registry']}\s*registry.runnable.com$/
+    unless node['runnable_docklet']['registry'].nil?
+      file('/etc/hosts').must_match /^#{node['runnable_docklet']['registry']}\s*registry.runnable.com$/
+    end
   end
 
   it 'installs nodejs v0.10.22' do

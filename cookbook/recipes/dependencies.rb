@@ -12,8 +12,10 @@ package 'git'
 node.set['runnable_nodejs']['version'] = '0.10.22'
 include_recipe 'runnable_nodejs'
 
-hostsfile_entry node['runnable_docklet']['registry'] do
-	hostname 'registry.runnable.com'
-	action :create
-	unique true
+unless node['runnable_docklet']['registry'].nil?
+  hostsfile_entry node['runnable_docklet']['registry'] do
+  	hostname 'registry.runnable.com'
+  	action :create
+  	unique true
+  end
 end

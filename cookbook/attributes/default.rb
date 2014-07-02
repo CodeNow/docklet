@@ -1,5 +1,5 @@
 default['runnable_docklet']['deploy_path']	= '/opt/docklet'
-default['runnable_docklet']['registry'] = ''
+default['runnable_docklet']['registry'] = nil
 default['runnable_docklet']['config'] 		= {
   'domain'            => '',
   # host of docker service
