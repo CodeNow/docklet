@@ -20,6 +20,8 @@ deploy node['runnable_docklet']['deploy_path'] do
   action :deploy
   notifies :create, 'file[docklet_config]', :immediately
   notifies :create, 'template[/etc/init/docklet.conf]', :immediately
+  notifies :create, 'template[/etc/init/bouncer.conf]', :immediately
+  notifies :create, 'template[/etc/init/containerGauge.conf]', :immediately
   notifies :run, 'execute[npm install]', :delayed
 end
 
