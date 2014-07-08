@@ -18,10 +18,6 @@ describe_recipe 'runnable_docklet::default' do
     assert_equal("v0.10.22\n", node_version.stdout, "Incorrect node version present: #{node_version.stdout}")
   end
 
-  it 'installs pm2@0.7.7' do
-    assert shell_out('npm list -g pm2').exitstatus == 0
-  end
-
   it 'creates github ssh deploy key files' do
     file('/root/.ssh/runnable_docklet').must_exist
     file('/root/.ssh/runnable_docklet.pub').must_exist
