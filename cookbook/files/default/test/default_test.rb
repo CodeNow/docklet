@@ -19,8 +19,8 @@ describe_recipe 'runnable_docklet::default' do
   end
 
   it 'creates github ssh deploy key files' do
-    file('/root/.ssh/runnable_docklet').must_exist
-    file('/root/.ssh/runnable_docklet.pub').must_exist
+    file('/root/.ssh/runnable_docklet-id_rsa').must_exist
+    file('/root/.ssh/runnable_docklet-id_rsa.pub').must_exist
   end
 
   it 'generates json configuration' do
