@@ -79,15 +79,15 @@ end
 
 service 'docklet' do
   provider Chef::Provider::Service::Upstart
-  action [:start, :enable]
+  action :nothing
 end
 
 service 'bouncer' do
   provider Chef::Provider::Service::Upstart
-  action [:start, :enable]
+  action :nothing
 end
 
 service 'containerGauge' do
   provider Chef::Provider::Service::Upstart
-  action [:start, :enable]
+  action :nothing
 end
