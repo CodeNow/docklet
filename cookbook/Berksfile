@@ -4,9 +4,11 @@ metadata
 
 cookbook 'hostsfile', github: 'customink-webops/hostsfile'
 cookbook 'runnable_nodejs', git: 'git@github.com:CodeNow/runnable_nodejs-cookbook.git'
-cookbook 'runnable_redis', git: 'git@github.com:CodeNow/runnable_redis-cookbook.git'
 
 group :integration do
+  cookbook 'runnable_docker', git: 'git@github.com:CodeNow/runnable_docker-cookbook.git'
+  cookbook 'runnable_redis', git: 'git@github.com:CodeNow/runnable_redis-cookbook.git'
+
   cookbook 'chef-solo-search', github: 'edelight/chef-solo-search'
   cookbook 'minitest-handler', github: 'btm/minitest-handler-cookbook'
 end

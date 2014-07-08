@@ -26,6 +26,7 @@ suites:
         environment: integration
     run_list:
       - recipe[runnable_redis]
+      - recipe[runnable_docker]
       - recipe[runnable_docklet]
       - recipe[minitest-handler]
     attributes:
