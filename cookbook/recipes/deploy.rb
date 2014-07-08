@@ -77,17 +77,10 @@ execute 'npm install' do
   notifies :restart, 'service[containerGauge]', :immediately
 end
 
-service 'docklet' do
-  provider Chef::Provider::Service::Upstart
-  action :nothing
-end
 
-service 'bouncer' do
-  provider Chef::Provider::Service::Upstart
-  action :nothing
-end
-
-service 'containerGauge' do
-  provider Chef::Provider::Service::Upstart
-  action :nothing
+%w{docklet bouncer containerGauge}.each do |s|
+  service s do
+    provider Chef::Provider::Service::Upstart
+    action :nothing
+  end
 end
