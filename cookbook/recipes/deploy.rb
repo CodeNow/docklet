@@ -41,7 +41,6 @@ template '/etc/init/docklet.conf' do
   })
   action :create
   notifies :restart, 'service[docklet]', :delayed
-  notifies :run, 'execute[npm install]', :immediately
 end
 
 template '/etc/init/bouncer.conf' do
@@ -55,7 +54,6 @@ template '/etc/init/bouncer.conf' do
   })
   action :create
   notifies :restart, 'service[bouncer]', :delayed
-  notifies :run, 'execute[npm install]', :immediately
 end
 
 template '/etc/init/containerGauge.conf' do
@@ -69,7 +67,6 @@ template '/etc/init/containerGauge.conf' do
   })
   action :create
   notifies :restart, 'service[containerGauge]', :delayed
-  notifies :run, 'execute[npm install]', :immediately
 end
 
 execute 'npm install' do
