@@ -15,7 +15,7 @@ deploy node['runnable_docklet']['deploy_path'] do
   migrate false
   before_migrate do
     file 'docklet_config' do
-      path "#{node['runnable_docklet']['deploy_path']}/current/configs/#{node.chef_environment}.json"
+      path "#{release_path}/configs/#{node.chef_environment}.json"
       content JSON.pretty_generate node['runnable_docklet']['config']
       action :create
     end
