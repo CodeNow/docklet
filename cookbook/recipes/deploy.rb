@@ -21,7 +21,7 @@ deploy node['runnable_docklet']['deploy_path'] do
     end
     
     execute 'npm install' do
-      cwd "#{release_path}"
+      cwd release_path
       action :run
     end
   end
@@ -30,7 +30,7 @@ deploy node['runnable_docklet']['deploy_path'] do
       source 'upstart.conf.erb'
       variables({
         :name     => 'docklet',
-        :deploy_path  => "#{release_path}",
+        :deploy_path  => release_path,
         :log_file   => '/var/log/docklet.log',
         :node_env     => node.chef_environment
       })
