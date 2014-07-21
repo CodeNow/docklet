@@ -20,5 +20,10 @@
   "domain": "cloudcosmos.com",
   "socket": "/var/run/docker.sock",
   "bounceWorkerLifeSpan": 18000000,
-  "rollbar": "34dfc593cf14456985c66ffc12c6acc4"
+  "rollbar": "34dfc593cf14456985c66ffc12c6acc4",
+  "dockerLog": "/var/log/upstart/docker.log",
+  "datadog": {
+    "apiKey": "69afa1c29f4ace631d5042baa694aade",
+    "appKey": "b780aeaaa33e4389c87ee5d221da0037de86a36d"
+  }
 }
