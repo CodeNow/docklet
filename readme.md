@@ -15,3 +15,4 @@ Docklet
 * we may be able to respond to api server right away and stall on subsequent accesses until the service is ready
 * front-door would listen for new rows to be created in the service table and attach front door handlers immediately
 * from that point on front door would be listening for changes to the service row and updating redis config
+
